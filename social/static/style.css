@@ -1,0 +1,338 @@
+body {
+  background: rgb(0, 31, 66);
+  font-size: 62.5%;
+  font-family: "Varela Round", Helvetica, Arial, serif;
+}
+/* Global Styles*/
+
+h5 {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+p {
+  font-size: 1rem;
+}
+
+button {
+  font-size: 1rem;
+  color: white;
+  padding: 0.4rem 1.4rem;
+  border: none;
+  background: #7a9d96;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+img {
+  object-fit: cover;
+}
+
+/* Nav bar */
+.main-head {
+  background: white;
+  color: black;
+}
+
+nav.main {
+  min-height: 7vh;
+  display: flex;
+  width: 65%;
+  margin: auto;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+nav.main ul {
+  display: flex;
+  flex: 1 1 40rem;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+}
+
+#logo {
+  flex: 2 1 40rem;
+}
+
+/* -----*/
+
+a {
+  font-size: 0.93rem;
+  text-decoration: none;
+  color: black;
+}
+
+.main {
+  background: white;
+  width: 60%;
+  margin: 5% auto;
+  border-radius: 4px;
+  padding-bottom: 20px;
+}
+
+/* NAVIGATION BAR */
+.second-nav {
+  display: flex;
+  padding: 15px 30px;
+}
+
+.second-nav .feed {
+  flex: 1 1 30px;
+}
+
+.second-nav .feed:hover {
+  flex: 1 1 30px;
+  color: grey;
+}
+
+.second-nav .profile {
+  flex: 1 1 30px;
+}
+
+.second-nav .profile:hover {
+  flex: 1 1 30px;
+  color: grey;
+}
+
+.second-nav .new {
+  background: transparent;
+  color: rgb(0, 0, 0);
+  padding: 15px;
+  border: 2px solid black;
+  border-radius: 30px;
+  margin-left: 38%;
+}
+
+.second-nav .new_1 {
+  background: transparent;
+  color: rgb(0, 0, 0);
+  padding: 15px;
+  border: 2px solid black;
+  border-radius: 30px;
+}
+
+.second-nav .new:hover {
+  background-color: green;
+  transition: 200ms;
+  color: white;
+}
+
+.hero {
+  --gradient-start: green;
+  --gradient-end: #ff0000;
+  padding: 15px;
+  transition: 1000ms --gradient-start, 1000ms --gradient-end;
+  background: linear-gradient(
+    to right,
+    var(--gradient-start),
+    var(--gradient-end)
+  );
+  border: 2px solid black;
+  border-radius: 30px;
+  margin-left: 34%;
+}
+
+.hero:hover {
+  --gradient-end: green;
+  --gradient-start: #ff0000;
+}
+
+.second-nav .new_1:hover {
+  background-color: red;
+  color: white;
+}
+
+/* Article */
+
+article {
+  width: 93%;
+  margin: auto;
+  padding: 40px 0;
+  border-bottom: 2px solid #eceeef;
+}
+
+.username {
+  margin-bottom: 0.2rem;
+}
+
+.username a {
+  font-size: 1.1rem;
+}
+
+.container-article {
+  display: flex;
+}
+
+.container-article img {
+  height: 68px;
+  width: 68px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+article:last-child {
+  border-bottom: 0;
+}
+
+time {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.post {
+  font-size: 0.94rem;
+}
+
+/* PROFILE */
+
+.salir {
+  background: transparent;
+  color: rgb(0, 0, 0);
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 30px;
+}
+
+.salir:hover {
+  flex: 1 1 30px;
+  /* color: rgb(0, 31, 66); */
+  background: rgb(0, 31, 66);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile img {
+  height: 100px;
+  width: 100px;
+  margin-right: 10px;
+  border-radius: 50%;
+  margin: 20px;
+}
+.profile h2 {
+  margin-top: -10px;
+  font-size: 1.3rem;
+}
+
+/* Followers / Following / Post */
+.follow {
+  display: flex;
+  width: 95%;
+  justify-content: space-around;
+  margin: 30px auto;
+  text-align: center;
+  border-bottom: 2px solid #eceeef;
+  border-left: 2px solid #eceeef;
+  border-right: 2px solid #eceeef;
+  border-top: 2px solid #eceeef;
+  padding-bottom: -1px;
+}
+
+/*Form Elements*/
+form {
+  margin: 0;
+  padding: 40px;
+  font-size: 1rem;
+}
+input {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #d3d8dc;
+  outline: 0;
+  background: #fff;
+  padding: 20px 0 4px;
+  margin: 0 0 20px;
+  color: #777b7e;
+}
+input:focus {
+  border-color: #7a9d96;
+  color: #2c3238;
+}
+textarea {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #d3d8dc;
+  outline: 0;
+  background: #fff;
+  padding: 20px 0 4px;
+  margin: 0 0 20px;
+  color: #777b7e;
+}
+textarea:focus {
+  border-color: #7a9d96;
+  color: #2c3238;
+}
+button#submit {
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  background: #7a9d96;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  opacity: 0.8;
+  transition: 0.35s linear;
+}
+
+button#submit:hover {
+  opacity: 1;
+}
+
+/*Notifications*/
+.notification {
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.9rem;
+}
+.success {
+  background: #43dc7e;
+  color: white;
+}
+.error {
+  background: #ab3444;
+  color: white;
+  margin-bottom: 20px;
+}
+
+/*Footer*/
+footer {
+  color: white;
+  text-align: center;
+  font-size: 0.875em;
+  margin: 40px 0;
+}
+
+footer p {
+  opacity: 0.8;
+}
+
+footer p a {
+  color: white;
+}
+
+img.profile {
+  height: 80px;
+  width: 80px;
+  margin-right: 10px;
+  margin-left: 30px;
+  border-radius: 50%;
+}
+
+.follow-button {
+  color: white;
+}
+
+/*Media Queries*/
+@media (max-width: 786px) {
+  .main {
+    width: 95%;
+  }
+}

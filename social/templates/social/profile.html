@@ -1,0 +1,107 @@
+{% extends 'social/feed.html' %}
+{% block content %}
+
+<!-- Profile -->
+<div class="profile">
+	<img src="{{ user.profile.image.url }}">
+	<h2>{{ user.username }}</h2>
+	<h2 style="color: gray;"><span>{{ user.profile.first_name }} {{ user.profile.last_name }}</span></h2>
+
+	<!-- {% if request.user.is_authenticated %}
+	{% if user.username != request.user.username %}
+	{% if user not in request.user.profile.following %}
+	<button><a class="follow-button" href="{% url 'follow' user %}">Siguir</a></button>
+	{% else %}
+	<button><a class="follow-button" href="{% url 'unfollow' user %}">Seguidor</a></button>
+	{% endif %}
+	{% endif %}
+	{% endif %} -->
+
+
+</div>
+
+<!-- PISO 1 -->
+<div class="follow">
+	<div>
+		<h5>Entradas y Salidas Registradas</h5>
+		<p>{{ user.posts.count }}</p>
+	</div>
+</div>
+
+<!-- PISO 2 -->
+
+<div class="follow">
+	<div>
+		<h5>Dirección</h5>
+		<p>{{ user.profile.direccion }}</p>
+	</div>
+</div>
+
+<!-- PISO 3 -->
+
+<div class="follow">
+	<div>
+		<h5>Fecha de nacimiento</h5>
+		<p>{{ user.profile.nacimiento }}</p>
+	</div>
+	<div>
+		<h5>Teléfono Personal</h5>
+		<p>{{ user.profile.telefono }}</p>
+	</div>
+	<div>
+		<h5>Teléfono de Casa</h5>
+		<p>{{ user.profile.telefono_casa }}</p>
+	</div>
+</div>
+
+<!-- PISO 4 -->
+
+<div class="follow">
+	<div>
+		<h5>Fecha de ingreso</h5>
+		<p>{{ user.profile.ingreso }}</p>
+	</div>
+	<div>
+		<h5>Fecha de egreso</h5>
+		<p>{{ user.profile.egreso }}</p>
+	</div>
+	<div>
+		<h5>Departamento(s)</h5>
+		<p>{{ user.profile.departamento }}</p>
+	</div>
+</div>
+
+<!-- PISO 5 -->
+
+<div class="follow">
+	<div>
+		<h5>Puesto</h5>
+		<p>{{ user.profile.puesto }}</p>
+	</div>
+	<div>
+		<h5>Correo</h5>
+		<p>{{ user.profile.email }}</p>
+	</div>
+</div>
+
+<!-- CONTACTO DE EMERGENCIA -->
+
+<div class="follow">
+	<div>
+		<h5>Contacto de Emergencia</h5>
+		<p>{{ user.profile.contacto_emergencia }}</p>
+	</div>
+	<div>
+		<h5>Teléfono de Emergencia</h5>
+		<p>{{ user.profile.telefono_emergencia }}</p>
+	</div>
+</div>
+
+
+<div>
+
+</div>
+
+
+{{ block.super }}
+{% endblock %}

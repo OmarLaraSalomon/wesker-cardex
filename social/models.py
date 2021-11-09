@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
@@ -11,7 +12,7 @@ class Profile(models.Model):
     image = models.ImageField(default='batman.png')
 
     def __str__(self):
-        return f'Perfil de {self.user.username}'
+            return f'Foto de perfil de { self.user.information.first_name } { self.user.information.last_name }'
 
     def following(self):
         user_ids = Relationship.objects.filter(from_user=self.user)\
@@ -34,7 +35,7 @@ class Post(models.Model):
         ordering = ['-timestamp']
 
     def __str__(self):
-        return f'{self.user.username}: {self.content}'
+            return f'Perfil de { self.user.information.first_name } { self.user.information.last_name } : {self.content} : {self.timestamp}'
 
 
 class Relationship(models.Model):
@@ -66,4 +67,14 @@ class Information(models.Model):
     departamento = models.CharField(max_length=250, null=True)
 
     def __str__(self):
-            return f'Perfil de {self.user.username}'
+            return f'Perfil de { self.user.information.first_name } { self.user.information.last_name }'
+
+    
+
+      
+
+class Egresos(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=True)
+    ingreso = models.CharField(max_length=250, null=True)
+    egreso = models.CharField(max_length=250, null=True)
+   

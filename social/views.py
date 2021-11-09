@@ -3,7 +3,24 @@ from .models import *
 from .forms import UserRegisterForm, PostForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from .models import Profile
+from .models import Information
 from django.contrib.auth.decorators import login_required
+
+def information(request):
+    print(request)
+    template = 'social/information.html'
+    if request.method == 'POST':
+        info = Information.objects.create(
+            first_name=request.POST['first_name'], last_name=request.POST['last_name'], 
+            telefono=request.POST['telefono'], telefono_casa=request.POST['telefono_casa'],
+            nacimiento=request.POST['nacimiento'],direccion=request.POST['direccion'],
+            puesto=request.POST['puesto'], contacto_emergencia=request.POST['contacto_emergencia'], 
+            telefono_emergencia=request.POST['telefono_emergencia'], departamento=request.POST['departamento'],
+            user_id=request.POST['user_id'])
+        info.save()
+    context = {}
+    return render(request, template, context)
 
 
 def feed(request):
@@ -15,7 +32,8 @@ def feed(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST) 
+      
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']

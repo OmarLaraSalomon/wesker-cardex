@@ -7,18 +7,7 @@ from django.contrib import admin
 
 
 class UserRegisterForm(UserCreationForm):
-    name = forms.CharField(
-        label='Nombre(s)', widget=forms.TextInput, required=True)
-
-    lastname = forms.CharField(
-        label='Apellidos', widget=forms.TextInput, required=True)
-
-    number = forms.CharField(label='Número telefónico',
-                             widget=forms.TextInput, required=True)
-
-    puesto = forms.CharField(label='Puesto',
-                             widget=forms.TextInput, required=True)
-
+  
     email = forms.EmailField(widget=forms.EmailInput, required=True)
     password1 = forms.CharField(
         label='Contraseña', widget=forms.PasswordInput, required=True)
@@ -26,13 +15,10 @@ class UserRegisterForm(UserCreationForm):
     password2 = forms.CharField(
         label='Confirma Contraseña', widget=forms.PasswordInput, required=True)
 
-    direccion = forms.CharField(
-        label='Dirección', widget=forms.TextInput, required=True)
 
     class Meta:
         model = User
-        fields = ['name', 'lastname', 'username', 'number', 'puesto', 'direccion',
-                  'email', 'password1', 'password2']
+        fields = ['username','email', 'password1', 'password2']
         help_texts = {k: "" for k in fields}
 
 

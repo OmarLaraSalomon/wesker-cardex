@@ -8,19 +8,6 @@ from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    first_name = models.CharField(max_length=250, null=True)
-    last_name = models.CharField(max_length=250, null=True)
-    email = models.EmailField(max_length=250, null=True, unique=True)
-    telefono = models.CharField(max_length=250, null=True, unique=True)
-    telefono_casa = models.CharField(max_length=250, null=True, unique=True)
-    nacimiento = models.CharField(max_length=250, null=True)
-    ingreso = models.CharField(max_length=250, null=True)
-    egreso = models.CharField(max_length=250, null=True)
-    direccion = models.CharField(max_length=300, null=True)
-    departamento = models.CharField(max_length=250, null=True)
-    contacto_emergencia = models.CharField(max_length=250, null=True)
-    telefono_emergencia = models.CharField(max_length=250, null=True)
-    puesto = models.CharField(max_length=250, null=True)
     image = models.ImageField(default='batman.png')
 
     def __str__(self):
@@ -63,3 +50,20 @@ class Relationship(models.Model):
         indexes = [
             models.Index(fields=['from_user', 'to_user', ]),
         ]
+
+
+class Information(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=True)
+    first_name = models.CharField(max_length=250, null=True)
+    last_name = models.CharField(max_length=250, null=True)
+    telefono = models.CharField(max_length=250, null=True, unique=True)
+    telefono_casa = models.CharField(max_length=250, null=True, unique=True)
+    nacimiento = models.CharField(max_length=250, null=True)
+    direccion = models.CharField(max_length=300, null=True)
+    contacto_emergencia = models.CharField(max_length=250, null=True)
+    telefono_emergencia = models.CharField(max_length=250, null=True)
+    puesto = models.CharField(max_length=250, null=True)
+    departamento = models.CharField(max_length=250, null=True)
+
+    def __str__(self):
+            return f'Perfil de {self.user.username}'

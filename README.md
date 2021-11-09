@@ -26,6 +26,7 @@ instala Anaconda Navigator.
 2: Dile al encargado de la cuenta de GitHub que te agregue a los proyectos digimundo
 o que coloquen tu SSH para tener acceso al repositorio. Puedes mandarme correo o marcarme
 
+dilan.estudillonava@gmail.com
 campero980103@outlook.com
 
 3:Cuando tengas el link clonalo en tu computadora

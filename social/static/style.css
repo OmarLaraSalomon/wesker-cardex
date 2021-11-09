@@ -131,11 +131,20 @@ a {
   border: 2px solid black;
   border-radius: 30px;
   margin-left: 34%;
+  color: white;
 }
 
 .hero:hover {
   --gradient-end: green;
   --gradient-start: #ff0000;
+}
+
+.btnInf{
+  padding: 15px;
+  border-radius: 20px;
+  background-color: rgb(0, 31, 66);
+  margin-left: 20px;
+  color: white;
 }
 
 .second-nav .new_1:hover {

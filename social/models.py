@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.contrib import admin
+from django.contrib import admin 
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
@@ -34,9 +34,6 @@ class Post(models.Model):
     class Meta:
         ordering = ['-timestamp']
 
-    def __str__(self):
-            return f'Perfil de { self.user.information.first_name } { self.user.information.last_name } : {self.content} : {self.timestamp}'
-
 
 class Relationship(models.Model):
     from_user = models.ForeignKey(
@@ -66,15 +63,12 @@ class Information(models.Model):
     puesto = models.CharField(max_length=250, null=True)
     departamento = models.CharField(max_length=250, null=True)
 
-    def __str__(self):
-            return f'Perfil de { self.user.information.first_name } { self.user.information.last_name }'
-
-    
-
+   
       
 
 class Egresos(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=True)
     ingreso = models.CharField(max_length=250, null=True)
     egreso = models.CharField(max_length=250, null=True)
-   
+    
+

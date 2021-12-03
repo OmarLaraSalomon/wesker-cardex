@@ -10,7 +10,7 @@ from django.utils import timezone
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     image = models.ImageField(default='batman.png')
-
+     
     def __str__(self):
             return f'Foto de perfil de { self.user.information.first_name } { self.user.information.last_name }'
 

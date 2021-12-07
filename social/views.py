@@ -46,15 +46,19 @@ def information(request):
 def feed(request, username=None):
     """  posts = Post.objects.all()
 
-     context = {'posts': posts} """
-    current_user = request.user
-    if username and username != current_user.username:
-        user = User.objects.get(username=username)
-        posts = user.posts.all()
+    context = {'posts': posts} """
+    if request.user.is_authenticated:
+        current_user = request.user
+        if username and username != current_user.username:
+            user = User.objects.get(username=username)
+            posts = user.posts.all()
+        else:
+            posts = current_user.posts.all()
+            user = current_user
+        return render(request, 'social/feed.html', {'user': user, 'posts': posts})
     else:
-        posts = current_user.posts.all()
-        user = current_user
-    return render(request, 'social/feed.html', {'user': user, 'posts': posts})
+        return render(request, 'social/feed.html')
+        
 
 
 def register(request):

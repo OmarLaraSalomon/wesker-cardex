@@ -23,10 +23,10 @@ Information
 </head>
 
 <body>
-  
+
 
   <form>
-  {% csrf_token %}
+    {% csrf_token %}
 
     <h2 style="color:red;">Una vez que Actualices tus datos , no podras cambiarlos , solo el administrador </h2>
     <div class="form-group">
@@ -62,17 +62,17 @@ Information
       <input type="text" class="form-control" id="telefono_emergenciaField"
         placeholder="{{ _('Escribe el telefono de tu contacto de emergencia') }}">
     </div>
-     <div class="form-group" style="margin-top:10px; margin-bottom:20px;">
+    <div class="form-group" style="margin-top:10px; margin-bottom:20px;">
       <label for="departamentoField">{{_('Departamento')}}</label>
       <select id="departamentoField" name="pais" required class="form-control">
-              <option value="" disabled selected>{{_('Selecciona tu departamento')}}</option>
-              <option value="Tierra">Tierra</option>
-              <option value="Agua">Agua</option>
-              <option value="Fuego">Fuego</option>
-              <option value="Aire">Aire</option>
-              <option value="Equipo Azul">Equipo Azul</option>
-              <option value="Equipo Rojo">Equipo Rojo</option>
-            </select>
+        <option value="" disabled selected>{{_('Selecciona tu departamento')}}</option>
+        <option value="Tierra">Tierra</option>
+        <option value="Agua">Agua</option>
+        <option value="Fuego">Fuego</option>
+        <option value="Aire">Aire</option>
+        <option value="Equipo Azul">Equipo Azul</option>
+        <option value="Equipo Rojo">Equipo Rojo</option>
+      </select>
     </div>
     <div class="form-group">
       <label for="nacimientoField">{{_('Fecha de nacimiento')}}</label>
@@ -87,8 +87,10 @@ Information
       <input type="text" class="form-control" id="puestoField" placeholder="{{ _('Escribe tu puesto') }}">
     </div>
 
+    <div class="btnact">
+      <button onclick="hacer()" type="submit" class="actualizar">{{_('Actualizar')}}</button>
+    </div>
 
-    <button onclick="hacer()" type="submit" class="btn btn-blue ">{{_('Actualizar')}}</button>
 
 
 
@@ -105,33 +107,33 @@ Information
 
 
 
-  function hacer(){
-    $.ajax({
-      url: "{% url 'information' %}",
-      type: "POST",
-      data: {
-        'first_name': $('#first_nameField').val(),
-        'last_name': $('#last_nameField').val(),
-        'telefono': $('#telefonoField').val(),
-        'telefono_casa': $('#telefono_casaField').val(),
-        'nacimiento': $('#nacimientoField').val(),
-        'direccion': $('#direccionField').val(),
-        'puesto': $('#puestoField').val(),
-        'contacto_emergencia': $('#contacto_emergenciaField').val(),
-        'telefono_emergencia': $('#telefono_emergenciaField').val(),
-        'departamento': $('#departamentoField').val(),
-        'user_id': $('#idField').val(),
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        
+    function hacer() {
+      $.ajax({
+        url: "{% url 'information' %}",
+        type: "POST",
+        data: {
+          'first_name': $('#first_nameField').val(),
+          'last_name': $('#last_nameField').val(),
+          'telefono': $('#telefonoField').val(),
+          'telefono_casa': $('#telefono_casaField').val(),
+          'nacimiento': $('#nacimientoField').val(),
+          'direccion': $('#direccionField').val(),
+          'puesto': $('#puestoField').val(),
+          'contacto_emergencia': $('#contacto_emergenciaField').val(),
+          'telefono_emergencia': $('#telefono_emergenciaField').val(),
+          'departamento': $('#departamentoField').val(),
+          'user_id': $('#idField').val(),
+          csrfmiddlewaretoken: '{{ csrf_token }}',
 
-      },
-      success: function (data) {
-            console.log(data)
-            console.log("Success");
+
+        },
+        success: function (data) {
+          console.log(data)
+          console.log("Success");
         }
-    });
-    console.log(data);
-  }
+      });
+      console.log(data);
+    }
   </script>
 </body>
 
@@ -139,4 +141,3 @@ Information
 
 
 {% endblock %}
-

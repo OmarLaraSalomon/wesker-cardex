@@ -7,6 +7,23 @@ from .models import Profile
 from .models import Information
 from django.contrib.auth.decorators import login_required
 
+
+
+def dash(request, username=None):
+    template = 'social/dashboard.html'
+    """ posts = Post.objects.all()
+
+    context = {'posts': posts} """
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+        
+    return render(request, template, {'user': user, 'posts': posts})
+
 def information(request):
     print(request)
     template = 'social/information.html'
@@ -23,11 +40,18 @@ def information(request):
     return render(request, template, context)
 
 
-def feed(request):
-    posts = Post.objects.all()
+def feed(request, username=None):
+    """  posts = Post.objects.all()
 
-    context = {'posts': posts}
-    return render(request, 'social/feed.html', context)
+     context = {'posts': posts} """
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    return render(request, 'social/feed.html', {'user': user, 'posts': posts})
 
 
 def register(request):

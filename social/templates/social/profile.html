@@ -9,6 +9,7 @@
 	<h2>{{ user.username }}</h2>
 	<h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2>
 
+
 	<!-- {% if request.user.is_authenticated %}
 	{% if user.username != request.user.username %}
 	{% if user not in request.user.profile.following %}
@@ -18,9 +19,11 @@
 	{% endif %}
 	{% endif %}
 	{% endif %} -->
-
-
 </div>
+<div class="profile1">
+	<a class="btnInf" href="{% url 'information' %}">Actualiza tu informacion</a>
+</div>
+
 
 <!-- PISO 1 -->
 <div class="follow">
@@ -104,6 +107,10 @@
 
 </div>
 
+
+<style>
+
+</style>
 
 {{ block.super }}
 {% endblock %}

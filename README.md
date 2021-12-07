@@ -26,7 +26,6 @@ instala Anaconda Navigator.
 2: Dile al encargado de la cuenta de GitHub que te agregue a los proyectos digimundo
 o que coloquen tu SSH para tener acceso al repositorio. Puedes mandarme correo o marcarme
 
-dilan.estudillonava@gmail.com
 campero980103@outlook.com
 
 3:Cuando tengas el link clonalo en tu computadora
@@ -59,6 +58,10 @@ pip freeze > requirements.txt
 -| py -m pip install -r requirements.txt
 si te da error prueba con éste otro:
 -| pip install -r requirements.txt
+
+si te da error por el psycopg2 cambia la version mas reciente y en el requirements escribe
+
+psycopg2-binary==version
 
 ///////// OPCIONAL SOLO CON POSTGRES /////////////
 12:Una ves instalados tienes que crear PostgreSQL en tu computadora.

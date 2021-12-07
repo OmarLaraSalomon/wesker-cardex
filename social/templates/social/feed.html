@@ -11,10 +11,12 @@
             <h2 class="username"><a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a></h2>
             <time style="color: #14344F;"> <strong> Tu hora de {{ post.content }} del día </strong>
                 {{ post.timestamp }}</time>
-            <div class="post">{{ post.content }}</div>
+            <div class="post1">{{ post.content }}</div>
         </div>
     </div>
 </article>
 
+
 {% endfor %}
+
 {% endblock %}

@@ -9,20 +9,23 @@ from django.contrib.auth.decorators import login_required
 
 
 
-def dash(request, username=None):
+def inicio(request, username=None):
     template = 'social/dashboard.html'
     """ posts = Post.objects.all()
 
     context = {'posts': posts} """
-    current_user = request.user
-    if username and username != current_user.username:
-        user = User.objects.get(username=username)
-        posts = user.posts.all()
+    if request.user.is_authenticated:
+        current_user = request.user
+        if username and username != current_user.username:
+            user = User.objects.get(username=username)
+            posts = user.posts.all()
+        else:
+            posts = current_user.posts.all()
+            user = current_user
+            return render(request, template, {'user': user, 'posts': posts})
     else:
-        posts = current_user.posts.all()
-        user = current_user
-        
-    return render(request, template, {'user': user, 'posts': posts})
+        return render(request, template)    
+
 
 def information(request):
     print(request)

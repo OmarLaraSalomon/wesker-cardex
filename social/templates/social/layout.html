@@ -18,34 +18,13 @@
 <body>
 
 	<header class="main-head">
-		<!--<nav class="main">
-			<h1 id="logo"><a href="{%url 'dash' %}"> TESCA CORPORATION </a></h1>
-			<ul>
-				<!-- Estilos: style="background-color: rgb(0, 31, 66); border-radius: 10px; color: aliceblue;" 
-				{% if request.user.is_authenticated %}
-				<li><a class="salir" href="{% url 'logout' %}">Salir de la sesión</a></li>
-				<li><a class="profile" href="{% url 'profile' request.user.username %}">Mi Perfil</a></li>
-				<nav class="second-nav">
-					<li><a class="feed" href="{% url 'feed' %}">Inicio</a></li>
-				</nav>
-				<li><img style="padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
-						src="{{ request.user.profile.image.url }}"></li>
-				{% else %}
-				<li><a href="{% url 'register' %}">Registrarse</a></li>
-				<li><a href="{% url 'login' %}">Entrar</a></li>
-				{% endif %}
-
-
-			</ul>
-		</nav>-->
-
 
 		<nav class="navbar">
 			<!-- LOGO -->
-			<h1 class="logo"><a href="{%url 'dash' %}">TESCA CORPORATION </a></h1>
+			
 			<!-- NAVIGATION MENU -->
 			<ul class="nav-links">
-
+				<h1 class="logo"><a href="{% url 'inicio' %}">TESCA CORPORATION </a></h1>
 				<!-- USING CHECKBOX HACK -->
 				<input type="checkbox" id="checkbox_toggle" />
 				<label for="checkbox_toggle" class="hamburger">&#9776;</label>

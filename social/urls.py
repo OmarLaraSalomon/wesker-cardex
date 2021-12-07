@@ -9,7 +9,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 
 urlpatterns = [
-    url(r'^dash/$', views.dash, name='dash'),
+    path('inicio/', views.inicio, name='inicio'),
     path('', views.feed, name='feed'),
     path('profile/', views.profile, name='profile'),
     url(r'^information/$', views.information, name='information'),

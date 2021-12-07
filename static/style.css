@@ -3,7 +3,9 @@ body {
   font-size: 62.5%;
   font-family: "Varela Round", Helvetica, Arial, serif;
 }
+
 /* Global Styles*/
+
 
 h5 {
   font-size: 1rem;
@@ -71,10 +73,34 @@ a {
   padding-bottom: 20px;
 }
 
+@media (max-width:768px) {
+  .main {
+    /*IMPORTANTE PARA RESPONSIVE*/
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    /*FIN DE IMPORTANTE*/
+  }
+}
+
 /* NAVIGATION BAR */
 .second-nav {
+
   display: flex;
   padding: 15px 30px;
+}
+
+@media (max-width:720px) {
+  .second-nav {
+    margin-top: 30px;
+    padding-top: 35px;
+
+    justify-content: center;
+    align-items: center;
+    margin-left: -28%;
+    margin-right: 40%;
+    display: block;
+    width: 100%;
+  }
 }
 
 .second-nav .feed {
@@ -123,11 +149,9 @@ a {
   --gradient-end: #ff0000;
   padding: 15px;
   transition: 1000ms --gradient-start, 1000ms --gradient-end;
-  background: linear-gradient(
-    to right,
-    var(--gradient-start),
-    var(--gradient-end)
-  );
+  background: linear-gradient(to right,
+      var(--gradient-start),
+      var(--gradient-end));
   border: 2px solid black;
   border-radius: 30px;
   margin-left: 34%;
@@ -139,7 +163,9 @@ a {
   --gradient-start: #ff0000;
 }
 
-.btnInf{
+.btnInf {
+  margin: 20px;
+  margin-top: 10px;
   padding: 15px;
   border-radius: 20px;
   background-color: rgb(0, 31, 66);
@@ -189,8 +215,19 @@ time {
   opacity: 0.7;
 }
 
-.post {
+.post1 {
   font-size: 0.94rem;
+
+}
+
+.post {
+  background-color: #001F42;
+  font-size: 20px;
+}
+
+.post:hover {
+  background-color: #01648e;
+  color: white;
 }
 
 /* PROFILE */
@@ -198,7 +235,7 @@ time {
 .salir {
   background: transparent;
   color: rgb(0, 0, 0);
-  padding: 20px;
+  padding: 10px;
   border: 2px solid black;
   border-radius: 30px;
 }
@@ -211,10 +248,69 @@ time {
   transition: all 0.3s ease;
 }
 
-.profile {
+@media (max-width:1280px) {
+  .salir {
+    display: block;
+    width: 100%;
+  }
+}
+
+.btnact {
   display: flex;
+  justify-content: center;
   align-items: center;
-  flex-direction: column;
+}
+
+.actualizar {
+  background-color: #001F42;
+  font-size: 0.94rem;
+}
+
+.actualizar:hover {
+  background-color: #01648e;
+  color: white;
+}
+
+.profile {
+  width: 100%;
+  /*IMPORTANTE*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.profile1 a {
+  margin-top: 10px;
+  padding: 15px;
+  border-radius: 20px;
+  background-color: rgb(0, 31, 66);
+  margin-left: 20px;
+  color: white;
+  /*IMPORTANTE*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width:768px) {
+  .profile {
+    justify-content: center;
+    align-items: center;
+    margin-left: 32%;
+    margin-right: 50%;
+    display: block;
+    width: 100%;
+  }
+}
+
+@media (max-width:768px) {
+  .profile1 {
+    justify-content: center;
+    align-items: center;
+    display: block;
+    width: 100%;
+  }
 }
 
 .profile img {
@@ -224,9 +320,14 @@ time {
   border-radius: 50%;
   margin: 20px;
 }
+
 .profile h2 {
   margin-top: -10px;
   font-size: 1.3rem;
+}
+
+.profile a {
+  margin-top: 50px;
 }
 
 /* Followers / Following / Post */
@@ -249,6 +350,7 @@ form {
   padding: 40px;
   font-size: 1rem;
 }
+
 input {
   width: 100%;
   border: 0;
@@ -259,10 +361,12 @@ input {
   margin: 0 0 20px;
   color: #777b7e;
 }
+
 input:focus {
   border-color: #7a9d96;
   color: #2c3238;
 }
+
 textarea {
   width: 100%;
   border: 0;
@@ -273,24 +377,26 @@ textarea {
   margin: 0 0 20px;
   color: #777b7e;
 }
+
 textarea:focus {
   border-color: #7a9d96;
   color: #2c3238;
 }
+
 button#submit {
   width: 100%;
   padding: 20px 0;
   text-align: center;
-  background: #7a9d96;
+  background-color: #001F42;
   color: #fff;
   border: 0;
   border-radius: 4px;
-  opacity: 0.8;
   transition: 0.35s linear;
 }
 
 button#submit:hover {
-  opacity: 1;
+  background-color: #01648e;
+  color: white;
 }
 
 /*Notifications*/
@@ -301,10 +407,12 @@ button#submit:hover {
   color: #fff;
   font-size: 0.9rem;
 }
+
 .success {
   background: #43dc7e;
   color: white;
 }
+
 .error {
   background: #ab3444;
   color: white;

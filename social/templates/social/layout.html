@@ -21,10 +21,10 @@
 
 		<nav class="navbar">
 			<!-- LOGO -->
-			
+			<h1 class="logo"><a href="{% url 'inicio' %}">TESCA CORPORATION </a></h1>
 			<!-- NAVIGATION MENU -->
 			<ul class="nav-links">
-				<h1 class="logo"><a href="{% url 'inicio' %}">TESCA CORPORATION </a></h1>
+				
 				<!-- USING CHECKBOX HACK -->
 				<input type="checkbox" id="checkbox_toggle" />
 				<label for="checkbox_toggle" class="hamburger">&#9776;</label>
@@ -52,96 +52,7 @@
 
 		<div id="top"></div>
 
-		<style>
-			/* NAVBAR STYLING STARTS */
-			.navbar {
-
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 10px;
-				/*background-color: #0A253F;*/
-				background-color: #fff;
-				color: black;
-			}
-
-			.nav-links a {
-				color: black;
-			}
-
-			/* LOGO */
-			.logo {
-
-				color: black;
-			}
-
-			/* NAVBAR MENU */
-			.menu {
-				display: flex;
-				gap: 1em;
-				font-size: 18px;
-			}
-
-			.menu li:hover {
-				background-color: #01648E;
-				border-radius: 5px;
-				transition: 0.3s ease;
-				color: #fff;
-			}
-
-			.menu li {
-				padding: 5px 24px;
-				color: #fff;
-			}
-
-			/*RESPONSIVE NAVBAR MENU STARTS*/
-			/* CHECKBOX HACK */
-			input[type=checkbox] {
-				display: none;
-			}
-
-			/*HAMBURGER MENU*/
-			.hamburger {
-				display: none;
-				font-size: 24px;
-				user-select: none;
-			}
-
-			/* APPLYING MEDIA QUERIES */
-			@media (max-width: 768px) {
-				.menu {
-					display: none;
-					position: absolute;
-					background-color: #fff;
-					right: 0;
-					left: 0;
-					margin-right: 10px;
-					text-align: right;
-					padding: 10px 0;
-				}
-
-				.menu li:hover {
-					display: inline-block;
-					background-color: #01648E;
-					transition: 0.3s ease;
-
-				}
-
-				.menu li+li {
-					margin-top: 14px;
-				}
-
-				input[type=checkbox]:checked~.menu {
-					display: block;
-				}
-
-				.hamburger {
-					margin-top: 10px;
-					margin-right: 60px;
-					display: block;
-				}
-			}
-		</style>
+		
 		<script>
 
 		</script>
@@ -191,6 +102,97 @@
 		@media (max-width:768px) {
 			.row {
 				color: white;
+			}
+		}
+	</style>
+
+	<style>
+		/* NAVBAR STYLING STARTS */
+		.navbar {
+
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px;
+			/*background-color: #0A253F;*/
+			background-color: #fff;
+			color: black;
+		}
+
+		.nav-links a {
+			color: black;
+		}
+
+		/* LOGO */
+		.logo {
+
+			color: black;
+		}
+
+		/* NAVBAR MENU */
+		.menu {
+			display: flex;
+			gap: 1em;
+			font-size: 18px;
+		}
+
+		.menu li:hover {
+			background-color: #01648E;
+			border-radius: 5px;
+			transition: 0.3s ease;
+			color: #fff;
+		}
+
+		.menu li {
+			padding: 5px 24px;
+			color: #fff;
+		}
+
+		/*RESPONSIVE NAVBAR MENU STARTS*/
+		/* CHECKBOX HACK */
+		input[type=checkbox] {
+			display: none;
+		}
+
+		/*HAMBURGER MENU*/
+		.hamburger {
+			display: none;
+			font-size: 24px;
+			user-select: none;
+		}
+
+		/* APPLYING MEDIA QUERIES */
+		@media (max-width: 768px) {
+			.menu {
+				display: none;
+				position: absolute;
+				background-color: #fff;
+				right: 0;
+				left: 0;
+				margin-right: 10px;
+				text-align: right;
+				padding: 10px 0;
+			}
+
+			.menu li:hover {
+				display: inline-block;
+				background-color: #01648E;
+				transition: 0.3s ease;
+
+			}
+
+			.menu li+li {
+				margin-top: 14px;
+			}
+
+			input[type=checkbox]:checked~.menu {
+				display: block;
+			}
+
+			.hamburger {
+				margin-top: 10px;
+				margin-right: 60px;
+				display: block;
 			}
 		}
 	</style>

@@ -31,12 +31,10 @@ class UserRegisterForm(UserCreationForm):
 #        fields = ['content']
 
 class PostForm(forms.ModelForm):
-    content = forms.CharField(label='Favor de poner "Entrada" o "Salida" seguido de donde está trabajando "Oficina" o "HomeOffice"', required=True, widget=forms.TextInput(
-        attrs={'rows': 3,  'placeholder': 'Entrada - Oficina / Salida - Oficina / Entrada - HomeOffice / Salida - HomeOffice', }))
-
     class Meta:
         model = Post
-        fields = ['content', ]
+        fields = ['content']
+        
 
 
 class QuestionAdmin(admin.ModelAdmin):

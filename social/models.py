@@ -24,15 +24,26 @@ class Profile(models.Model):
             .values_list('from_user_id', flat=True)
         return User.objects.filter(id__in=user_ids)
 
+ENTRADAS_SALIDAS = (
+    ('entrada oficina','ENTRADA OFICINA'),
+    ('entrada homeofice','ENTRADA HOMEOFICE'),
+    ('salida oficina', 'SALIDA OFICINA'),
+    ('salida homeofice', 'SALIDA HOMEOFICE')
+
+)
 
 class Post(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='posts', null=True)
-    timestamp = models.DateTimeField(default=datetime.now())
-    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(choices=ENTRADAS_SALIDAS)
 
     class Meta:
         ordering = ['-timestamp']
+    
+    def clean_renewal_date(self):
+        data = self.full_clean['timestamp']
+
 
 
 class Relationship(models.Model):

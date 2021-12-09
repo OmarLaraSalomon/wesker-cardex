@@ -86,6 +86,8 @@ def post(request):
             post = form.save(commit=False)
             post.user = current_user
             post.save()
+            
+            
             messages.success(request, f'{post} registrada exitosamente!')
             return redirect('feed')
     else:

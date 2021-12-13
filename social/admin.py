@@ -24,8 +24,8 @@ class PostAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     """Profile model admin."""
 
-    list_display = ('id','first_name','last_name','telefono','telefono_casa','nacimiento','direccion','contacto_emergencia','telefono_emergencia','puesto','departamento')
-    list_filter = ('id', 'first_name','departamento')
+    list_display = ('id','first_name','last_name','telefono','telefono_casa','nacimiento','direccion','contacto_emergencia','telefono_emergencia','puesto','departamento','is_leader')
+    list_filter = ('first_name','departamento','is_leader')
 
 @admin.register(Egresos)
 class EgresoAdmin(admin.ModelAdmin):

@@ -2,12 +2,15 @@
 <!--{% load static %}-->
 {% block content %}
 
+<head>
+	<script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+</head>
 <!-- Profile -->
 <div class="profile">
 	{% load static from static %}
 	<img src="{{user.profile.image.url}}">
 	<h2>{{ user.username }}</h2>
-	<h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2>
+	<!-- <h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2> -->
 
 
 	<!-- {% if request.user.is_authenticated %}
@@ -20,8 +23,31 @@
 	{% endif %}
 	{% endif %} -->
 </div>
+
+
+<div class="follow">
+	<div>
+		{% if user.information.is_leader %}
+
+		<h5 style='padding-bottom: 20px'> <i style="color: gold;" class="fa fa-star" aria-hidden="true"></i>&nbsp;Eres Lider
+			del equipo {{user.information.departamento}} </h5>
+
+		{% else %}
+		<h5 style='padding-bottom: 20px'> <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Eres Parte del equipo {{user.information.departamento}}</h5>
+		{% endif %}
+	</div>
+</div>
+
+
+
 <div class="profile1">
+	{% if user.id == user.information.user_id %}
+	<a class="btnInf">Ya actualizaste tu informacion</a>
+	{% else %}
 	<a class="btnInf" href="{% url 'information' %}">Actualiza tu informacion</a>
+
+	{% endif %}
+
 </div>
 
 
@@ -34,6 +60,13 @@
 </div>
 
 <!-- PISO 2 -->
+
+<div class="follow">
+	<div>
+		<h5>Nombre Completo</h5>
+		<h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2>
+	</div>
+</div>
 
 <div class="follow">
 	<div>

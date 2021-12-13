@@ -73,6 +73,8 @@ class Information(models.Model):
     telefono_emergencia = models.CharField(max_length=250, null=True)
     puesto = models.CharField(max_length=250, null=True)
     departamento = models.CharField(max_length=250, null=True)
+    is_leader = models.BooleanField(default=False,null=True)
+
 
    
       

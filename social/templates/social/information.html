@@ -70,8 +70,8 @@ Information
         <option value="Agua">Agua</option>
         <option value="Fuego">Fuego</option>
         <option value="Aire">Aire</option>
-        <option value="Equipo Azul">Equipo Azul</option>
-        <option value="Equipo Rojo">Equipo Rojo</option>
+        <option value="Aire">Ether</option>
+        <option value="Equipo Azul">Digimundo</option>
       </select>
     </div>
     <div class="form-group">
@@ -130,9 +130,10 @@ Information
         success: function (data) {
           console.log(data)
           console.log("Success");
+          window.location.href = "{% url 'profile' %}";
         }
       });
-      console.log(data);
+      
     }
   </script>
 </body>

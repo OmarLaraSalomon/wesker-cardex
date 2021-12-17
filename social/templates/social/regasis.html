@@ -1,0 +1,26 @@
+{% extends 'social/layout.html' %}
+{% load humanize %}
+{% block content %}
+
+
+
+<div>
+    <h1 style="justify-content: center; display: flex;">Selecciona el boton para marcar tu entrada o tu salida</h1>
+    <br>
+    <br>
+
+    <div class="regisasis">
+
+        {% if request.user.is_authenticated %}
+        <a class="hero" href="{% url 'post' %}">Registra tu entrada o salida</a>
+        <br>
+        {% endif %}
+
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

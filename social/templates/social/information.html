@@ -30,73 +30,71 @@ Information
 
     <h2 style="color:red;">Una vez que Actualices tus datos , no podras cambiarlos , solo el administrador </h2>
     <div class="form-group">
-      <input type="hidden" class="form-control" id="idField" value="{{user.id}}">
+      <input type="hidden" class="form-control" id="idField" value="{{user.id}}" required>
     </div>
     <div class="form-group">
       <label for="first_namaField">{{_('Nombre')}}</label>
-      <input type="text" class="form-control" id="first_nameField" placeholder="{{ _('Escribe tu nombre') }}">
+      <input type="text" class="form-control" id="first_nameField" placeholder="{{ _('Escribe tu nombre') }}" required>
     </div>
     <div class="form-group">
       <label for="last_nameField">{{_('Apellido')}}</label>
-      <input type="text" class="form-control" id="last_nameField" placeholder="{{ _('Escribe tu Apellido') }}">
+      <input type="text" class="form-control" id="last_nameField" placeholder="{{ _('Escribe tu Apellido') }}" required>
     </div>
 
     <div class="form-group">
       <label for="telefonoField">{{_('Telefono')}}</label>
-      <input type="text" class="form-control" id="telefonoField" placeholder="{{ _('Escribe tu numero de telefono') }}">
+      <input type="text" class="form-control" id="telefonoField" placeholder="{{ _('Escribe tu numero de telefono') }}"
+        required>
     </div>
 
     <div class="form-group">
       <label for="telefono_casaField">{{_('Telefono de casa')}}</label>
-      <input type="text" class="form-control" id="telefono_casaField"
-        placeholder="{{ _('Escribe tu numero de casa') }}">
+      <input type="text" class="form-control" id="telefono_casaField" placeholder="{{ _('Escribe tu numero de casa') }}"
+        required>
     </div>
 
     <div class="form-group">
       <label for="contacto_emergenciaField">{{_('Nombre de contacto de emergencia')}}</label>
       <input type="text" class="form-control" id="contacto_emergenciaField"
-        placeholder="{{ _('Escribe el nombre de tu contacto de emergencia') }}">
+        placeholder="{{ _('Escribe el nombre de tu contacto de emergencia') }}" required>
     </div>
     <div class="form-group">
       <label for="telefono_emergenciaField">{{_('Telefono de emergencia')}}</label>
       <input type="text" class="form-control" id="telefono_emergenciaField"
-        placeholder="{{ _('Escribe el telefono de tu contacto de emergencia') }}">
+        placeholder="{{ _('Escribe el telefono de tu contacto de emergencia') }}" required>
     </div>
     <div class="form-group" style="margin-top:10px; margin-bottom:20px;">
       <label for="departamentoField">{{_('Departamento')}}</label>
-      <select id="departamentoField" name="pais" required class="form-control">
+      <select class="cajasTexto" id="departamentoField" name="pais" required class="form-control" required>
         <option value="" disabled selected>{{_('Selecciona tu departamento')}}</option>
         <option value="Tierra">Tierra</option>
         <option value="Agua">Agua</option>
         <option value="Fuego">Fuego</option>
         <option value="Aire">Aire</option>
-        <option value="Aire">Ether</option>
-        <option value="Equipo Azul">Digimundo</option>
+        <option value="Ether">Ether</option>
+        <option value="Digimundo">Digimundo</option>
       </select>
     </div>
     <div class="form-group">
       <label for="nacimientoField">{{_('Fecha de nacimiento')}}</label>
-      <input type="date" class="form-control" id="nacimientoField" placeholder="{{ _('') }}">
+      <input type="date" class="form-control" id="nacimientoField" placeholder="{{ _('') }}" required>
     </div>
     <div class="form-group">
       <label for="direccionField">{{_('Direccion')}}</label>
-      <input type="text" class="form-control" id="direccionField" placeholder="{{ _('Escribe tu direccion') }}">
+      <input type="text" class="form-control" id="direccionField" placeholder="{{ _('Escribe tu direccion') }}"
+        required>
     </div>
     <div class="form-group">
       <label for="puestoField">{{_('Puesto')}}</label>
-      <input type="text" class="form-control" id="puestoField" placeholder="{{ _('Escribe tu puesto') }}">
+      <input type="text" class="form-control" id="puestoField" placeholder="{{ _('Escribe tu puesto') }}" required>
     </div>
 
     <div class="btnact">
-      <button onclick="hacer()" type="submit" class="actualizar">{{_('Actualizar')}}</button>
+      <button disabled="disabled" name="boton" onclick="hacer()" type="submit"
+        class="actualizar">{{_('Actualizar')}}</button>
     </div>
 
-
-
-
   </form>
-
-
 
   <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -104,6 +102,33 @@ Information
 
   <script>
 
+
+
+
+    var toValidate = $(' #puestoField'),
+      valid = false;
+    toValidate.keyup(function () {
+      if ($(this).val().length > 0) {
+        $(this).data('valid', true);
+      } else {
+        $(this).data('valid', false);
+      }
+      toValidate.each(function () {
+        if ($(this).data('valid') == true) {
+          valid = true;
+        } else {
+          valid = false;
+        }
+      });
+      if (valid === true) {
+        $('button[type=submit]').prop('disabled', false);
+
+      } else {
+        $('button[type=submit]').prop('disabled', true);
+
+
+      }
+    });
 
 
 
@@ -133,8 +158,9 @@ Information
           window.location.href = "{% url 'profile' %}";
         }
       });
-      
+
     }
+
   </script>
 </body>
 

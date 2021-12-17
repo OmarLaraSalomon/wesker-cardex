@@ -24,16 +24,26 @@
 	{% endif %} -->
 </div>
 
+<div class="profile">
+	{% if user.is_superuser%}
+	<h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
+	{%else%}
+	<!-- <h2> No eres Admin :(</h2> -->
+	{%endif%}
+</div>
 
+<!--Piso 0 -->
 <div class="follow">
 	<div>
 		{% if user.information.is_leader %}
 
-		<h5 style='padding-bottom: 20px'> <i style="color: gold;" class="fa fa-star" aria-hidden="true"></i>&nbsp;Eres Lider
+		<h5 style='padding-bottom: 20px'> <i style="color: gold;" class="fa fa-star" aria-hidden="true"></i>&nbsp;Eres
+			Lider
 			del equipo {{user.information.departamento}} </h5>
 
 		{% else %}
-		<h5 style='padding-bottom: 20px'> <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Eres Parte del equipo {{user.information.departamento}}</h5>
+		<h5 style='padding-bottom: 20px'> <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Eres Parte del equipo
+			{{user.information.departamento}}</h5>
 		{% endif %}
 	</div>
 </div>
@@ -41,11 +51,15 @@
 
 
 <div class="profile1">
-	{% if user.id == user.information.user_id %}
-	<a class="btnInf">Ya actualizaste tu informacion</a>
-	{% else %}
-	<a class="btnInf" href="{% url 'information' %}">Actualiza tu informacion</a>
+	{%if user.id == user.information.user_id %}
+	<div class="profile1">
+		<a class="btnInf" style="color: red;">Ya actualizaste tu informacion</a>
+	</div>
+	{%else%}
 
+	<div class="profile1">
+		<a class="btnInf" href="{% url 'information' %}">Actualiza tu informacion</a>
+	</div>
 	{% endif %}
 
 </div>

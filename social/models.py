@@ -85,3 +85,18 @@ class Egresos(models.Model):
     egreso = models.CharField(max_length=250, null=True)
     
 
+class DatosMedicos(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=True)
+    edad = models.CharField(max_length=250, null=True)
+    peso = models.CharField(max_length=250, null=True)
+    estatura = models.CharField(max_length=250, null=True)
+    alergias = models.CharField(max_length=500, null=True)
+    sangre = models.CharField(max_length=250, null=True)
+    enfermedad = models.CharField(max_length=300, null=True)
+    lentes = models.CharField(max_length=250, null=True)
+    fumas = models.CharField(max_length=250, null=True)
+    tomas = models.CharField(max_length=250, null=True)
+    deporte = models.CharField(max_length=250, null=True)
+    sueño = models.CharField(max_length=250, null=True)
+    covid = models.CharField(max_length=250, null=True)
+    vacuna = models.CharField(max_length=250, null=True)

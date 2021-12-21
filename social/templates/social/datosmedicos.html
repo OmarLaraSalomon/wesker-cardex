@@ -91,7 +91,7 @@ Information
          
           </tr>
         </table>
-        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px;" class="form-control" id="textbox1" type="textarea" name="t3"></textarea>
+        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px;" class="form-control" id="alergiasField" type="textarea" name="t3"></textarea>
 
       </div>
      
@@ -99,13 +99,13 @@ Information
    
 
     <div class="form-group">
-      <label for="tipodesangreField">{{_('5: Tipo de sangre')}}</label>
-      <input type="text" class="form-control" id="tipodesangreField" placeholder="{{ _('Escribe el tipo de sangre de ') }} {{user.username}}"
+      <label for="sangreField">{{_('5: Tipo de sangre')}}</label>
+      <input type="text" class="form-control" id="sangreField" placeholder="{{ _('Escribe el tipo de sangre de ') }} {{user.username}}"
         >
     </div>
 
     <div class="form-group">
-      <label for="tipodesangreField">{{_('6: ¿Padeces de alguna enfermedad?')}}</label>
+      <label for="enfermedadField">{{_('6: ¿Padeces de alguna enfermedad?')}}</label>
         <input type="radio" name="interesado" value="si" id="interesadoPositivo" checked> Sí
         <input type="radio" name="interesado" value="no" id="interesadoNegativo"> No
    
@@ -114,9 +114,9 @@ Information
     </div>
 
     <div class="form-group">
-       <label for="tipodesangreField">{{_('7: ¿Usas Lentes?')}}</label>
-        <input type="radio" name="usolentes" value="si" id="usolentesField" checked> Sí
-        <input type="radio" name="usolentes" value="no" id="usolentesField"> No
+       <label for="lentesField">{{_('7: ¿Usas Lentes?')}}</label>
+        <input type="radio" name="usolentes" value="si" id="lentesField" checked> Sí
+        <input type="radio" name="usolentes" value="no" id="lentesField"> No
     
     </div>
 
@@ -135,13 +135,13 @@ Information
    </div>
 
     <div class="form-group">
-      <label for="actfisicaField">{{_('10: ¿Realizas algun deporte o actividad fisica ?')}}</label>
-      <input type="text" class="form-control" id="actfisicaField" placeholder="{{ _('Coloca la actividad fisica que realiza ') }} {{user.username}}">
+      <label for="deporteField">{{_('10: ¿Realizas algun deporte o actividad fisica ?')}}</label>
+      <input type="text" class="form-control" id="deporteField" placeholder="{{ _('Coloca la actividad fisica que realiza ') }} {{user.username}}">
     </div>
 
     <div class="form-group">
-      <label for="horasueñosField">{{_('11: ¿Cuantas horasde sueño tienes al dia ?')}}</label>
-      <input type="text" class="form-control" id="horassueñoField" placeholder="{{ _('Coloca las horas de sueño de ') }} {{user.username}}">
+      <label for="sueñoField">{{_('11: ¿Cuantas horasde sueño tienes al dia ?')}}</label>
+      <input type="text" class="form-control" id="sueñoField" placeholder="{{ _('Coloca las horas de sueño de ') }} {{user.username}}">
     </div>
 
     <div class="form-group">
@@ -173,20 +173,20 @@ Information
 
     /* script para lista de alergias */
     var idList = " "
-    document.getElementById('textbox1').value = idList;
+    document.getElementById('alergiasField').value = idList;
 
     function EnableDisableButton(cb, id) {
 
     if (cb.checked == 1) {
     idList = idList + id + " "
-    document.getElementById('textbox1').value = idList;
+    document.getElementById('alergiasField').value = idList;
     }
 
     if (cb.checked == 0) {
     var v;
     v = " " + id + " "
     idList = idList.replace(v, " ");
-    document.getElementById('textbox1').value = idList;
+    document.getElementById('alergiasField').value = idList;
     }
 
     if (idList == " ") {
@@ -243,19 +243,23 @@ Information
 
     function hacer() {
       $.ajax({
-        url: "{% url 'information' %}",
+        url: "{% url 'datosmedicos' %}",
         type: "POST",
         data: {
-          'first_name': $('#first_nameField').val(),
-          'last_name': $('#last_nameField').val(),
-          'telefono': $('#telefonoField').val(),
-          'telefono_casa': $('#telefono_casaField').val(),
-          'nacimiento': $('#nacimientoField').val(),
-          'direccion': $('#direccionField').val(),
-          'puesto': $('#puestoField').val(),
-          'contacto_emergencia': $('#contacto_emergenciaField').val(),
-          'telefono_emergencia': $('#telefono_emergenciaField').val(),
-          'departamento': $('#departamentoField').val(),
+         
+          'edad': $('#edadField').val(),
+          'peso': $('#pesoField').val(),
+          'estatura': $('#estaturaField').val(),
+          'alergias': $('#alergiasField').val(),
+          'sangre': $('#sangreField').val(),
+          'enfermedad': $('#enfermedadField').val(),
+          'lentes': $('#lentesField').val(),
+          'fumas': $('#fumasField').val(),
+          'tomas': $('#tomasField').val(),
+          'deporte': $('#deporteField').val(),
+          'sueño': $('#sueñoField').val(),
+          'covid': $('#covidField').val(),
+          'vacuna': $('#vacunaField').val(),
           'user_id': $('#idField').val(),
           csrfmiddlewaretoken: '{{ csrf_token }}',
 

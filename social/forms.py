@@ -7,11 +7,11 @@ from django.contrib import admin
 
 
 class UserRegisterForm(UserCreationForm):
-  
+    
     email = forms.EmailField(widget=forms.EmailInput, required=True)
-    password1 = forms.CharField(
-        label='Contraseña', widget=forms.PasswordInput, required=True)
-
+    password1 = forms.CharField( 
+        label='Contraseña', widget=forms.PasswordInput,required=True)
+    
     password2 = forms.CharField(
         label='Confirma Contraseña', widget=forms.PasswordInput, required=True)
 

@@ -17,6 +17,29 @@ def hats(request, username=None):
     return render(request, template, context)    
 
 
+def perfilmedico(request, username=None):
+    template = 'social/perfilmedico.html'
+    users = User.objects.all()
+
+    context = {'users': users}
+    
+    return render(request, template, context)   
+
+
+def datosmedicos(request, username=None):
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    template = 'social/datosmedicos.html'
+    
+    return render(request, template,  {'user': user, 'posts': posts})    
+
+
+
 
 def regasis(request, username=None):
     template = 'social/regasis.html'

@@ -1,0 +1,279 @@
+{% extends 'social/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block link %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+{% endblock link %}
+{% block title %}
+Information
+{% endblock title %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="profile">
+    {% load static from static %}
+    <img src="{{user.profile.image.url}}">
+    
+ 
+</div>
+<div class="follow">
+	<div>
+		<h5>Nombre Completo</h5>
+		<h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2>
+	</div>
+</div>
+
+<div class="profile" style="margin-top: 20px;">
+  <h2>DATOS MEDICOS </h2>
+</div>
+  <form>
+    {% csrf_token %}
+
+    
+    <div class="form-group">
+      <input type="hidden" class="form-control" id="idField" value="{{user.id}}" >
+    </div>
+    <div class="form-group">
+      <label for="edadField">{{_('1: Edad')}}</label>
+      <input type="text" class="form-control" id="edadField" placeholder="{{ _('Escribe la edad de') }} {{user.username}}" >
+    </div>
+    <div class="form-group">
+      <label for="pesoField">{{_('2: Peso')}}</label>
+      <input type="text" class="form-control" id="pesoField" placeholder="{{ _('Escribe el peso de') }} {{user.username}}" >
+    </div>
+
+    <div class="form-group">
+      <label for="estaturaField">{{_('3: Estatura')}}</label>
+      <input type="text" class="form-control" id="estaturaField" placeholder="{{ _('Escribe la estatura de ') }} {{user.username}}"
+      >
+    </div>
+
+    <label  for="chec">4: ¿Tienes alguna alergia?</label>
+   
+      <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
+        <table >
+
+          <tr> 
+        
+            <td>  <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton(this,'No');">No</input></td>
+        
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a alimentos()');">Alergia a alimentos</input></td>
+        
+            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a fármacos()');">Alergia a fármacos.</input></td>
+            
+            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Asma alérgico');">Asma alérgico.</input></td>
+        
+          </tr>
+        
+          <tr>
+        
+            <td><input type="checkbox" onclick="javacript:EnableDisableButton(this,'Dermatitis atópica');">Dermatitis atópica.</input></td>
+        
+            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Poliposis nasal');">Poliposis nasal.</input></td>
+        
+            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Rinitis alérgica');">Rinitis alérgica.</input></td>
+
+            <td>   <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Urticaria crónica');">Urticaria crónica.</input><br></td>
+         
+          </tr>
+        </table>
+        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px;" class="form-control" id="textbox1" type="textarea" name="t3"></textarea>
+
+      </div>
+     
+ 
+   
+
+    <div class="form-group">
+      <label for="tipodesangreField">{{_('5: Tipo de sangre')}}</label>
+      <input type="text" class="form-control" id="tipodesangreField" placeholder="{{ _('Escribe el tipo de sangre de ') }} {{user.username}}"
+        >
+    </div>
+
+    <div class="form-group">
+      <label for="tipodesangreField">{{_('6: ¿Padeces de alguna enfermedad?')}}</label>
+        <input type="radio" name="interesado" value="si" id="interesadoPositivo" checked> Sí
+        <input type="radio" name="interesado" value="no" id="interesadoNegativo"> No
+   
+        <input type="text"  placeholder="Especifica cual" id="enfermedadField">
+   
+    </div>
+
+    <div class="form-group">
+       <label for="tipodesangreField">{{_('7: ¿Usas Lentes?')}}</label>
+        <input type="radio" name="usolentes" value="si" id="usolentesField" checked> Sí
+        <input type="radio" name="usolentes" value="no" id="usolentesField"> No
+    
+    </div>
+
+    <div class="form-group">
+      <label for="fumasField">{{_('8: ¿Fumas?')}}</label>
+       <input type="radio" name="fumas" value="si" id="fumasField" checked> Sí
+       <input type="radio" name="fumas" value="no" id="fumasField"> No
+   
+   </div>
+
+   <div class="form-group">
+    <label for="tomasField">{{_('9: ¿Tomas?')}}</label>
+     <input type="radio" name="tomas" value="si" id="tomasField" checked> Sí
+     <input type="radio" name="tomas" value="no" id="tomasField"> No
+ 
+   </div>
+
+    <div class="form-group">
+      <label for="actfisicaField">{{_('10: ¿Realizas algun deporte o actividad fisica ?')}}</label>
+      <input type="text" class="form-control" id="actfisicaField" placeholder="{{ _('Coloca la actividad fisica que realiza ') }} {{user.username}}">
+    </div>
+
+    <div class="form-group">
+      <label for="horasueñosField">{{_('11: ¿Cuantas horasde sueño tienes al dia ?')}}</label>
+      <input type="text" class="form-control" id="horassueñoField" placeholder="{{ _('Coloca las horas de sueño de ') }} {{user.username}}">
+    </div>
+
+    <div class="form-group">
+      <label for="covidField">{{_('12: ¿Te dio Covid alguna vez?')}}</label>
+       <input type="radio" name="covid" value="si" id="covidField" checked> Sí
+       <input type="radio" name="covid" value="no" id="covidField"> No
+   
+     </div>
+     
+     <div class="form-group">
+      <label for="vacunaField">{{_('13: ¿Ya tienes las 2 vacunas?')}}</label>
+       <input type="radio" name="vacuna" value="si" id="vacunaField" checked> Sí
+       <input type="radio" name="vacuna" value="no" id="vacunaField"> No
+   
+     </div>
+
+    <div class="btnact">
+      <button disabled="disabled" name="boton" onclick="hacer()" type="submit"
+        class="actualizar">{{_('Actualizar')}}</button>
+    </div>
+
+  </form>
+
+  <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+
+    /* script para lista de alergias */
+    var idList = " "
+    document.getElementById('textbox1').value = idList;
+
+    function EnableDisableButton(cb, id) {
+
+    if (cb.checked == 1) {
+    idList = idList + id + " "
+    document.getElementById('textbox1').value = idList;
+    }
+
+    if (cb.checked == 0) {
+    var v;
+    v = " " + id + " "
+    idList = idList.replace(v, " ");
+    document.getElementById('textbox1').value = idList;
+    }
+
+    if (idList == " ") {
+    document.getElementById('button1').disabled = true;
+    } else {
+    document.getElementById('button1').disabled = false;
+    }
+
+    }
+
+    /* script para enfermedades */
+
+    var emailInput = document.getElementById('enfermedadField');
+
+// evento para el input radio del "si"
+      document.getElementById('interesadoPositivo').addEventListener('click', function (e) {
+          console.log('Vamos a habilitar el input text');
+          emailInput.disabled = false;
+      });
+
+// evento para el input radio del "no"
+      document.getElementById('interesadoNegativo').addEventListener('click', function (e) {
+          console.log('Vamos a deshabilitar el input text');
+          emailInput.disabled = true;
+      }); 
+
+
+   /*  var toValidate = $(' #puestoField'),
+      valid = false;
+    toValidate.keyup(function () {
+      if ($(this).val().length > 0) {
+        $(this).data('valid', true);
+      } else {
+        $(this).data('valid', false);
+      }
+      toValidate.each(function () {
+        if ($(this).data('valid') == true) {
+          valid = true;
+        } else {
+          valid = false;
+        }
+      });
+      if (valid === true) {
+        $('button[type=submit]').prop('disabled', false);
+
+      } else {
+        $('button[type=submit]').prop('disabled', true);
+
+
+      }
+    });
+ */
+
+
+    function hacer() {
+      $.ajax({
+        url: "{% url 'information' %}",
+        type: "POST",
+        data: {
+          'first_name': $('#first_nameField').val(),
+          'last_name': $('#last_nameField').val(),
+          'telefono': $('#telefonoField').val(),
+          'telefono_casa': $('#telefono_casaField').val(),
+          'nacimiento': $('#nacimientoField').val(),
+          'direccion': $('#direccionField').val(),
+          'puesto': $('#puestoField').val(),
+          'contacto_emergencia': $('#contacto_emergenciaField').val(),
+          'telefono_emergencia': $('#telefono_emergenciaField').val(),
+          'departamento': $('#departamentoField').val(),
+          'user_id': $('#idField').val(),
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+
+
+        },
+        success: function (data) {
+          console.log(data)
+          console.log("Success");
+          window.location.href = "{% url 'profile' %}";
+        }
+      });
+
+    }
+
+  </script>
+</body>
+
+</html>
+
+
+{% endblock %}

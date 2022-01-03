@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^information/$', views.information, name='information'),
     url(r'^hats/$', views.hats, name='hats'),
     url(r'^regasis/$', views.regasis, name='regasis'),
+    url(r'^perfilpsico/$', views.perfilpsico, name='perfilpsico'),
+    url(r'^upload/$', views.upload, name='upload'),
     path('profile/<str:username>/', views.profile, name='profile'),
     path('register/', views.register, name='register'),
     path('login/', LoginView.as_view(template_name='social/login.html'), name='login'),

@@ -48,14 +48,15 @@
 				</div>
 			</ul>
 			{% if request.user.is_authenticated %}
+			<!-- <img style="margin-left: -50px; margin-right: 50px; padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
+				src=""> -->
 			<img style="margin-left: -50px; margin-right: 50px; padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
-				src="{{ request.user.profile.image.url }}">
+				src="{% static 'batman.png' %}">
 			{% else %}
 			{%endif%}
 		</nav>
 
 		<div id="top"></div>
-
 	</header>
 
 	{% if messages %}
@@ -92,7 +93,8 @@
 							Asistencias</a></li>
 					<li><a href="#" class="orange"><i class="fa fa-trophy"></i>&nbsp; Reconocimientos</a></li>
 					<li><a href="#" class="green"><i class="fa fa-line-chart"></i>&nbsp; Actas Kaizen</a></li>
-					<li><a href="#" class="yellow"><i class="fa fa-lightbulb-o"></i>&nbsp; Perfil Psicologico</a>
+					<li><a href="{% url 'perfilpsico' %}" class="yellow"><i class="fa fa-lightbulb-o"></i>&nbsp; Perfil
+							Psicologico</a>
 					</li>
 					<li><a href="#" class="green"><i class="fa fa-stethoscope"></i>&nbsp; Perfil Medico</a></li>
 					<li><a href="#" class="green"><i class="fa fa-gavel"></i>&nbsp; Legal</a></li>
@@ -132,7 +134,8 @@
 				<br>
 				{% endif %}
 				{% if request.user.is_authenticated %}
-				<a class="hero1" href="#"><i class="fa fa-lightbulb-o"></i>&nbsp; Perfil Psicologico</a>
+				<a class="hero1" href="{% url 'perfilpsico' %}"><i class="fa fa-lightbulb-o"></i>&nbsp; Perfil
+					Psicologico</a>
 				<br>
 				{% endif %}
 				{% if request.user.is_authenticated %}

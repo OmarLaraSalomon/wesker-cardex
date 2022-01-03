@@ -1,0 +1,28 @@
+{% extends 'social/layout.html' %}
+{% load humanize %}
+{% block content %}
+
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+<script src="aws_config.js"></script>
+<script src="s3_upload.js"></script>
+
+
+<div>
+    <h1 style="justify-content: center; display: flex;">Selecciona el boton para subir un archivo</h1>
+    <br>
+    <br>
+    {% if request.user.is_authenticated %}
+    <form action="/upload/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="file" name="file" />
+        <input type="submit" value="Subir" />
+    </form>
+    {% endif %}
+</div>
+
+
+
+
+
+{% endblock %}

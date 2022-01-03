@@ -8,6 +8,12 @@ from .models import Information
 from django.contrib.auth.decorators import login_required
 
 
+from social_django.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
+import boto3 
+from boto3.session import Session
+
+    
+    
 def hats(request, username=None):
     template = 'social/hats.html'
     users = User.objects.all()
@@ -34,6 +40,37 @@ def regasis(request, username=None):
             return render(request, template, {'user': user, 'posts': posts})
     else:
         return render(request, template) 
+    
+    
+def perfilpsico(request, username=None):
+    template = 'social/perfilpsico.html'
+    """ posts = Post.objects.all()
+
+    context = {'posts': posts} """
+    if request.user.is_authenticated:
+        current_user = request.user
+        if username and username != current_user.username:
+            user = User.objects.get(username=username)
+            posts = user.posts.all()
+        else:
+            posts = current_user.posts.all()
+            user = current_user
+            return render(request, template, {'user': user, 'posts': posts})
+    else:
+        return render(request, template) 
+    
+def upload(request,image):
+    session = boto3.Session(aws_access_key_id=AWS_ACCESS_KEY_ID,
+                                    aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    filename = request+'_picture.jpg'
+    imagedata = image
+    s3 = boto3.resource('s3')
+    try:
+        object = s3.Object('bucket sauce', filename)
+        object.put(ACL='public-read',Body=imagedata,Key=filename)
+        return True
+    except Exception as e:
+        return redirect('profile.html')
     
 
 def inicio(request, username=None):

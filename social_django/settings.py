@@ -11,7 +11,26 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+
 import os
+
+
+import boto3
+
+#s3 = boto3.client('s3')
+
+# Let's use Amazon S3
+s3 = boto3.client('s3')
+
+# Print out bucket names
+#for bucket in s3.list_buckets():
+#    print(bucket.get())
+buckets = s3.list_buckets()
+for bucket in buckets['Buckets']:
+    print(bucket['CreationDate'].ctime(), bucket['Name'])
+    
+    
+    
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +48,76 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1' , 'localhost']
 
 
+
+#AWS Configuration S3
+
+#[ dafault ] 
+#aws_access_key_id  = 'AKIA3YVW5CDSB456QEBF'
+#aws_secret_access_key  =  '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'
+
+#s3 = boto3.resource('s3',
+#         aws_access_key_id='AKIA3YVW5CDSB456QEBF',
+#         aws_secret_access_key='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')
+
+# S3 Bucket Configurations  
+
+AWS_ACCESS_KEY_ID= 'AKIA3YVW5CDSB456QEBF'  
+
+AWS_SECRET_ACCESS_KEY= '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'
+
+AWS_STORAGE_BUCKET_NAME= 'digimundo-prueba'
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_LOCATION = 'static'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_S3_REGION_NAME = 'us-west-1' #change to your region
+
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+AWS_S3_FILE_OVERWRITE = False  
+
+AWS_DEFAULT_ACL = None  
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'   
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+STATICFILES_LOCATION = 'static'
+#STATICFILES_STORAGE = 'django_lender.custom_storages.StaticStorage'
+STATIC_URL = 'https://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+
+MEDIAFILES_LOCATION = 'media'
+#DEFAULT_FILE_STORAGE = 'django_lender.custom_storages.MediaStorage'
+MEDIA_URL = 'htts://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+
+
+
+#STATIC_URL = '/static/'
+
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+#Nunca comentar estas dos lineas
+LOGIN_REDIRECT_URL = 'feed'
+LOGIN_URL = 'login'
+
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +129,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -121,14 +211,3 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = '/static/'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-LOGIN_REDIRECT_URL = 'feed'
-LOGIN_URL = 'login'

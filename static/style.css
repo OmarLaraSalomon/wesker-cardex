@@ -30,6 +30,39 @@ img {
   object-fit: cover;
 }
 
+.cards {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width:1280px) {
+  .cards {
+    display: block;
+    width: 100%;
+  }
+}
+
+
+
+.hero1 {
+  border-radius: 30px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.hero1:hover {
+  background-color: #001F42;
+  color: white;
+}
+
 /* Nav bar */
 .main-head {
   background: white;
@@ -82,12 +115,17 @@ a {
   }
 }
 
+.regisasis {
+  justify-content: center;
+}
+
 /* NAVIGATION BAR */
 .second-nav {
-
+  justify-content: center;
   display: flex;
   padding: 15px 30px;
 }
+
 
 @media (max-width:720px) {
   .second-nav {
@@ -157,6 +195,20 @@ a {
   margin-left: 34%;
   color: white;
 }
+
+/* .hero1 {
+  --gradient-start: green;
+  --gradient-end: #ff0000;
+  padding: 15px;
+  transition: 1000ms --gradient-start, 1000ms --gradient-end;
+  background: linear-gradient(to right,
+      var(--gradient-start),
+      var(--gradient-end));
+  border: 2px solid black;
+  border-radius: 30px;
+  margin-left: 34%;
+  color: white;
+} */
 
 .hero:hover {
   --gradient-end: green;

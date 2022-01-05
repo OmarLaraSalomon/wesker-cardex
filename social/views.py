@@ -66,7 +66,17 @@ def datosmedicos(request, username=None):
     return render(request, template,  {'user': user, 'posts': posts})    
 
 
-
+def verdatosmedicos(request, username=None):
+    template = 'social/verdatosmedicos.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    
+    return render(request, template,  {'user': user, 'posts': posts})   
 
 def regasis(request, username=None):
     template = 'social/regasis.html'

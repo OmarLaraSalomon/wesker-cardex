@@ -10,18 +10,7 @@
     {% load static from static %}
     <img src="{{user.profile.image.url}}">
     <h2>{{ user.username }}</h2>
-    <!-- <h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2> -->
-
-
-    <!-- {% if request.user.is_authenticated %}
-	{% if user.username != request.user.username %}
-	{% if user not in request.user.profile.following %}
-	<button><a class="follow-button" href="{% url 'follow' user %}">Siguir</a></button>
-	{% else %}
-	<button><a class="follow-button" href="{% url 'unfollow' user %}">Seguidor</a></button>
-	{% endif %}
-	{% endif %}
-	{% endif %} -->
+   
 </div>
 
 <div class="profile">
@@ -51,12 +40,18 @@
     {% for user in users %}
     
 
-
+        <div class="profile">
+            <a class="boton-datosmedicos"  href="{% url 'verdatosmedicos' user.username %}" >Ver datos medicos</a>
+            <a class="boton-datosmedicos">Adjuntar archivos medicos</a>
+            <a class="boton-datosmedicos">Adjuntar Justificantes</a>
+        </div>
         <div class="profile">
             <a class="boton-datosmedicos"  href="{% url 'datosmedicos' user.username %}" >Actualizar datos medicos</a>
             <a class="boton-datosmedicos">Adjuntar archivos medicos</a>
             <a class="boton-datosmedicos">Adjuntar Justificantes</a>
         </div>
+     
+
 
         <div class="profile">
             <img src="{{ user.profile.image.url }}">

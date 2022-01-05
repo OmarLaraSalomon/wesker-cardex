@@ -14,9 +14,14 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     url(r'^information/$', views.information, name='information'),
     url(r'^hats/$', views.hats, name='hats'),
+    
     url(r'^perfilmedico/$', views.perfilmedico, name='perfilmedico'),
+
     url(r'^datosmedicos/$', views.datosmedicos, name='datosmedicos'),
     path('datosmedicos/<str:username>/', views.datosmedicos, name='datosmedicos'),
+
+    url(r'^verdatosmedicos/$', views.verdatosmedicos, name='verdatosmedicos'),
+    path('verdatosmedicos/<str:username>/', views.verdatosmedicos, name='verdatosmedicos'),
 
     url(r'^regasis/$', views.regasis, name='regasis'),
     path('profile/<str:username>/', views.profile, name='profile'),

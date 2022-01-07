@@ -1,27 +1,78 @@
-{% extends 'social/layout.html' %}
+{% extends 'social/feed.html' %}
 {% load humanize %}
 {% block content %}
 
+<head>
 
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
-<script src="aws_config.js"></script>
-<script src="s3_upload.js"></script>
+    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+</head>
+<!-- Profile -->
+<div class="profile">
+    {% load static from static %}
+    <img src="{{user.profile.image.url}}">
+    <h2>{{ user.username }}</h2>
 
+</div>
 
-<div>
-    <h1 style="justify-content: center; display: flex;">Selecciona el boton para subir un archivo</h1>
-    <br>
-    <br>
-    {% if request.user.is_authenticated %}
-    <form action="/upload/" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" id="file" name="file" />
-        <input type="submit" value="Subir" />
-    </form>
-    {% endif %}
+<div class="profile">
+    {% if user.is_superuser%}
+    <h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
+    {%else%}
+    <!-- <h2> No eres Admin :(</h2> -->
+    {%endif%}
 </div>
 
 
+
+<div>
+
+    {% for user in users %}
+
+    {%load static%}
+
+    <div class="profile">
+        <a class="boton-datosmedicos justify" href="{% url 'files' user.username %}">Subir Perfil Psicologico</a>
+        <a class="boton-datosmedicos justify" onclick="direccion()">Ver archivos</a>
+    </div>
+
+    <div class="profile">
+        <img src="{{ user.profile.image.url }}">
+    </div>
+
+    <table border="1" width="100%" align="center" cellpadding="10px">
+
+
+        <tr>
+            <td>
+                <h2 class="username"><a href="{%url 'profile' user.username%}"><span> {{ user.information.first_name }}
+                            {{ user.information.last_name }}</span></a></h2>
+            </td>
+            <td>Puesto: <strong> {{ user.information.puesto }} </strong></td>
+            <td>Departamento: <strong> {{ user.information.departamento }} </strong></td>
+        </tr>
+        <tr>
+            <td>Ingreso: {{ user.egresos.ingreso }}</td>
+            <td>Egreso: {{ user.egresos.egreso}} </td>
+            <td><strong> {{ user.email }} </strong></td>
+        </tr>
+    </table>
+
+
+    {% endfor %}
+
+</div>
+
+<script>
+    function direccion() {
+        window.location.href = "http://127.0.0.1:8000/only-admin-cardex/social/document/"
+    }
+</script>
+
+<style>
+
+</style>
+
+</html>
 
 
 

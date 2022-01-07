@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls import url
 from . import views
 from django.conf import settings
@@ -9,14 +9,25 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 
 urlpatterns = [
+    url(r'^admin/', admin.site.urls),
     path('inicio/', views.inicio, name='inicio'),
     path('', views.feed, name='feed'),
     path('profile/', views.profile, name='profile'),
     url(r'^information/$', views.information, name='information'),
     url(r'^hats/$', views.hats, name='hats'),
     url(r'^regasis/$', views.regasis, name='regasis'),
+    
     url(r'^perfilpsico/$', views.perfilpsico, name='perfilpsico'),
-    url(r'^upload/$', views.upload, name='upload'),
+    
+    url(r'^uploadpsico/$', views.uploadpsico, name='uploadpsico'),
+    path(r'^uploadpsico/<str:username>/', views.uploadpsico, name='uploadpsico'),
+    
+    url(r'^files/$', views.files, name='files'),
+    path(r'^files/<str:username>/', views.files, name='files'),
+    
+    url(r'^viewfiles/$', views.viewfiles, name='viewfiles'),
+    path(r'^viewfiles/<str:username>/', views.viewfiles, name='viewfiles'),
+    
     path('profile/<str:username>/', views.profile, name='profile'),
     path('register/', views.register, name='register'),
     path('login/', LoginView.as_view(template_name='social/login.html'), name='login'),

@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from social.models import Document
+
 urlpatterns = [
     path('only-admin-cardex/', admin.site.urls),
     path('', include('social.urls')),

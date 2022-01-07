@@ -6,7 +6,28 @@ from django.db.models.deletion import CASCADE
 from django.db.models.fields import EmailField
 from django.utils import timezone
 
+""" class Document(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE, unique=False, null=True)
+    title = models.CharField(max_length = 200)
+    uploadedFile = models.FileField(upload_to = "Archivos Psicologicos/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True) """
+    
+class Document(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='files', null=True)
+    title = models.CharField(max_length = 200)
+    uploadedFile = models.FileField(upload_to = "Archivos Psicologicos/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
 
+    class Meta:
+        ordering = ['-dateTimeOfUpload']
+    
+    def clean_renewal_date(self):
+        data = self.full_clean['dateTimeOfUpload']
+
+                
+    
+    
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     image = models.ImageField(default='batman.png')

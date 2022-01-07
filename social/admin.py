@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Post, Profile, Relationship,Information,Egresos
+from .models import Document, Post, Profile, Relationship,Information,Egresos
 
 # Register your models here.
 admin.site.register(Relationship)
@@ -34,4 +34,10 @@ class EgresoAdmin(admin.ModelAdmin):
     list_display = ('id', 'user','ingreso','egreso')
     list_filter = ('id','user')
 
+@admin.register(Document)
+class DocumentAdmin(admin.ModelAdmin):
+    """Profile model admin."""
+
+    list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')
+    list_filter = ('id','user_id')
 

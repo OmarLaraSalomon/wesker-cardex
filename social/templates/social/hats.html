@@ -10,18 +10,7 @@
     {% load static from static %}
     <img src="{{user.profile.image.url}}">
     <h2>{{ user.username }}</h2>
-    <!-- <h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2> -->
 
-
-    <!-- {% if request.user.is_authenticated %}
-	{% if user.username != request.user.username %}
-	{% if user not in request.user.profile.following %}
-	<button><a class="follow-button" href="{% url 'follow' user %}">Siguir</a></button>
-	{% else %}
-	<button><a class="follow-button" href="{% url 'unfollow' user %}">Seguidor</a></button>
-	{% endif %}
-	{% endif %}
-	{% endif %} -->
 </div>
 
 <div class="profile">
@@ -32,40 +21,12 @@
     {%endif%}
 </div>
 
-<!--Piso 0 -->
-<!-- <div class="follow">
-    <div>
-        {% if user.information.is_leader %}
 
-        <h5 style='padding-bottom: 20px'> <i style="color: gold;" class="fa fa-star" aria-hidden="true"></i>&nbsp;Eres
-            Lider
-            del equipo {{user.information.departamento}} </h5>
-
-        {% else %}
-        <h5 style='padding-bottom: 20px'> <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Eres Parte del equipo
-            {{user.information.departamento}}</h5>
-        {% endif %}
-    </div>
-</div> -->
 
 <div>
 
     {% for user in users %}
 
-    <!-- <article>
-        <div class="container-article">
-            <img src="{{ user.profile.image.url }}">
-            <div>
-                <h2 class="username"><a href="{% url 'profile' user.username %}">{{ user.username }}</a></h2>
-                <h2 class="username"><a href="{%url 'profile' user.username%}"><span> {{ user.information.first_name }}
-                            {{ user.information.last_name }}</span></a></h2>
-                <strong> {{ user.information.puesto }} </strong>
-                <br>
-                <strong> {{ user.email }} </strong>
-
-            </div>
-        </div>
-    </article> -->
 
     <div class="profile">
         <img src="{{ user.profile.image.url }}">

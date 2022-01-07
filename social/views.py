@@ -7,7 +7,10 @@ from .models import Profile
 from .models import Information
 from django.contrib.auth.decorators import login_required
 
+from . import models
+from django.shortcuts import render
 
+from django.urls import reverse
 from social_django.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
 import boto3 
 from boto3.session import Session
@@ -44,33 +47,88 @@ def regasis(request, username=None):
     
 def perfilpsico(request, username=None):
     template = 'social/perfilpsico.html'
-    """ posts = Post.objects.all()
-
-    context = {'posts': posts} """
-    if request.user.is_authenticated:
-        current_user = request.user
-        if username and username != current_user.username:
-            user = User.objects.get(username=username)
-            posts = user.posts.all()
-        else:
-            posts = current_user.posts.all()
-            user = current_user
-            return render(request, template, {'user': user, 'posts': posts})
-    else:
-        return render(request, template) 
+    users = User.objects.all()
+    documents = Document.objects.all()
+    context = {"files": documents, 'users': users}
     
-def upload(request,image):
-    session = boto3.Session(aws_access_key_id=AWS_ACCESS_KEY_ID,
-                                    aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-    filename = request+'_picture.jpg'
-    imagedata = image
-    s3 = boto3.resource('s3')
-    try:
-        object = s3.Object('bucket sauce', filename)
-        object.put(ACL='public-read',Body=imagedata,Key=filename)
-        return True
-    except Exception as e:
-        return redirect('profile.html')
+    return render(request, template, context) 
+
+def files(request, username=None):
+    template = 'social/files.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    return render(request, template, {'user': user, 'posts': posts})
+
+""" def viewfiles(request, username=None):
+    template = 'social/viewfiles.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+        documents = Document.objects.all()
+    else:
+        posts = current_user.posts.all()
+        documents = current_user.documents.all()
+        user = current_user
+    return render(request, template, { "files": documents, 'user': user, 'posts': posts}) """
+
+""" def viewfiles(request, username=None):
+    template = 'social/viewfiles.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+        documents = models.Document.objects.all()
+    else:
+        posts = current_user.posts.all()
+        documents = current_user.documents.all()
+        user = current_user
+    return render(request, template, { "files": documents, 'user': user, 'posts': posts}) """
+    
+def viewfiles(request, username=None):
+    template = 'social/viewfiles.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+        documents = models.Document.objects.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    return render(request, template, { 'files': documents, 'user': user, 'posts': posts})  
+
+
+
+    
+def uploadpsico(request, username=None):
+    template = 'social/files.html'
+    users = User.objects.all()
+    if request.method == "POST":
+        
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+        userid = request.POST["idField"]
+
+        # Saving the information in the database
+        document = models.Document(
+            title = fileTitle,
+            uploadedFile = uploadedFile,
+            user_id = userid
+            
+        )
+        document.save()
+
+    documents = models.Document.objects.all()
+    return render(request, template, {
+        "files": documents, 'users': users })
+
+    
     
 
 def inicio(request, username=None):
@@ -167,7 +225,10 @@ def profile(request, username=None):
     else:
         posts = current_user.posts.all()
         user = current_user
-    return render(request, 'social/profile.html', {'user': user, 'posts': posts})
+    return render(request, 'social/profile.html', {'user': user, 'posts': posts })
+
+
+
 
 
 def follow(request, username):

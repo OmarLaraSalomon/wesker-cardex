@@ -505,3 +505,17 @@ img.profile {
     width: 95%;
   }
 }
+
+
+/*Estilos datods medicos*/
+
+.boton-datosmedicos {
+  background-color: #7a9d96;
+  margin: 5px;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 5px;
+}

@@ -1,0 +1,52 @@
+{% extends 'social/feed.html' %}
+{% load humanize %}
+{% block content %}
+
+<head>
+    <style>
+        table {
+            width: 100%;
+            text-align: center;
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #FFFFFF;
+        }
+
+        table tr td {
+            padding-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>Prueba</th>
+            <th>ID</th>
+            <th>Nombre del archivo</th>
+            <th>Ruta del Archivo</th>
+            <th>Hora y Fecha de Subida</th>
+            <th>Usuario</th>
+
+        </tr>
+
+        {% for file in files %}
+        <tr>
+            <td>
+                {{ user.files.id}}</td>
+            <td>{{ file.id }}</td>
+            <td>{{ file.title }}</td>
+            <td>{{ file.uploadedFile.url }}</td>
+            <td>{{ file.dateTimeOfUpload }}</td>
+            <td>{{ file.user }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+
+
+
+{{ block.super }}
+{% endblock %}

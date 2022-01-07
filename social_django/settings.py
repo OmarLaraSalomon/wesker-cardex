@@ -45,7 +45,7 @@ SECRET_KEY = '#^z_7hd(538h=l8luekkv@&12sz#^oq*ferugz4k69u!x%9ti)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1' , 'localhost']
+ALLOWED_HOSTS = []
 
 
 
@@ -171,7 +171,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cardex',
         'USER': 'postgres',
-        'PASSWORD': 'admin123',
+        'PASSWORD': 'Insanity1997',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -209,5 +209,4 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 

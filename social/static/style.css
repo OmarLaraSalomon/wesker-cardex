@@ -46,7 +46,6 @@ img {
 
 .hero1 {
   border-radius: 30px;
-  background-color: #4CAF50;
   border: none;
   color: white;
   padding: 10px 25px;
@@ -414,6 +413,16 @@ input {
   color: #777b7e;
 }
 
+input[type='checkbox'] {
+  width: auto;
+}
+
+input[type='radio'] {
+  width: auto;
+}
+
+
+
 input:focus {
   border-color: #7a9d96;
   color: #2c3238;
@@ -507,10 +516,10 @@ img.profile {
 }
 
 
-/*Estilos datods medicos*/
+/*Estilos para datos medicos */
 
 .boton-datosmedicos {
-  background-color: #7a9d96;
+  background-color: rgb(0, 89, 86);
   margin: 5px;
   color: white;
   padding-top: 10px;
@@ -519,3 +528,5 @@ img.profile {
   padding-right: 20px;
   border-radius: 5px;
 }
+
+#check1 {}

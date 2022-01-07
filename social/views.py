@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Profile
 from .models import Information
+from .models import DatosMedicos
 from django.contrib.auth.decorators import login_required
 
 from . import models
@@ -26,6 +27,65 @@ def hats(request, username=None):
     return render(request, template, context)    
 
 
+def perfilmedico(request, username=None):
+    template = 'social/perfilmedico.html'
+    users = User.objects.all()
+
+    context = {'users': users}
+    
+    return render(request, template, context)   
+
+
+def datosmedicos(request, username=None):
+
+    if request.method == 'POST':
+        if DatosMedicos.objects.filter(user_id=request.POST['user_id']).count():
+            infomedica = DatosMedicos.objects.update(
+                edad=request.POST['edad'], peso=request.POST['peso'], 
+                estatura=request.POST['estatura'], alergias=request.POST['alergias'],
+                sangre=request.POST['sangre'],enfermedad=request.POST['enfermedad'],
+                lentes=request.POST['lentes'], fumas=request.POST['fumas'], 
+                tomas=request.POST['tomas'], deporte=request.POST['deporte'],
+                sueño=request.POST['sueño'], covid=request.POST['covid'],
+                vacuna=request.POST['vacuna'],user_id=request.POST['user_id'])
+            infomedica.save()
+        else:
+            infomedica = DatosMedicos.objects.create(
+                edad=request.POST['edad'], peso=request.POST['peso'], 
+                estatura=request.POST['estatura'], alergias=request.POST['alergias'],
+                sangre=request.POST['sangre'],enfermedad=request.POST['enfermedad'],
+                lentes=request.POST['lentes'], fumas=request.POST['fumas'], 
+                tomas=request.POST['tomas'], deporte=request.POST['deporte'],
+                sueño=request.POST['sueño'], covid=request.POST['covid'],
+                vacuna=request.POST['vacuna'],user_id=request.POST['user_id'])
+            infomedica.save()
+
+    context = {}
+
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    template = 'social/datosmedicos.html'
+    
+   
+    return render(request, template,  {'user': user, 'posts': posts})    
+
+
+def verdatosmedicos(request, username=None):
+    template = 'social/verdatosmedicos.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    
+    return render(request, template,  {'user': user, 'posts': posts})   
 
 def regasis(request, username=None):
     template = 'social/regasis.html'

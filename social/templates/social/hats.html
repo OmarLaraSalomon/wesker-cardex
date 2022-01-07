@@ -34,8 +34,8 @@
                     <img src="{{ user.profile.image.url }}" alt="">
                 </div>
                 <div class="textos">
-                    <h2 class="username"><a href="{%url 'profile' user.username%}"><span> {{
-                                user.information.first_name}}
+                    <h2 class="username"><a href="{%url 'profile' user.username%}"><span>
+                                {{user.information.first_name}}
                                 {{ user.information.last_name }}</span></a></h2>
                     <h4>Hats:</h4>
                 </div>
@@ -45,8 +45,8 @@
                     <ul class="lista">
                         <li style="font-size: 15px;"><i class="fa fa-check"></i>Puesto: {{ user.information.puesto }}
                         </li>
-                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Departamento: {{
-                            user.information.departamento }}</li>
+                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Departamento:
+                            {{user.information.departamento }}</li>
                         <li style="font-size: 15px;"><i class="fa fa-check"></i>Ingreso: {{ user.egresos.ingreso }}</li>
                         <li style="font-size: 15px;"><i class="fa fa-check"></i>Egreso: {{ user.egresos.egreso}}</li>
                         <li style="font-size: 15px;"><i class="fa fa-check"></i>Correo: {{ user.email }}</li>

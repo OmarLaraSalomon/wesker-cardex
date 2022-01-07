@@ -171,7 +171,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cardex',
         'USER': 'postgres',
-        'PASSWORD': 'Insanity1997',
+        'PASSWORD': 'admin123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

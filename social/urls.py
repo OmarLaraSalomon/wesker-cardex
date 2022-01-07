@@ -26,13 +26,33 @@ urlpatterns = [
 
     url(r'^regasis/$', views.regasis, name='regasis'),
     
+    #Perfil Psicologico
     url(r'^perfilpsico/$', views.perfilpsico, name='perfilpsico'),
     
+    #Subir Archivos Psicologicos
     url(r'^uploadpsico/$', views.uploadpsico, name='uploadpsico'),
     path(r'^uploadpsico/<str:username>/', views.uploadpsico, name='uploadpsico'),
     
+    #Subir Archivos Medicos
+    url(r'^uploadmedic/$', views.uploadmedic, name='uploadmedic'),
+    path(r'^uploadmedic/<str:username>/', views.uploadmedic, name='uploadmedic'),
+    
+    #Subir Archivos Justificantes
+    url(r'^uploadmedicjust/$', views.uploadmedicjust, name='uploadmedicjust'),
+    path(r'^uploadmedicjust/<str:username>/', views.uploadmedicjust, name='uploadmedicjust'),
+    
+    #Datos Psicologicos
     url(r'^files/$', views.files, name='files'),
     path(r'^files/<str:username>/', views.files, name='files'),
+    
+    #Datos medicos
+    url(r'^medicfiles/$', views.medicfiles, name='medicfiles'),
+    path(r'^medicfiles/<str:username>/', views.medicfiles, name='medicfiles'),
+    
+    #Justificantes Medicos
+    url(r'^justifyfiles/$', views.justifyfiles, name='justifyfiles'),
+    path(r'^justifyfiles/<str:username>/', views.justifyfiles, name='justifyfiles'),
+    
     
     url(r'^viewfiles/$', views.viewfiles, name='viewfiles'),
     path(r'^viewfiles/<str:username>/', views.viewfiles, name='viewfiles'),

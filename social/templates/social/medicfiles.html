@@ -1,0 +1,41 @@
+{% extends 'social/layout.html' %}
+{% load humanize %}
+{% block content %}
+
+<head>
+    <style>
+        table {
+            width: 100%;
+            text-align: center;
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #FFFFFF;
+        }
+
+        table tr td {
+            padding-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile">
+        <h1>Estas por adjuntar un Archivo medico para {{user.information.first_name}} {{user.information.last_name}}
+        </h1>
+    </div>
+
+
+    <form action="{% url 'uploadmedic' %}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" name="idField" value="{{user.id}}" required>
+        <input type="text" name="fileTitle" placeholder="Ingresa un titulo">
+        <input type="file" name="uploadedFile">
+        {% csrf_token %}
+        <input type="submit" value="Subir">
+
+    </form>
+</body>
+
+
+
+
+{% endblock %}

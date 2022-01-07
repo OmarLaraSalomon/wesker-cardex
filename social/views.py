@@ -112,7 +112,7 @@ def perfilpsico(request, username=None):
     context = {"files": documents, 'users': users}
     
     return render(request, template, context) 
-
+#Files Psicologicos
 def files(request, username=None):
     template = 'social/files.html'
     current_user = request.user
@@ -123,32 +123,29 @@ def files(request, username=None):
         posts = current_user.posts.all()
         user = current_user
     return render(request, template, {'user': user, 'posts': posts})
-
-""" def viewfiles(request, username=None):
-    template = 'social/viewfiles.html'
+#Files Medicos
+def medicfiles(request, username=None):
+    template = 'social/medicfiles.html'
     current_user = request.user
     if username and username != current_user.username:
         user = User.objects.get(username=username)
         posts = user.posts.all()
-        documents = Document.objects.all()
     else:
         posts = current_user.posts.all()
-        documents = current_user.documents.all()
         user = current_user
-    return render(request, template, { "files": documents, 'user': user, 'posts': posts}) """
-
-""" def viewfiles(request, username=None):
-    template = 'social/viewfiles.html'
+    return render(request, template, {'user': user, 'posts': posts})
+#Justificantes Files
+def justifyfiles(request, username=None):
+    template = 'social/justifyfiles.html'
     current_user = request.user
     if username and username != current_user.username:
         user = User.objects.get(username=username)
         posts = user.posts.all()
-        documents = models.Document.objects.all()
     else:
         posts = current_user.posts.all()
-        documents = current_user.documents.all()
         user = current_user
-    return render(request, template, { "files": documents, 'user': user, 'posts': posts}) """
+    return render(request, template, {'user': user, 'posts': posts})
+
     
 def viewfiles(request, username=None):
     template = 'social/viewfiles.html'
@@ -163,8 +160,7 @@ def viewfiles(request, username=None):
     return render(request, template, { 'files': documents, 'user': user, 'posts': posts})  
 
 
-
-    
+#Subir archivos a perfil Psicologico
 def uploadpsico(request, username=None):
     template = 'social/files.html'
     users = User.objects.all()
@@ -187,6 +183,55 @@ def uploadpsico(request, username=None):
     documents = models.Document.objects.all()
     return render(request, template, {
         "files": documents, 'users': users })
+    
+
+#Subir archivos A Perfil Medico
+def uploadmedic(request, username=None):
+    template = 'social/perfilmedico.html'
+    users = User.objects.all()
+    if request.method == "POST":
+        
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+        userid = request.POST["idField"]
+
+        # Saving the information in the database
+        medic = models.Documentosmedicos(
+            title = fileTitle,
+            uploadedFile = uploadedFile,
+            user_id = userid
+            
+        )
+        medic.save()
+
+    medics = models.Documentosmedicos.objects.all()
+    return render(request, template, {
+        "medicfiles": medics, 'users': users })
+
+#Subir archivos a Justificantes Medicos 
+def uploadmedicjust(request, username=None):
+    template = 'social/perfilmedico.html'
+    users = User.objects.all()
+    if request.method == "POST":
+        
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+        userid = request.POST["idField"]
+
+        # Saving the information in the database
+        justificant = models.Justificantesmedicos(
+            title = fileTitle,
+            uploadedFile = uploadedFile,
+            user_id = userid
+            
+        )
+        justificant.save()
+
+    justificants = models.Justificantesmedicos.objects.all()
+    return render(request, template, {
+        "justifyfiles": justificants, 'users': users })
 
     
     

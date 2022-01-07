@@ -40,6 +40,15 @@
 							Perfil</a></li>
 					<li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>&nbsp;Salir</a></li>
 
+					{% if user.is_superuser%}
+
+					<li><a href="{% url 'admin:index' %}"><i class="fa fa-cogs"></i>&nbsp;Panel de Control</a></li>
+
+					{%else%}
+					<!-- <h2> No eres Admin :(</h2> -->
+					{%endif%}
+
+
 				</div>
 				<div class="menu">
 					{% else %}
@@ -52,7 +61,7 @@
 			<!-- <img style="margin-left: -50px; margin-right: 50px; padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
 				src=""> -->
 			<img style="margin-left: -50px; margin-right: 50px; padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
-				src="{% static 'batman.png' %}">
+				src="{{user.profile.image.url}}">
 			{% else %}
 			{%endif%}
 		</nav>
@@ -97,7 +106,8 @@
 					<li><a href="{% url 'perfilpsico' %}" class="yellow"><i class="fa fa-lightbulb-o"></i>&nbsp; Perfil
 							Psicologico</a>
 					</li>
-					<li><a href="{% url 'perfilmedico' %}" class="green"><i class="fa fa-stethoscope"></i>&nbsp; Perfil Medico</a></li>
+					<li><a href="{% url 'perfilmedico' %}" class="green"><i class="fa fa-stethoscope"></i>&nbsp; Perfil
+							Medico</a></li>
 					<li><a href="#" class="green"><i class="fa fa-gavel"></i>&nbsp; Legal</a></li>
 					<li><a href="#" class="yellow"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a>
 					<li><a href="#" class="red"><i class="fa fa-money"></i>&nbsp; Contabilidad</a></li>
@@ -118,7 +128,8 @@
 		<div class="cards">
 			<nav class="second-nav">
 				{% if request.user.is_authenticated %}
-				<a class="hero1" href="{% url 'hats' %}" style="background-color: #1594A6;"><i class="fa fa-graduation-cap" style="background-color: #1594A6;"></i>&nbsp; Hats/Desempeño</a>
+				<a class="hero1" href="{% url 'hats' %}" style="background-color: #1594A6;"><i
+						class="fa fa-graduation-cap" style="background-color: #1594A6;"></i>&nbsp; Hats/Desempeño</a>
 				<br>
 				{% endif %}
 				{% if request.user.is_authenticated %}
@@ -140,7 +151,8 @@
 				<br>
 				{% endif %}
 				{% if request.user.is_authenticated %}
-				<a class="hero1" href="{% url 'perfilmedico' %}"  style="background-color: rgb(0, 89, 86);"><i  style="background-color: rgb(0, 89, 86);" class="fa fa-stethoscope"></i>&nbsp; Perfil Medico</a>
+				<a class="hero1" href="{% url 'perfilmedico' %}" style="background-color: rgb(0, 89, 86);"><i
+						style="background-color: rgb(0, 89, 86);" class="fa fa-stethoscope"></i>&nbsp; Perfil Medico</a>
 				<br>
 				{% endif %}
 				{% if request.user.is_authenticated %}
@@ -600,7 +612,7 @@
 
 		/*RESPONSIVE NAVBAR MENU STARTS*/
 		/* CHECKBOX HACK */
-		.checki{
+		.checki {
 			display: none;
 		}
 

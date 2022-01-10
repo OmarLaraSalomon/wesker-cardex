@@ -51,7 +51,19 @@ class Justificantesmedicos(models.Model):
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']
 
-                
+
+class Documentoslegales(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='legalfiles', null=True)
+    title = models.CharField(max_length = 200)
+    uploadedFile = models.FileField(upload_to = "Archivos Legales/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
+
+    class Meta:
+        ordering = ['-dateTimeOfUpload']
+    
+    def clean_renewal_date(self):
+        data = self.full_clean['dateTimeOfUpload']               
     
     
 class Profile(models.Model):

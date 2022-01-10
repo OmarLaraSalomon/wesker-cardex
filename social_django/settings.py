@@ -61,11 +61,11 @@ ALLOWED_HOSTS = []
 
 # S3 Bucket Configurations  
 
-AWS_ACCESS_KEY_ID= 'AKIA3YVW5CDSB456QEBF'  
+AWS_ACCESS_KEY_ID= 'AKIA5E6VJQ4FRDYVXOIH'  
 
-AWS_SECRET_ACCESS_KEY= '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'
+AWS_SECRET_ACCESS_KEY= '0lrFNkHxnTvGYLRbayBbAiQ3YpkyfDY8KEcZaE9o'
 
-AWS_STORAGE_BUCKET_NAME= 'digimundo-prueba'
+AWS_STORAGE_BUCKET_NAME= 'cardexbuckettesca'
 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
@@ -79,7 +79,7 @@ STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_S3_REGION_NAME = 'us-west-1' #change to your region
+AWS_S3_REGION_NAME = 'us-west-2' #change to your region
 
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 

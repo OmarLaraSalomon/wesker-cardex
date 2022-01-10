@@ -112,6 +112,14 @@ def perfilpsico(request, username=None):
     context = {"files": documents, 'users': users}
     
     return render(request, template, context) 
+
+def perfillegal(request, username=None):
+    template = 'social/perfillegal.html'
+    users = User.objects.all()
+    legals = Documentoslegales.objects.all()
+    context = {"legalfiles": legals, 'users': users}
+    
+    return render(request, template, context) 
 #Files Psicologicos
 def files(request, username=None):
     template = 'social/files.html'
@@ -159,6 +167,17 @@ def viewfiles(request, username=None):
         user = current_user
     return render(request, template, { 'files': documents, 'user': user, 'posts': posts})  
 
+#Files Legales
+def legalfiles(request, username=None):
+    template = 'social/legalfiles.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    return render(request, template, {'user': user, 'posts': posts})
 
 #Subir archivos a perfil Psicologico
 def uploadpsico(request, username=None):
@@ -233,8 +252,30 @@ def uploadmedicjust(request, username=None):
     return render(request, template, {
         "justifyfiles": justificants, 'users': users })
 
-    
-    
+
+#Subir archivos a perfil legal
+def uploadlegal(request, username=None):
+    template = 'social/perfillegal.html'
+    users = User.objects.all()
+    if request.method == "POST":
+        
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+        userid = request.POST["idField"]
+
+        # Saving the information in the database
+        legal = models.Documentoslegales(
+            title = fileTitle,
+            uploadedFile = uploadedFile,
+            user_id = userid
+            
+        )
+        legal.save()
+
+    legals = models.Documentoslegales.objects.all()
+    return render(request, template, {
+        "legalfiles": legals, 'users': users })  
 
 def inicio(request, username=None):
     template = 'social/dashboard.html'

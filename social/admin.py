@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Document, Documentosmedicos, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos
+from .models import Document, Documentosmedicos, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales
 
 # Register your models here.
 admin.site.register(Relationship)
@@ -58,3 +58,10 @@ class JustificantesmedicosAdmin(admin.ModelAdmin):
     list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')
     list_filter = ('id','user_id')
 
+#AdminLegal
+@admin.register(Documentoslegales)
+class DocumentoslegalesAdmin(admin.ModelAdmin):
+    """Profile model admin."""
+
+    list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')
+    list_filter = ('id','user_id')

@@ -15,8 +15,10 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     url(r'^information/$', views.information, name='information'),
     url(r'^hats/$', views.hats, name='hats'),
-    
+    #Perfil Medico
     url(r'^perfilmedico/$', views.perfilmedico, name='perfilmedico'),
+    #Perfil Legal
+    url(r'^perfillegal/$', views.perfillegal, name='perfillegal'),
 
     url(r'^datosmedicos/$', views.datosmedicos, name='datosmedicos'),
     path('datosmedicos/<str:username>/', views.datosmedicos, name='datosmedicos'),
@@ -41,6 +43,10 @@ urlpatterns = [
     url(r'^uploadmedicjust/$', views.uploadmedicjust, name='uploadmedicjust'),
     path(r'^uploadmedicjust/<str:username>/', views.uploadmedicjust, name='uploadmedicjust'),
     
+    #Subir Archivos Legales
+    url(r'^uploadlegal/$', views.uploadlegal, name='uploadlegal'),
+    path(r'^uploadlegal/<str:username>/', views.uploadlegal, name='uploadlegal'),
+    
     #Datos Psicologicos
     url(r'^files/$', views.files, name='files'),
     path(r'^files/<str:username>/', views.files, name='files'),
@@ -48,6 +54,9 @@ urlpatterns = [
     #Datos medicos
     url(r'^medicfiles/$', views.medicfiles, name='medicfiles'),
     path(r'^medicfiles/<str:username>/', views.medicfiles, name='medicfiles'),
+    #Datos Legales
+    url(r'^legalfiles/$', views.legalfiles, name='legalfiles'),
+    path(r'^legalfiles/<str:username>/', views.legalfiles, name='legalfiles'),
     
     #Justificantes Medicos
     url(r'^justifyfiles/$', views.justifyfiles, name='justifyfiles'),

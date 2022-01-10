@@ -3,6 +3,10 @@
 {% load i18n %}
 
 {% block link %}
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
   integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -25,7 +29,24 @@ Information
   <title>Document</title>
 </head>
 
+<style>
+  .boton {
+    float: right;
+    background-color: rgb(0, 89, 86);
+    margin: 5px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+  }
+</style>
+
 <body>
+  <div class="profile">
+    <a class="boton" href="{% url 'perfilmedico' %}"><i class="fa fa-arrow-circle-left"></i>&nbsp;Regresar</a>
+  </div>
   <div class="profile">
     {% load static from static %}
     <img src="{{user.profile.image.url}}">
@@ -64,38 +85,46 @@ Information
         placeholder="{{ _('Escribe la estatura de ') }} {{user.username}}">
     </div>
 
-    <label  for="chec">4: ¿Tienes alguna alergia?</label>
-   
-      <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
-        <table >
+    <label for="chec">4: ¿Tienes alguna alergia?</label>
 
-          <tr> 
-        
-            <td>  <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton(this,'No');">No</input></td>
-        
-            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a alimentos()');">Alergia a alimentos</input></td>
-        
-            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a fármacos()');">Alergia a fármacos.</input></td>
-            
-            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Asma alérgico');">Asma alérgico.</input></td>
-        
-          </tr>
-        
-          <tr>
-        
-            <td><input type="checkbox" onclick="javacript:EnableDisableButton(this,'Dermatitis atópica');">Dermatitis atópica.</input></td>
-        
-            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Poliposis nasal');">Poliposis nasal.</input></td>
-        
-            <td>  <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Rinitis alérgica');">Rinitis alérgica.</input></td>
+    <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
+      <table>
 
-            <td>   <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Urticaria crónica');">Urticaria crónica.</input><br></td>
-         
-          </tr>
-        </table>
-        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px;" class="form-control" id="alergiasField" type="textarea" name="t2"></textarea>
+        <tr>
 
-      </div> 
+          <td> <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton(this,'No');">No</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a alimentos()');">Alergia a
+            alimentos</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a fármacos()');">Alergia a
+            fármacos.</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Asma alérgico');">Asma
+            alérgico.</input></td>
+
+        </tr>
+
+        <tr>
+
+          <td><input type="checkbox" onclick="javacript:EnableDisableButton(this,'Dermatitis atópica');">Dermatitis
+            atópica.</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Poliposis nasal');">Poliposis
+            nasal.</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Rinitis alérgica');">Rinitis
+            alérgica.</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Urticaria crónica');">Urticaria
+            crónica.</input><br></td>
+
+        </tr>
+      </table>
+      <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px;" class="form-control"
+        id="alergiasField" type="textarea" name="t2"></textarea>
+
+    </div>
 
 
 
@@ -106,60 +135,73 @@ Information
         placeholder="{{ _('Escribe el tipo de sangre de ') }} {{user.username}}">
     </div>
 
-    <label  for="checy">6: ¿Padeces de alguna enfermedad?</label>
-   
+    <label for="checy">6: ¿Padeces de alguna enfermedad?</label>
+
     <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
-      <table >
+      <table>
 
-        <tr> 
-      
-          <td>  <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton2(this,'No');">No</input></td>
-      
-          <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Síndrome metabólico o cardiovascular');">Síndrome metabólico o cardiovascular</input></td>
-      
-          <td>  <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Obesidad');">Obesidad.</input></td>
-          
-          <td>  <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Hipertensión arterial');">Hipertensión arterial</input></td>
-      
-        </tr>
-      
         <tr>
-      
-          <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Colesterol alto');">Colesterol alto</input></td>
-      
-          <td>  <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Triglicéridos');">Triglicéridos</input></td>
-      
-          <td>  <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Diabetes');">Diabetes</input></td>
 
-          <td>   <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedad Intestinal');">Enfermedad Intestinal</input><br></td>
-       
+          <td> <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton2(this,'No');">No</input></td>
+
+          <td> <input type="checkbox"
+              onclick="javacript:EnableDisableButton2(this,'Síndrome metabólico o cardiovascular');">Síndrome metabólico
+            o cardiovascular</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Obesidad');">Obesidad.</input></td>
+
+          <td> <input type="checkbox"
+              onclick="javacript:EnableDisableButton2(this,'Hipertensión arterial');">Hipertensión arterial</input></td>
+
         </tr>
 
         <tr>
-      
-          <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedad hepática');">Enfermedad hepática</input></td>
-      
-          <td>  <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedades cerebrovasculares');">Enfermedades cerebrovasculares </input></td>
-      
-          <td>  <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedades respiratorias');">Enfermedades respiratorias</input></td>
 
-          <td>   <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Malformaciones()');">Malformaciones</input><br></td>
-       
+          <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Colesterol alto');">Colesterol
+            alto</input></td>
+
+          <td> <input type="checkbox"
+              onclick="javacript:EnableDisableButton2(this,'Triglicéridos');">Triglicéridos</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Diabetes');">Diabetes</input></td>
+
+          <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedad Intestinal');">Enfermedad
+            Intestinal</input><br></td>
+
+        </tr>
+
+        <tr>
+
+          <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedad hepática');">Enfermedad
+            hepática</input></td>
+
+          <td> <input type="checkbox"
+              onclick="javacript:EnableDisableButton2(this,'Enfermedades cerebrovasculares');">Enfermedades
+            cerebrovasculares </input></td>
+
+          <td> <input type="checkbox"
+              onclick="javacript:EnableDisableButton2(this,'Enfermedades respiratorias');">Enfermedades
+            respiratorias</input></td>
+
+          <td> <input type="checkbox"
+              onclick="javacript:EnableDisableButton2(this,'Malformaciones()');">Malformaciones</input><br></td>
+
         </tr>
       </table>
-      <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px;" class="form-control" id="enfermedadField" type="textarea" name="t3"></textarea>
+      <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px;" class="form-control"
+        id="enfermedadField" type="textarea" name="t3"></textarea>
 
-    </div> 
+    </div>
 
 
     <div class="form-group">
-       <label for="lentesField">{{_('7: ¿Usas Lentes?')}}</label>
-       <select name="select" id="lentesField">
+      <label for="lentesField">{{_('7: ¿Usas Lentes?')}}</label>
+      <select name="select" id="lentesField">
         <option value="si">si</option>
         <option value="no" selected>no</option>
-    
+
       </select>
-    
+
     </div>
 
     <div class="form-group">
@@ -167,20 +209,20 @@ Information
       <select name="select" id="fumasField">
         <option value="si">si</option>
         <option value="no" selected>no</option>
-    
-      </select>
-   
-   </div>
 
-   <div class="form-group">
-    <label for="tomasField">{{_('9: ¿Tomas?')}}</label>
-    <select name="select" id="tomasField">
-      <option value="si">si</option>
-      <option value="no" selected>no</option>
-  
-    </select>
- 
-   </div> 
+      </select>
+
+    </div>
+
+    <div class="form-group">
+      <label for="tomasField">{{_('9: ¿Tomas?')}}</label>
+      <select name="select" id="tomasField">
+        <option value="si">si</option>
+        <option value="no" selected>no</option>
+
+      </select>
+
+    </div>
 
     <div class="form-group">
       <label for="deporteField">{{_('10: ¿Realizas algun deporte o actividad fisica ?')}}</label>
@@ -199,29 +241,30 @@ Information
       <select name="select" id="covidField">
         <option value="si">si</option>
         <option value="no" selected>no</option>
-    
+
       </select>
-     </div>
-     
-     <div class="form-group">
+    </div>
+
+    <div class="form-group">
       <label for="vacunaField">{{_('13: ¿Ya tienes las 2 vacunas?')}}</label>
       <select name="select" id="vacunaField">
         <option value="si">si</option>
         <option value="no" selected>no</option>
-    
+
       </select>
-   
-     </div> 
+
+    </div>
 
     <div class="btnact">
       <button name="boton" onclick="hacer()" class="actualizar">{{_('Actualizar')}}</button>
+      <button name="boton" onclick="hacer()" class="actualizar">{{_('Cancelar')}}</button>
     </div>
 
   </form>
-  
+
   <script>
 
-  function get_cookie(name) {
+    function get_cookie(name) {
       let cookie_value = null;
       if (document.cookie && document.cookie !== '') {
         let cookies = document.cookie.split(';');
@@ -237,7 +280,7 @@ Information
     }
 
     let csrf_token = get_cookie('csrftoken');
-  
+
     function hacer() {
       $.ajax({
         url: "{% url 'datosmedicos' %}",
@@ -268,7 +311,7 @@ Information
           window.location.href = "{% url 'profile' %}";
         }
       });
-    
+
     }
   </script>
 
@@ -307,14 +350,14 @@ Information
     }
 
 
-  
+
 
   </script>
 
 
   <script>
-      /* script para lista de enfermedades */
-      var idList2 = " "
+    /* script para lista de enfermedades */
+    var idList2 = " "
     document.getElementById('enfermedadField').value = idList2;
 
     function EnableDisableButton2(cbb, ids) {

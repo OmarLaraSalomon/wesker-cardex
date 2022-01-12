@@ -21,13 +21,13 @@
   {%endif%}
 </div>
 
-<div style="background-color: rgb(0, 89, 86)">
+<div style="background-color: #4b3621;">
 
 
   <hr>
 
   <div class="profile" style="margin-top: 20px;">
-    <h2 style="color: white;"><i class="fa fa-stethoscope"></i>&nbsp;Pefiles Legales</h2>
+    <h2 style="color: white;"><i class="fa fa-gavel"></i>&nbsp;Pefiles Legales</h2>
   </div>
 
   <hr>
@@ -64,13 +64,17 @@
                 <li><a href="#"><i class="fa fa-codepen"></i></a></li>
               </ul> -->
       <div class="profile">
-        <a class="boton-datosmedicos" href="{% url 'verdatosmedicos' user.username %}">Ver datos legales</a>
-        <a style="cursor:pointer;" class="boton-datosmedicos" onclick="docslegales()">Ver archivos legales</a>
+        <a class="boton-datosmedicos" style="background-color: #4b3621;"
+          href="{% url 'verdatosmedicos' user.username %}">Ver datos legales</a>
+        <a style="cursor:pointer; background-color: #4b3621;" class="boton-datosmedicos" onclick="docslegales()">Ver
+          archivos legales</a>
         <!-- <a style="cursor:pointer;" class="boton-datosmedicos" onclick="direccionjustificantes()">Ver Justificantes</a> -->
       </div>
       <div class="profile">
-        <a class="boton-datosmedicos" href="{% url 'datosmedicos' user.username %}">Actualizar datos Juridicos</a>
-        <a class="boton-datosmedicos" href="{% url 'legalfiles' user.username %}">Adjuntar archivos legales</a>
+        <a class="boton-datosmedicos" style="background-color: #4b3621;"
+          href="{% url 'datosmedicos' user.username %}">Actualizar datos Juridicos</a>
+        <a class="boton-datosmedicos" style="background-color: #4b3621;"
+          href="{% url 'legalfiles' user.username %}">Adjuntar archivos legales</a>
         <!-- <a class="boton-datosmedicos" href="{% url 'justifyfiles' user.username %}">Adjuntar reportes</a> -->
       </div>
 

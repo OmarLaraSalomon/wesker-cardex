@@ -24,6 +24,14 @@ def hats(request, username=None):
 
     context = {'users': users}
     
+    return render(request, template, context)   
+ 
+def rewards(request, username=None):
+    template = 'social/rewards.html'
+    users = User.objects.all()
+
+    context = {'users': users}
+    
     return render(request, template, context)    
 
 

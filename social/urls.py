@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     url(r'^information/$', views.information, name='information'),
     url(r'^hats/$', views.hats, name='hats'),
+    url(r'^rewards/$', views.rewards, name='rewards'),
     #Perfil Medico
     url(r'^perfilmedico/$', views.perfilmedico, name='perfilmedico'),
     #Perfil Legal

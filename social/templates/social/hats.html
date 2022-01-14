@@ -64,13 +64,19 @@
 {% endfor %}
 
 
-
-
-
 <style>
     .espaciohats {
-        margin-bottom: 00px;
+        margin-bottom: 0px;
         margin-top: 100px;
+        margin-left: -50px;
+    }
+
+    @media (max-width:720px) {
+        .espaciohats {
+            margin-left: -100px;
+            display: block;
+            width: 100%;
+        }
     }
 
     .hats {

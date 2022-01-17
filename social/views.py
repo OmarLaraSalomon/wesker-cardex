@@ -94,16 +94,6 @@ def verdatosmedicos(request, username=None):
         user = current_user
     
     return render(request, template,  {'user': user, 'posts': posts})   
-
-#Asistencias
-def regasis(request, username=None):
-    template = 'social/regasis.html'
-    posts = Post.objects.all()
-
-    context = {'posts': posts}
-
-    return render(request, template, context) 
-#Fin de asistencias  
     
 def perfilpsico(request, username=None):
     template = 'social/perfilpsico.html'
@@ -310,6 +300,25 @@ def information(request):
     context = {}
     return render(request, template, context)
 
+#Asistencias
+def regasis(request, username=None):
+    template = 'social/regasis.html'
+    posts = Post.objects.all()
+
+    context = {'posts': posts}
+
+    if request.user.is_authenticated:
+        current_user = request.user
+        if username and username != current_user.username:
+            user = User.objects.get(username=username)
+            posts = user.posts.all()
+        else:
+            posts = current_user.posts.all()
+            user = current_user
+        return render(request, template, context)
+    else:
+        return render(request, template) 
+#Fin de asistencias 
 
 def feed(request, username=None):
     """  posts = Post.objects.all()

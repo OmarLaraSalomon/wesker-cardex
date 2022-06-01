@@ -96,6 +96,7 @@ class Post(models.Model):
         User, on_delete=models.CASCADE, related_name='posts', null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(choices=ENTRADAS_SALIDAS)
+    activate = models.BooleanField(default=True,null=True)
 
     class Meta:
         ordering = ['-timestamp']

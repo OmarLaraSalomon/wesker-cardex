@@ -328,9 +328,9 @@ def feed(request, username=None):
         current_user = request.user
         if username and username != current_user.username:
             user = User.objects.get(username=username)
-            posts = user.posts.all()
+            posts = user.posts.all().exclude(activate = "False")
         else:
-            posts = current_user.posts.all()
+            posts = current_user.posts.all().exclude(activate = "False") 
             user = current_user
         return render(request, 'social/feed.html', {'user': user, 'posts': posts})
     else:

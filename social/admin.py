@@ -16,8 +16,8 @@ class FotoAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     """Profile model admin."""
 
-    list_display = ('id', 'user','timestamp','content')
-    list_filter = ('id','user')
+    list_display = ('id', 'user','timestamp','content','activate')
+    list_filter = ('timestamp','user')
 #informacion del perfil
 
 @admin.register(Information)

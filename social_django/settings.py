@@ -26,7 +26,7 @@ SECRET_KEY = '#^z_7hd(538h=l8luekkv@&12sz#^oq*ferugz4k69u!x%9ti)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cardex.tescacorporation.com','34.217.74.14' , 'localhost']
+ALLOWED_HOSTS = ['cardex.tescacorporation.com','34.217.74.14' , 'localhost','127.0.0.1']
 
 
 #AWS Configuration S3
@@ -107,6 +107,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'import_export'
 ]
 
 MIDDLEWARE = [
@@ -142,6 +143,10 @@ WSGI_APPLICATION = 'social_django.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+
+#'USER': 'tesca',
+#'PASSWORD': 'tesca123',
 
 DATABASES = {
     'default': {

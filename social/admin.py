@@ -1,4 +1,9 @@
+from dataclasses import fields
+from pyexpat import model
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+from import_export.fields import Field
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import Document, Documentosmedicos, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales
 
@@ -12,12 +17,22 @@ class FotoAdmin(admin.ModelAdmin):
     list_display = ('id', 'user')
     list_filter = ('id','user')
 
+class PostResource(resources.ModelResource): 
+ 
+    class Meta:
+        model = Post
+        fields = ('user','timestamp','content',)
+        exclude = ('activate', )
+
+
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(ImportExportModelAdmin):
+    resource_class = PostResource
     """Profile model admin."""
 
-    list_display = ('id', 'user','timestamp','content','activate')
-    list_filter = ('timestamp','user')
+    list_display = ('user','timestamp','content','activate')
+    list_filter = ('timestamp','user',)
+
 #informacion del perfil
 
 @admin.register(Information)

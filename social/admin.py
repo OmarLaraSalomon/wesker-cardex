@@ -21,9 +21,9 @@ class PostResource(resources.ModelResource):
  
     class Meta:
         model = Post
-        fields = ('user','timestamp','content',)
+        fields = ('fullname','timestamp','content',)
         exclude = ('activate', )
-
+        export_order = ('fullname','timestamp','content',)
 
 @admin.register(Post)
 class PostAdmin(ImportExportModelAdmin):

@@ -97,6 +97,7 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(choices=ENTRADAS_SALIDAS)
     activate = models.BooleanField(default=True,null=True)
+    fullname = models.CharField(max_length = 200,null=True)
 
     class Meta:
         ordering = ['-timestamp']

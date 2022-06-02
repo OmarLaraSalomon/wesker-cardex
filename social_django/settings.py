@@ -26,7 +26,7 @@ SECRET_KEY = '#^z_7hd(538h=l8luekkv@&12sz#^oq*ferugz4k69u!x%9ti)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cardex.tescacorporation.com','34.217.74.14' , 'localhost','127.0.0.1']
+ALLOWED_HOSTS = ['cardex.tescacorporation.com','34.217.74.14' , 'localhost',]
 
 
 #AWS Configuration S3

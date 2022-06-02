@@ -357,12 +357,13 @@ def register(request):
 @login_required
 def post(request):
     current_user = get_object_or_404(User, pk=request.user.pk)
+    current_user2 = (request.user.information.first_name + " " + request.user.information.last_name  )
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.user = current_user
-            
+            post.fullname = current_user2
             post.save()
             
             

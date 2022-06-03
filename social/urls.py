@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^rewards/$', views.rewards, name='rewards'),
     #Perfil Medico
     url(r'^perfilmedico/$', views.perfilmedico, name='perfilmedico'),
+    path('perfilmedico/<str:username>/', views.perfilmedicodentro, name='perfilmedico'),
     #Perfil Legal
     url(r'^perfillegal/$', views.perfillegal, name='perfillegal'),
 

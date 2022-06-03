@@ -26,7 +26,7 @@ SECRET_KEY = '#^z_7hd(538h=l8luekkv@&12sz#^oq*ferugz4k69u!x%9ti)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cardex.tescacorporation.com','34.217.74.14' , 'localhost',]
+ALLOWED_HOSTS = ['cardex.tescacorporation.com','34.217.74.14' , 'localhost','127.0.0.1',]
 
 
 #AWS Configuration S3
@@ -91,7 +91,7 @@ MEDIA_URL = 'htts://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
 
 #Nunca comentar estas dos lineas
-LOGIN_REDIRECT_URL = 'feed'
+LOGIN_REDIRECT_URL = 'inicio'
 LOGIN_URL = 'login'
 
 
@@ -152,8 +152,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cardex',
-        'USER': 'tesca',
-        'PASSWORD': 'tesca123',
+        'USER': 'postgres',
+        'PASSWORD': 'Insanity1997',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -202,5 +202,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-LOGIN_REDIRECT_URL = 'feed'
+LOGIN_REDIRECT_URL = 'inicio'
 LOGIN_URL = 'login'

@@ -62,15 +62,24 @@
     body {
         max-width: 100% !important;
         overflow-x: hidden !important;
-        text-align: center;
+        text-align: left;
         margin-top: -10px;
         height: 90vh;
-        background-image: url("{% static 'azul1.jpg' %}");
+        --gradient-start: rgb(25, 79, 107);
+        --gradient-medium: rgb(95, 178, 177);
+        --gradient-between: rgb(175, 220, 202);
+        --gradient-medium1: rgb(95, 178, 177);
+        --gradient-end: rgb(49, 121, 145);
+        transition: 300ms --gradient-start, 300 ms --gradient-medium, 2000 ms --gradient-between, 300 ms --gradient-medium1, 300ms --gradient-end;
+        background: linear-gradient(to left,
+                var(--gradient-start),
+                var(--gradient-medium),
+                var(--gradient-between),
+                var(--gradient-medium1),
+                var(--gradient-end));
         /*background-image: url("../../static/azul1.jpg");*/
-        background-size: cover;
-        background-size: 100%;
-        background-repeat: no-repeat;
-        background-position: 50%;
+      
+       
         /*background-attachment: fixed;*/
     }
 

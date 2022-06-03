@@ -5,6 +5,7 @@
 <head>
   <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
 </head>
+
 <!-- Profile -->
 <div class="profile">
   {% load static from static %}
@@ -37,49 +38,43 @@
 
 <div style="margin: 10px;">
 
-  {% for user in users %}
+ 
+
+  <table class="datatable" id="tabla">
+   
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Usuario</th>
+        <th>Puesto</th>
+        <th>departamento </th>
+       
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for user in users %}
 
 
-  <div class="container">
-    <div class="card">
-      <img src="{{ user.profile.image.url }}" alt="Person" class="card__image">
-      <p style="color: black;" class="card__name"> {{ user.information.first_name}} {{ user.information.last_name }}</p>
-      <p style="color: black;" class="card__name">Puesto: {{ user.information.puesto }}</p>
-      <p style="color: black;" class="card__name">Departamento: {{user.information.departamento}}</p>
-      <div class="grid-container">
 
-        <div style="color: black;" class="grid-child-posts">
-          Ingreso: {{ user.egresos.ingreso }}
-        </div>
-
-        <div style="color: black;" class="grid-child-followers">
-          Egreso: {{ user.egresos.egreso}}
-        </div>
-
-      </div>
-      <!-- <ul class="social-icons">
-                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                <li><a href="#"><i class="fa fa-codepen"></i></a></li>
-              </ul> -->
-      <div class="profile">
-        <a class="boton-datosmedicos" href="{% url 'verdatosmedicos' user.username %}">Ver datos medicos</a>
-        <a style="cursor:pointer;" class="boton-datosmedicos" onclick="direccionmedica()">Ver archivos medicos</a>
-        <a style="cursor:pointer;" class="boton-datosmedicos" onclick="direccionjustificantes()">Ver Justificantes</a>
-      </div>
-      <div class="profile">
-        <a class="boton-datosmedicos" href="{% url 'datosmedicos' user.username %}">Actualizar datos medicos</a>
-        <a class="boton-datosmedicos" href="{% url 'medicfiles' user.username %}">Adjuntar archivos medicos</a>
-        <a class="boton-datosmedicos" href="{% url 'justifyfiles' user.username %}">Adjuntar Justificantes</a>
-      </div>
+      {%load static%}
+      <tr>
+        <td> {{ user.id}} </td>
+        <td> {{ user.information.first_name}} {{ user.information.last_name}} <a href="{% url 'perfilmedico' user.username  %}" class="portfolio-Button-ver"><i
+          class="fas fa-folder-open fa-bounce" style="font-size: 12px;"></i></a></td>
+        <td>  {{ user.information.puesto}}</td>
+        <td>  {{ user.information.departamento}}</td>
+        
 
 
-    </div>
+      {% endfor %}
 
-  </div>
+    
+    </tbody>
+  </table>
 
-  {% endfor %}
+
 
 </div>
 

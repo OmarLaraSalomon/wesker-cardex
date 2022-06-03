@@ -41,6 +41,20 @@ def perfilmedico(request, username=None):
 
     context = {'users': users}
     
+    return render(request, template, context)
+
+def perfilmedicodentro(request, username=None):
+    template = 'social/perfilmedicousuario.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+
+    context =  {'user': user, 'posts': posts}
+    
     return render(request, template, context)   
 
 
@@ -356,6 +370,9 @@ def register(request):
 
 @login_required
 def post(request):
+    variable = request
+    for intento in variable:
+        print("veremos que hay aqui"+str(intento))
     current_user = get_object_or_404(User, pk=request.user.pk)
     current_user2 = (request.user.information.first_name + " " + request.user.information.last_name  )
     if request.method == 'POST':

@@ -2,6 +2,9 @@
 
 Sitio web de Cardex, desarrollado con Django.
 
+documentacion extra para exportar archivos
+https://django-import-export.readthedocs.io/en/latest/getting_started.html
+
 Somos la segunda Generacion de programadores en Digimundo
 Los pasados programadores no documentaron, no seas como ellos
 CHUERK te lo dice
@@ -50,6 +53,7 @@ campero980103@outlook.com
 -| pip install pylint
 -| pip install djangorestframework
 -| pip install djangorestframework-simplejwt
+
 
 10:En caso de que falten librerias y no estés del todo seguro puede poner el siguiente código el cuál saca los requirements del proyecto
 pip freeze > requirements.txt
@@ -199,3 +203,5 @@ abres Cmder
 -| python manage.py runserver
 
 LISTO!!!!
+
+

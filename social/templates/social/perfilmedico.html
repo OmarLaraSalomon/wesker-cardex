@@ -36,47 +36,54 @@
 </div>
 
 
-<div style="margin: 10px;">
 
- 
+<br>
+<br>
+<br>
+<br>
+<hr width=50% size=10 noshade="noshade">
 
-  <table class="datatable" id="tabla">
-   
-    <thead>
-      <tr>
-        <th>No.</th>
-        <th>Usuario</th>
-        <th>Puesto</th>
-        <th>departamento </th>
-       
-      </tr>
-    </thead>
-
-    <tbody>
-
-      {% for user in users %}
-
-
-
-      {%load static%}
-      <tr>
-        <td> {{ user.id}} </td>
-        <td> {{ user.information.first_name}} {{ user.information.last_name}} <a href="{% url 'perfilmedico' user.username  %}" class="portfolio-Button-ver"><i
-          class="fas fa-folder-open fa-bounce" style="font-size: 12px;"></i></a></td>
-        <td>  {{ user.information.puesto}}</td>
-        <td>  {{ user.information.departamento}}</td>
-        
-
-
-      {% endfor %}
-
-    
-    </tbody>
-  </table>
-
-
-
+<div class="regasis">
+  <h1 style="justify-content: center; display: flex;">Aqui podras ver los perfiles medicos</h1>
 </div>
+
+<article>
+  <div>
+
+    <div class="scroll_horizontal">
+      <table id="myTable">
+
+        <tr class="header">
+          <th style="width:20%;">Foto</th>
+          <th style="width:20%;">Usuario</th>
+          <th style="width:20%;">Departamento</th>
+         
+        
+        </tr>
+        {% for user in users %}
+        <tr> 
+          <td>
+            <div class="container-article"><a href="{% url 'perfilmedico' user.username %}"><img src="{{ user.profile.image.url }}"></a></div>
+          </td>
+          <td><a href="{% url 'perfilmedico' user.username %}">{{ user.information.first_name }} {{ user.information.last_name }}</a></td>
+          <td>{{ user.information.departamento }}</td>
+          
+
+          
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+  </div>
+</article>
+
+
+
+
+
+
+
 
 <script>
   function direccionmedica() {
@@ -86,9 +93,7 @@
     window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/"
   }
 </script>
-<script>
 
-</script>
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
 
@@ -265,6 +270,55 @@
     grid-gap: 20px;
     font-size: 1.2em;
   }
+
+  .scroll_horizontal {
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #myTable th,
+    #myTable td {
+        text-align: left;
+        padding: 12px;
+    }
+
+    #myTable tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #myTable tr.header,
+    #myTable tr:hover {
+        background-color: #f1f1f1;
+    }
+    svg {
+        position: absolute;
+        top: 50%;
+        margin-top: -60px;
+        left: 30%;
+        margin-left: -225px;
+    }
 </style>
 
 

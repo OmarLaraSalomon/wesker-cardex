@@ -15,7 +15,7 @@
 <div class="profile">
     {% load static from static %}
     <img src="{{user.profile.image.url}}">
-    <h2>{{ user.username }}</h2>
+    <h2> {{ user.information.first_name }}  {{user.information.last_name }}</h2>
 
 </div>
 
@@ -94,6 +94,7 @@
                                 onclick="direccionmedica()">Ver
                                 archivos medicos</a></h5>
                         <hr>
+                        <input type="text" value=" {{ user.id}}" id="id_us">
                         <h5 class="card-title"> <a style="cursor:pointer;" class="boton-datosmedicos"
                                 onclick="direccionjustificantes()">Ver Justificantes</a></h5>
                         <hr>
@@ -120,10 +121,14 @@
 
 <script>
     function direccionmedica() {
-        window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/"
+   window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/"
     }
     function direccionjustificantes() {
-        window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/"
+        let id_us = $("#id_us").val();
+        console.log("EL ID ES: "+id_us)
+       /*  window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/" */
+       window.location.href = " https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/"+"?user_id__id__exact="+id_us
+      
     }
 </script>
 <script>

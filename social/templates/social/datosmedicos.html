@@ -45,7 +45,8 @@ Information
 
 <body>
   <div class="profile">
-    <a class="boton" href="{% url 'perfilmedico' %}"><i class="fa fa-arrow-circle-left"></i>&nbsp;Regresar</a>
+    <a class="boton" href="javascript: history.go(-1)" class="go-back"> <i class="fa fa-arrow-circle-left"></i>&nbsp; Regresar </a>
+   
   </div>
   <div class="profile">
     {% load static from static %}

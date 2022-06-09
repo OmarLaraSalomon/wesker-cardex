@@ -27,14 +27,14 @@
     {%endif%}
 </div>
 
-<div style="background-color: rgba(77, 76, 83, 0.572)">
+<div style="background-color:red;">
 
 
     <hr>
 
     <div class="profile" style="margin-top: 20px;">
-        <h2 style="color: black;"><i class="fa fa-stethoscope"></i>&nbsp;Perfiles Medicos</h2>
-    </div>
+        <h2 style="color: white;"><i class="fa fa-line-chart"></i>&nbsp;Pefiles de Actas Kaisen</h2>
+      </div>
 
     <hr>
 
@@ -86,29 +86,16 @@
                         <hr>
                         <hr>
                         <hr>
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'verdatosmedicos' user.username %}">Ver
-                                datos medicos</a></h5>
-                        <hr>
+                
                         <h5 class="card-title"> <a style="cursor:pointer;" class="boton-datosmedicos"
-                                onclick="direccionmedica()">Ver
-                                archivos medicos</a></h5>
+                                onclick="direccionkaisen()">Ver
+                                actas kaisen</a></h5>
                         <hr>
                         <input type="hidden" value=" {{ user.id}}" id="id_us">
-                        <h5 class="card-title"> <a style="cursor:pointer;" class="boton-datosmedicos"
-                                onclick="direccionjustificantes()">Ver Justificantes</a></h5>
-                        <hr>
+
                         <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'datosmedicos' user.username %}">Actualizar
-                                datos medicos</a></h5>
-                        <hr>
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'medicfiles' user.username %}">Adjuntar
-                                archivos medicos</a></h5>
-                        <hr>
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'justifyfiles' user.username %}">Adjuntar
-                                Justificantes</a></h5>
+                                href="{% url 'kaisenfiles' user.username %}">Adjuntar
+                                Acta kaisen</a></h5>
                         <hr>
                     </div>
                 </div>
@@ -120,16 +107,12 @@
 </div>
 
 <script>
-    function direccionmedica() {
-        let id_me = $("#id_us").val();
-        console.log("EL ID ES: "+id_me)
-        window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/"+"?user_id__id__exact="+id_me
-    }
-    function direccionjustificantes() {
+
+    function direccionkaisen() {
         let id_us = $("#id_us").val();
         console.log("EL ID ES: "+id_us)
        /*  window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/" */
-       window.location.href = " https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/"+"?user_id__id__exact="+id_us
+       window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/kaisen/"+"?user_id__id__exact="+id_us
       
     }
 </script>

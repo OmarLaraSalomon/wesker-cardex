@@ -36,7 +36,18 @@ urlpatterns = [
     #Subir Archivos Psicologicos
     url(r'^uploadpsico/$', views.uploadpsico, name='uploadpsico'),
     path(r'^uploadpsico/<str:username>/', views.uploadpsico, name='uploadpsico'),
-    
+
+    #perfil Actas Kaisen
+    url(r'^perfilKaisen/$', views.perfilkaisen, name='perfilKaisen'),
+    path('perfilkaisen/<str:username>/', views.perfilkaisenusuario, name='perfilKaisen'),
+
+    #Datos kaisen
+    url(r'^kaisenfiles/$', views.kaisenfiles, name='kaisenfiles'),
+    path(r'^kaisenfiles/<str:username>/', views.kaisenfiles, name='kaisenfiles'),
+    #subir Actas Kaisen
+    url(r'^uploadkaisen/$', views.uploadkaisen, name='uploadkaisen'),
+    path(r'^uploadkaisen/<str:username>/', views.uploadkaisen, name='uploadkaisen'),
+
     #Subir Archivos Medicos
     url(r'^uploadmedic/$', views.uploadmedic, name='uploadmedic'),
     path(r'^uploadmedic/<str:username>/', views.uploadmedic, name='uploadmedic'),

@@ -11,7 +11,22 @@ from django.utils import timezone
     title = models.CharField(max_length = 200)
     uploadedFile = models.FileField(upload_to = "Archivos Psicologicos/")
     dateTimeOfUpload = models.DateTimeField(auto_now = True) """
+
+
+class Kaisen(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='actas', null=True)
+    title = models.CharField(max_length = 200)
+    uploadedFile = models.FileField(upload_to = "Actas Kaisen/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
+
+    class Meta:
+        ordering = ['-dateTimeOfUpload']
     
+    def clean_renewal_date(self):
+        data = self.full_clean['dateTimeOfUpload']
+
+
 class Document(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='files', null=True)

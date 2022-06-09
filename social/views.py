@@ -34,6 +34,28 @@ def rewards(request, username=None):
     
     return render(request, template, context)    
 
+def perfilkaisen(request, username=None):
+    template = 'social/perfilkaisen.html'
+    users = User.objects.all()
+
+    context = {'users': users}
+    
+    return render(request, template, context)
+
+
+def perfilkaisenusuario(request, username=None):
+    template = 'social/perfilkaisenusuario.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+
+    context =  {'user': user, 'posts': posts}
+    
+    return render(request, template, context)   
 
 def perfilmedico(request, username=None):
     template = 'social/perfilmedico.html'
@@ -146,6 +168,44 @@ def medicfiles(request, username=None):
         posts = current_user.posts.all()
         user = current_user
     return render(request, template, {'user': user, 'posts': posts})
+
+
+#subir Kaisen
+def uploadkaisen(request, username=None):
+    template = 'social/kaisenfiles.html'
+    users = User.objects.all()
+    if request.method == "POST":
+        
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+        userid = request.POST["idField"]
+
+        # Saving the information in the database
+        kaisen = models.Kaisen(
+            title = fileTitle,
+            uploadedFile = uploadedFile,
+            user_id = userid
+            
+        )
+        kaisen.save()
+
+    kaisens = models.Kaisen.objects.all()
+    return render(request, template, {
+        "kaisenfiles": kaisens, 'users': users })
+
+#Files Kaisen
+def kaisenfiles(request, username=None):
+    template = 'social/kaisenfiles.html'
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+        posts = user.posts.all()
+    else:
+        posts = current_user.posts.all()
+        user = current_user
+    return render(request, template, {'user': user, 'posts': posts})
+
 #Justificantes Files
 def justifyfiles(request, username=None):
     template = 'social/justifyfiles.html'

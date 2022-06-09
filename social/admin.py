@@ -5,7 +5,7 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from import_export.fields import Field
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Document, Documentosmedicos, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales
+from .models import Document, Documentosmedicos, Kaisen, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales
 
 # Register your models here.
 admin.site.register(Relationship)
@@ -68,6 +68,15 @@ class DocumentosmedicosAdmin(admin.ModelAdmin):
 #AdminJustificante
 @admin.register(Justificantesmedicos)
 class JustificantesmedicosAdmin(admin.ModelAdmin):
+    """Profile model admin."""
+
+    list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')
+    list_filter = ('id','user_id')
+
+
+#AdminKaisen
+@admin.register(Kaisen)
+class KaisenAdmin(admin.ModelAdmin):
     """Profile model admin."""
 
     list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')

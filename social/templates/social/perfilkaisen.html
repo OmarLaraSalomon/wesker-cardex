@@ -46,8 +46,22 @@
 <div class="regasis">
   <h1 style="justify-content: center; display: flex;">Aqui podras ver los usuarios para asignar actas Kaisen</h1>
 </div>
+<label for="" style="font-size: 15px;">Busqueda por persona </label>
+<input type="text" id="myInputname" onkeyup="myFunctionname()" placeholder="Escribe el nombre del usuario para buscar" title="Type in a name">
 
-<article>
+<label for="" style="font-size: 15px;">Busqueda por despartamento </label>
+<input type=text list=browsers id="myInput" onkeyup="myFunction()" placeholder="Elige Departamento a buscar" >
+<datalist id=browsers style="background-color:red ;">
+  <option value="Digimundo">Digimundo</option>
+  <option value="Aire">Aire</option>
+  <option value="Fuego">Fuego</option>
+  <option value="Ignis">Ignis</option>
+  <option value="Tierra">Tierra</option>
+  <option value="Agua">Agua</option>
+  <option value="Ether">Ether</option>
+</datalist>
+ 
+ <article>
   <div>
 
     <div class="scroll_horizontal">
@@ -82,9 +96,47 @@
 
 
 
+<script>
+  function myFunctionname() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInputname");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[1];
+          if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+              } else {
+                  tr[i].style.display = "none";
+              }
+          }
+      }
+  }
+</script>
 
-
-
+<script>
+  function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[2];
+          if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+              } else {
+                  tr[i].style.display = "none";
+              }
+          }
+      }
+  }
+</script>
 <script>
   function direccionmedica() {
     window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/"
@@ -281,6 +333,16 @@
     }
 
     #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+    #myInputname {
         background-image: url('/css/searchicon.png');
         background-position: 10px 10px;
         background-repeat: no-repeat;

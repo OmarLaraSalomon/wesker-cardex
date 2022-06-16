@@ -1,7 +1,9 @@
 {% extends 'social/layout.html' %}
 
 {% block content %}
-
+<div style="background-color:#001F42">
+ <h2 style="padding:10px; color: white; text-align: center;">Tu Nombre de usuario debe ser sin espacios.</h2>
+</div>
 <form class="form" method="post">
 	{% csrf_token %}
 	{{ form.as_p }}

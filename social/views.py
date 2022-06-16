@@ -172,10 +172,9 @@ def medicfiles(request, username=None):
 
 #subir Kaisen
 def uploadkaisen(request, username=None):
-    template = 'social/kaisenfiles.html'
+    template = 'social/perfilkaisen.html'
     users = User.objects.all()
     if request.method == "POST":
-        
         # Fetching the form data
         fileTitle = request.POST["fileTitle"]
         uploadedFile = request.FILES["uploadedFile"]
@@ -189,7 +188,6 @@ def uploadkaisen(request, username=None):
             
         )
         kaisen.save()
-
     kaisens = models.Kaisen.objects.all()
     return render(request, template, {
         "kaisenfiles": kaisens, 'users': users })
@@ -205,6 +203,7 @@ def kaisenfiles(request, username=None):
         posts = current_user.posts.all()
         user = current_user
     return render(request, template, {'user': user, 'posts': posts})
+   
 
 #Justificantes Files
 def justifyfiles(request, username=None):
@@ -430,6 +429,10 @@ def register(request):
 
 @login_required
 def post(request):
+    for prueba in request:
+        uno = request.POST['content']
+        print("Vamos a traer la entrada del request" + str(prueba))
+        print("Vamos a traer la entrada del request" + str(uno))
     variable = request
     for intento in variable:
         print("veremos que hay aqui"+str(intento))
@@ -443,9 +446,19 @@ def post(request):
             post.fullname = current_user2
             post.save()
             
-            
-            messages.success(request, f'{post} registrada exitosamente!')
-            return redirect('feed')
+            if uno == "entrada oficina" :
+                messages.success(request, 'Asistencia registrada exitosamente!')
+                return redirect('feed')
+            if uno == "entrada homeofice" :
+                messages.success(request, 'Entrada Home Office registrada exitosamente!')
+                return redirect('feed')
+            if uno == "salida oficina":
+                messages.success(request, 'Salida registrada exitosamente!')
+                return redirect('feed')
+            if uno == "salida homeofice":
+                messages.success(request, 'Salida Home Office registrada exitosamente!')
+                return redirect('feed')
+
     else:
         form = PostForm()
     return render(request, 'social/post.html', {'form': form})

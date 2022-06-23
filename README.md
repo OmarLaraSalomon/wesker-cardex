@@ -53,7 +53,7 @@ campero980103@outlook.com
 -| pip install pylint
 -| pip install djangorestframework
 -| pip install djangorestframework-simplejwt
-
+pip install django-admin-rangefilter
 
 10:En caso de que falten librerias y no estés del todo seguro puede poner el siguiente código el cuál saca los requirements del proyecto
 pip freeze > requirements.txt

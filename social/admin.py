@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 from import_export.fields import Field
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import Document, Documentosmedicos, Kaisen, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales
-
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 # Register your models here.
 admin.site.register(Relationship)
 
@@ -31,8 +31,8 @@ class PostAdmin(ImportExportModelAdmin):
     """Profile model admin."""
 
     list_display = ('user','timestamp','content','activate')
-    list_filter = ('timestamp','user',)
-
+    list_filter = (('timestamp',DateRangeFilter),('timestamp',DateTimeRangeFilter),'user',)
+    
 #informacion del perfil
 
 @admin.register(Information)

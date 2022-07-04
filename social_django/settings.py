@@ -108,7 +108,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'import_export',
-    'rangefilter'
+    'rangefilter',
+    'django_seed'
 ]
 
 MIDDLEWARE = [
@@ -153,8 +154,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cardex',
-        'USER': 'tesca',
-        'PASSWORD': 'tesca123',
+        'USER': 'postgres',
+        'PASSWORD': 'admin123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

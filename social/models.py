@@ -178,3 +178,6 @@ class DatosMedicos(models.Model):
     vacuna = models.CharField(max_length=250, null=True)
 
 
+class Hat(models.Model):
+    nombre_hat = models.CharField(max_length=500, null=True)
+    create_at = models.DateTimeField(auto_now_add=True)

@@ -1,0 +1,306 @@
+[
+    {
+        "model" : "social.hat",
+        "pk": 1,
+        "fields": {
+            "nombre_hat": "Quality",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 2,
+        "fields": {
+            "nombre_hat": "Kaizen",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 3,
+        "fields": {
+            "nombre_hat": "Supply chain",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 4,
+        "fields": {
+            "nombre_hat": "Technology",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 5,
+        "fields": {
+            "nombre_hat": "Contabilidad",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 6,
+        "fields": {
+            "nombre_hat": "Fiscal",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 7,
+        "fields": {
+            "nombre_hat": "Opportunity Research",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 8,
+        "fields": {
+            "nombre_hat": "Desarrollo financiero",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 9,
+        "fields": {
+            "nombre_hat": "Inteligencia",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 10,
+        "fields": {
+            "nombre_hat": "Estrategias",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 11,
+        "fields": {
+            "nombre_hat": "Comunicacion",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 12,
+        "fields": {
+            "nombre_hat": "Data Distribution",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 13,
+        "fields": {
+            "nombre_hat": "Costumer Service",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 14,
+        "fields": {
+            "nombre_hat": "Community Managment",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 15,
+        "fields": {
+            "nombre_hat": "Diseñador Grafico",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 16,
+        "fields": {
+            "nombre_hat": "Social Media Analist",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 17,
+        "fields": {
+            "nombre_hat": " Bienestar",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 18,
+        "fields": {
+            "nombre_hat": "Calidad Humana",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 19,
+        "fields": {
+            "nombre_hat": "Inclusión",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 20,
+        "fields": {
+            "nombre_hat": "Comunicación Interna",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 21,
+        "fields": {
+            "nombre_hat": "Alianzas",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 22,
+        "fields": {
+            "nombre_hat": "Legal",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 23,
+        "fields": {
+            "nombre_hat": "Identidad",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 24,
+        "fields": {
+            "nombre_hat": "Etica",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 25,
+        "fields": {
+            "nombre_hat": "Development Architect",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 26,
+        "fields": {
+            "nombre_hat": "Programador Senior",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 27,
+        "fields": {
+            "nombre_hat": "Programador Aprendiz",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 28,
+        "fields": {
+            "nombre_hat": "Back End",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 29,
+        "fields": {
+            "nombre_hat": "Front End",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 30,
+        "fields": {
+            "nombre_hat": "Product Owner",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 31,
+        "fields": {
+            "nombre_hat": "Project Manager",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 32,
+        "fields": {
+            "nombre_hat": "Data Base Manager",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 33,
+        "fields": {
+            "nombre_hat": "Server Manager",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 34,
+        "fields": {
+            "nombre_hat": "Trader Senior",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 35,
+        "fields": {
+            "nombre_hat": "Trader Junior",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 36,
+        "fields": {
+            "nombre_hat": "Trader Aprendiz",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 37,
+        "fields": {
+            "nombre_hat": "Reporto",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    },
+    {
+        "model" : "social.hat",
+        "pk": 38,
+        "fields": {
+            "nombre_hat": "Ib",
+            "create_at": "2022-07-01 16:44:44.8925-05"
+        }
+    }
+]

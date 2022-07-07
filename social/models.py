@@ -113,6 +113,7 @@ class Post(models.Model):
     content = models.TextField(choices=ENTRADAS_SALIDAS)
     activate = models.BooleanField(default=True,null=True)
     fullname = models.CharField(max_length = 200,null=True)
+    status = models.CharField(max_length = 200,null=True)
 
     class Meta:
         ordering = ['-timestamp']

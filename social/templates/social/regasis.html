@@ -41,11 +41,55 @@
     </defs>
     <use xlink:href="#eff" opacity="1.5" style="mix-blend-mode:color-burn" />
 </svg> -->
+<script>
+    window.onload=function () {
+        let date = new Date();
+        let output = String(date.getDate()).padStart(2, '0');
+        let output1 = String(date.getMonth() + 1).padStart(2, '0');
+        var fechcom = output
+        var fechmes = output1
+        $('#fecha1').val(fechcom);
+        $('#fecha2').val(fechmes);
+    
+        var fe1 = $("#timeuser").val()
+        var proof = fe1.split(' ');
+        var proof1 = proof[0];
+        var proof2 = proof1.padStart(2, '0');
+        $('#feuser').val(proof2);
+
+        var a =$("#fecha1").val()
+        var b =$("#feuser").val()
+
+        if( b == a ){
+            document.getElementById("mensaje").innerHTML = "Recuerda que ya marcaste entrada por hoy";
+        }
+    };
+</script>
+
+<input type="text" id="fecha1" disabled style="display: none;">
+
+<input type="text" id="fecha2" disabled style="display: none;">
+
+<input type="text" id="feuser" disabled style="display: none;">
+
+
+
+{% for post in posts%}
+
+    <!-- mandar a llamar con javascript y añadir el emnsaje con un innerhtml -->
+
+    <input type="text" value="{{ post.timestamp }}" id="timeuser" style="display: none;">
+
+{% endfor %}
+
+
 
 <div>
+
     <h1 style="justify-content: center; display: flex;">Selecciona el boton para marcar tu entrada o tu salida</h1>
     <br>
-    <br>
+    <h1 id="mensaje" style="text-align: center; border-style: none; background: transparent; margin-bottom: 20px;"></h1>
+
 
     <div class="regisasis">
 
@@ -101,6 +145,8 @@
 
 {% endif %}
 
+<script src="https://kit.fontawesome.com/2aa4b284c9.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/e12947a646.js" crossorigin="anonymous"></script>
 
 <script>
     function myFunction() {
@@ -165,6 +211,7 @@
     #myTable tr:hover {
         background-color: #f1f1f1;
     }
+
     svg {
         position: absolute;
         top: 50%;

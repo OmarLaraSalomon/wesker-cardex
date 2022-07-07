@@ -359,6 +359,7 @@ def inicio(request, username=None):
 
 
 def information(request):
+    hat = Hat.objects.all()
     print(request)
     template = 'social/information.html'
     if request.method == 'POST':
@@ -370,7 +371,7 @@ def information(request):
             telefono_emergencia=request.POST['telefono_emergencia'], departamento=request.POST['departamento'],
             user_id=request.POST['user_id'])
         info.save()
-    context = {}
+    context = {'hat' : hat}
     return render(request, template, context)
 
 #Asistencias
@@ -438,6 +439,7 @@ def post(request):
         print("veremos que hay aqui"+str(intento))
     current_user = get_object_or_404(User, pk=request.user.pk)
     current_user2 = (request.user.information.first_name + " " + request.user.information.last_name  )
+
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -497,3 +499,4 @@ def unfollow(request, username):
     rel.delete()
     messages.success(request, f'Ya no sigues a {username}')
     return redirect('feed')
+

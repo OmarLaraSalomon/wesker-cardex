@@ -22,6 +22,7 @@ class Kaisen(models.Model):
 
     class Meta:
         ordering = ['-dateTimeOfUpload']
+        verbose_name_plural = 'kaizen'
     
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']
@@ -36,6 +37,8 @@ class Document(models.Model):
 
     class Meta:
         ordering = ['-dateTimeOfUpload']
+        
+        
     
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']
@@ -49,6 +52,8 @@ class Documentosmedicos(models.Model):
 
     class Meta:
         ordering = ['-dateTimeOfUpload']
+        verbose_name_plural = 'Documentos Medicos'
+
     
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']
@@ -62,6 +67,7 @@ class Justificantesmedicos(models.Model):
 
     class Meta:
         ordering = ['-dateTimeOfUpload']
+        verbose_name_plural = 'Justificantes Medicos'
     
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']
@@ -76,6 +82,7 @@ class Documentoslegales(models.Model):
 
     class Meta:
         ordering = ['-dateTimeOfUpload']
+        verbose_name_plural = 'Documentos Legales'
     
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']               
@@ -84,7 +91,7 @@ class Documentoslegales(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     image = models.ImageField(default='batman.png')
-     
+    
     def __str__(self):
             return f'Foto de perfil de { self.user.information.first_name } { self.user.information.last_name }'
 
@@ -106,6 +113,11 @@ ENTRADAS_SALIDAS = (
 
 )
 
+RETCA = (
+    ('A Tiempo','A Tiempo'),
+    ('Retardo','Retardo')
+)
+
 class Post(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='posts', null=True)
@@ -113,10 +125,11 @@ class Post(models.Model):
     content = models.TextField(choices=ENTRADAS_SALIDAS)
     activate = models.BooleanField(default=True,null=True)
     fullname = models.CharField(max_length = 200,null=True)
-    status = models.CharField(max_length = 200,null=True)
+    status = models.TextField(choices=RETCA)
 
     class Meta:
         ordering = ['-timestamp']
+        verbose_name_plural = 'Entradas/Salidas'
     
     def clean_renewal_date(self):
         data = self.full_clean['timestamp']
@@ -133,6 +146,8 @@ class Relationship(models.Model):
         return f'{self.from_user} to {self.to_user}'
 
     class Meta:
+
+        verbose_name_plural = 'Relaciones'
         indexes = [
             models.Index(fields=['from_user', 'to_user', ]),
         ]

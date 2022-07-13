@@ -21,16 +21,16 @@ class PostResource(resources.ModelResource):
  
     class Meta:
         model = Post
-        fields = ('fullname','timestamp','content',)
+        fields = ('fullname','timestamp','content','status',)
         exclude = ('activate', )
-        export_order = ('fullname','timestamp','content',)
+        export_order = ('fullname','timestamp','content','status',)
 
 @admin.register(Post)
 class PostAdmin(ImportExportModelAdmin):
     resource_class = PostResource
     """Profile model admin."""
 
-    list_display = ('user','timestamp','content','activate')
+    list_display = ('user','timestamp','content','status','activate')
     list_filter = (('timestamp',DateRangeFilter),('timestamp',DateTimeRangeFilter),'user',)
     
 #informacion del perfil

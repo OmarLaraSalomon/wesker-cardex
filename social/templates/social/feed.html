@@ -12,6 +12,12 @@
             <time style="color: #14344F;"> <strong> Tu hora de {{ post.content }} del día </strong>
                 {{ post.timestamp }}</time>
             <div class="post1">{{ post.content }}</div>
+            {% if post.status == 'A Tiempo' %}
+            <div class="post1" style="text-align: center; color: green;"> {{ post.status }} </div>
+            {% elif post.status == 'Retardo' %}
+            <div class="post1" style="text-align: center; color: red;"> {{ post.status }} </div>
+            {% endif %}
+<!-- {{ post.status }} -->
         </div>
     </div>
 </article>

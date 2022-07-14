@@ -1,0 +1,103 @@
+{% extends 'social/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block link %}
+
+
+
+{% endblock link %}
+{% block title %}
+Information
+{% endblock title %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <style>
+        #hatput {
+            width: 90%;
+            font-size: 15px;
+            text-align: center;
+            border-radius: 15px;
+            margin-left: 35px;
+        }
+
+        #idput-1 {
+            text-align: center;
+            font-size: 15px;
+        }
+    </style>
+
+    <form>
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <input type="text" value="{{ user.id }}" id="user_id">
+
+            <select class="cajasTexto" id="hatput" name="pais" required class="form-control">
+                <option value="" disabled selected>{{_('Selecciona tu departamento')}}</option>
+                {% for hat in hat %}
+                <option value="{{ hat.id }}">{{hat.nombre_hat}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="text" id="idput-1" disabled>
+        </div>
+
+        <div class="btnact">
+            <button name="boton" onclick="hatreg()" type="submit"
+              class="actualizar">{{_('Asignar')}}</button>
+          </div>
+
+    </form>
+
+    <script>
+        $("#hatput").on("change", function () {
+            var precio_pr = $("#hatput").val();
+            console.log(precio_pr);
+            $('#idput-1').val(precio_pr);
+
+        });
+    </script>
+
+    <script>
+        function hatreg() {
+        $.ajax({
+          url: "{% url 'asignarhat' %}",
+          type: "POST",
+          data: {
+            'user_id': $('#user_id').val(),
+            'hat_id': $('#idput-1').val(),
+            
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+
+
+          },
+          success: function (data) {
+            console.log(data)
+            console.log("Success");
+            location.reload();
+          }
+        });
+    }
+    </script>
+
+</body>
+
+</html>
+
+
+{% endblock %}

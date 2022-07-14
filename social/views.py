@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .models import Profile
 from .models import Information
 from .models import DatosMedicos
+from .models import AsignacionHat
 from django.contrib.auth.decorators import login_required
 
 from . import models
@@ -359,7 +360,7 @@ def inicio(request, username=None):
 
 
 def information(request):
-    hat = Hat.objects.all()
+    hat = Hat.objects.order_by('id')
     print(request)
     template = 'social/information.html'
     if request.method == 'POST':
@@ -500,3 +501,17 @@ def unfollow(request, username):
     messages.success(request, f'Ya no sigues a {username}')
     return redirect('feed')
 
+
+def asignarhat(request):
+    print(request)
+    template = 'social/asignarhat.html'
+    hat = Hat.objects.order_by('id')
+
+    if request.method == 'POST':  
+        asig = AsignacionHat.objects.create(
+                  user_id=request.POST['user_id'] , hat_id = request.POST['hat_id'])
+        asig.save()
+
+
+    context = {'hat': hat}
+    return render(request, template, context)

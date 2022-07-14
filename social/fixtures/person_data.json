@@ -131,7 +131,7 @@
         "model" : "social.hat",
         "pk": 17,
         "fields": {
-            "nombre_hat": " Bienestar",
+            "nombre_hat": "Bienestar",
             "create_at": "2022-07-01 16:44:44.8925-05"
         }
     },

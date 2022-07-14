@@ -125,7 +125,7 @@ class Post(models.Model):
     content = models.TextField(choices=ENTRADAS_SALIDAS)
     activate = models.BooleanField(default=True,null=True)
     fullname = models.CharField(max_length = 200,null=True)
-    status = models.TextField(choices=RETCA)
+    status = models.TextField(choices=RETCA,default=True,null=True)
 
     class Meta:
         ordering = ['-timestamp']
@@ -197,3 +197,19 @@ class DatosMedicos(models.Model):
 class Hat(models.Model):
     nombre_hat = models.CharField(max_length=500, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
+
+class AsignacionHat(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='hats', null=True)
+    hat = models.ForeignKey(
+        Hat, on_delete=models.CASCADE, related_name='hats', null=True)
+    create_at = models.DateTimeField(auto_now_add=True, null=True)
+
+class Actividades(models.Model):
+    actividades = models.CharField(max_length=500, null=True)
+    descripcion = models.CharField(max_length=500, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='Actividades', null=True)
+    hat = models.ForeignKey(
+        Hat, on_delete=models.CASCADE, related_name='Actividades', null=True)
+    create_at = models.DateTimeField(auto_now_add=True, null=True)

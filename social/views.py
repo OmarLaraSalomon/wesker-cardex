@@ -506,12 +506,13 @@ def asignarhat(request):
     print(request)
     template = 'social/asignarhat.html'
     hat = Hat.objects.order_by('id')
+    registros = AsignacionHat.objects.all() 
 
-    if request.method == 'POST':  
+    if request.method == "POST":  
         asig = AsignacionHat.objects.create(
                   user_id=request.POST['user_id'] , hat_id = request.POST['hat_id'])
         asig.save()
 
 
-    context = {'hat': hat}
+    context = {'hat': hat,'registros': registros}
     return render(request, template, context)

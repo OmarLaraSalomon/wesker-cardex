@@ -5,8 +5,65 @@
 <head>
     <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
 </head>
+
+<form>
+    {% csrf_token %}
+
+    <div class="form-group" style="margin-bottom:20px ;">
+        <label for="hatField">{{_('hat')}}</label>
+        <select class="cajasTexto" id="hatField" name="pais" required class="form-control">
+            <option value="" disabled selected>{{_('Selecciona usuario y su hat')}}</option>
+            {% for a in asighat %}
+                        <option value="{{ a.hat_id }}">{{a.user.username}} {{ a.hat.nombre_hat }}</option>
+                  
+            {% endfor %}
+
+        </select>
+    </div>
+    <div class="form-group">
+      <label for="actividadField">{{_('Actividad')}}</label>
+      <input type="text" class="form-control" id="actividadField" placeholder="{{ _('Escribe la actividad') }}" required>
+    </div>
+    <div class="form-group">
+      <label for="descripcion_Field">{{_('Descripcion')}}</label>
+      <input type="text" class="form-control" id="descripcionField" placeholder="{{ _('Coloca la descripcion') }}" required>
+    </div>
+
+    
+    <div class="btnact">
+      <button  name="boton" onclick="post()" type="submit"
+        class="actualizar">{{_('Actualizar')}}</button>
+    </div>
+
+  </form>
+
+  <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    function post() {
+      $.ajax({
+        url: "{% url 'hats' %}",
+        type: "POST",
+        data: {
+          'actividad': $('#actividadField').val(),
+          'descripcion': $('#descripcionField').val(),
+          'hat_id': $('#hatField').val(),
+           csrfmiddlewaretoken: '{{ csrf_token }}',
+
+
+        },
+        success: function (data) {
+          console.log(data)
+          console.log("Success");
+        
+        }
+      });
+
+    }
+  </script>
 <!-- Profile -->
-<div class="profile">
+<!-- <div class="profile">
     {% load static from static %}
     <img src="{{user.profile.image.url}}">
     <h2>{{ user.username }}</h2>
@@ -17,7 +74,7 @@
     {% if user.is_superuser%}
     <h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
     {%else%}
-    <!-- <h2> No eres Admin :(</h2> -->
+    <h2> No eres Admin :(</h2> 
     {%endif%}
 </div>
 
@@ -61,7 +118,7 @@
     </div>
 </div>
 
-{% endfor %}
+{% endfor %} -->
 
 
 <style>

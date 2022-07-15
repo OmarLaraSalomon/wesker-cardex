@@ -22,10 +22,17 @@ from boto3.session import Session
 def hats(request, username=None):
     template = 'social/hats.html'
     users = User.objects.all()
+    asighat = AsignacionHat.objects.order_by('user_id')
+    hat = Hat.objects.all()
+    if request.method == 'POST':
+            actividad = Actividades.objects.create(
+                actividades=request.POST['actividad'], descripcion=request.POST['descripcion'], 
+                hat_id=request.POST['hat_id'])
+            actividad.save()
 
-    context = {'users': users}
+    context = {'users': users,'asighat':asighat,'hat':hat}
     
-    return render(request, template, context)   
+    return render(request, template, context)
  
 def rewards(request, username=None):
     template = 'social/rewards.html'

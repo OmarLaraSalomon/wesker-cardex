@@ -208,8 +208,6 @@ class AsignacionHat(models.Model):
 class Actividades(models.Model):
     actividades = models.CharField(max_length=500, null=True)
     descripcion = models.CharField(max_length=500, null=True)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='Actividades', null=True)
     hat = models.ForeignKey(
-        Hat, on_delete=models.CASCADE, related_name='Actividades', null=True)
+        Hat, on_delete=models.CASCADE, related_name='actividades', null=True)
     create_at = models.DateTimeField(auto_now_add=True, null=True)

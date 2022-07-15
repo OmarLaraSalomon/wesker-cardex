@@ -476,13 +476,15 @@ def post(request):
 
 def profile(request, username=None):
     current_user = request.user
+    hat = Hat.objects.order_by('id')
+    registros = AsignacionHat.objects.all()
     if username and username != current_user.username:
         user = User.objects.get(username=username)
         posts = user.posts.all()
     else:
         posts = current_user.posts.all()
         user = current_user
-    return render(request, 'social/profile.html', {'user': user, 'posts': posts })
+    return render(request, 'social/profile.html', {'user': user, 'posts': posts, 'hat' : hat, 'registros' : registros})
 
 
 

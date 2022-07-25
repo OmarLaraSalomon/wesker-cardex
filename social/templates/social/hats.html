@@ -9,59 +9,371 @@
 <form>
     {% csrf_token %}
 
-    <div class="form-group" style="margin-bottom:20px ;">
+    <div class="form-group" style="margin-bottom:20px; text-align: center;">
         <label for="hatField">{{_('hat')}}</label>
         <select class="cajasTexto" id="hatField" name="pais" required class="form-control">
             <option value="" disabled selected>{{_('Selecciona usuario y su hat')}}</option>
             {% for a in asighat %}
-                        <option value="{{ a.hat_id }}">{{a.user.username}} {{ a.hat.nombre_hat }}</option>
-                  
+            <option value="{{ a.hat_id }}">{{a.user.username}} {{ a.hat.nombre_hat }}</option>
             {% endfor %}
 
         </select>
     </div>
     <div class="form-group">
-      <label for="actividadField">{{_('Actividad')}}</label>
-      <input type="text" class="form-control" id="actividadField" placeholder="{{ _('Escribe la actividad') }}" required>
+        <label for="actividadField">{{_('Actividad')}}</label>
+        <input type="text" class="form-control" id="actividadField" placeholder="{{ _('Escribe la actividad') }}"
+            required>
     </div>
     <div class="form-group">
-      <label for="descripcion_Field">{{_('Descripcion')}}</label>
-      <input type="text" class="form-control" id="descripcionField" placeholder="{{ _('Coloca la descripcion') }}" required>
+        <label for="descripcion_Field">{{_('Descripcion')}}</label>
+        <input type="text" class="form-control" id="descripcionField" placeholder="{{ _('Coloca la descripcion') }}"
+            required>
     </div>
 
-    
+
     <div class="btnact">
-      <button  name="boton" onclick="post()" type="submit"
-        class="actualizar">{{_('Actualizar')}}</button>
+        <button name="boton" onclick="post()" type="submit" class="actualizar">{{_('Registrar')}}</button>
     </div>
 
-  </form>
+</form>
 
-  <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script>
-    function post() {
-      $.ajax({
-        url: "{% url 'hats' %}",
-        type: "POST",
-        data: {
-          'actividad': $('#actividadField').val(),
-          'descripcion': $('#descripcionField').val(),
-          'hat_id': $('#hatField').val(),
-           csrfmiddlewaretoken: '{{ csrf_token }}',
+<div class="scroll_horizontal" style="text-align: center;">
 
-
-        },
-        success: function (data) {
-          console.log(data)
-          console.log("Success");
-        
+    <style>
+        .form-control1 {
+            font-size: 15px;
+            outline: none;
+            background: transparent;
+            text-align: center;
         }
-      });
+
+        .selectHat,
+        .selectUser,
+        .selectDepart {
+            text-align: center;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+    </style>
+    <!-- <input style="width: 30%;" onkeyup="filtra_movi()" id="filtro" class="form-control1 col-lg-3 py-1 mr-5" type="text"
+        placeholder="Filtrar Hats" aria-label="Search"> -->
+
+    <input type="text" id="idput-1" disabled style="width: 30%; text-align: center; font-size: 20px; display: none;">
+
+    <select class="selectHat" id="hatput" name="pais" required class="form-control" onchange="filtra_movi()">
+        <option value="" disabled selected>{{_('Selecciona el Hat')}}</option>
+        {% for hat in hat %}
+        <option value="{{ hat.nombre_hat }}">{{hat.nombre_hat}}</option>
+        {% endfor %}
+    </select>
+
+
+    <select class="selectUser" id="hatput2" name="pais" required class="form-control" onchange="filtra_user()">
+        <option value="" disabled selected>{{_('Selecciona el usuario')}}</option>
+        {% for users in users %}
+        <option value="{{ users.username }}">{{users.username}}</option>
+        {% endfor %}
+    </select>
+
+    <select class="selectDepart" id="hatput3" name="pais" required class="form-control" onchange="filtra_dept()">
+        <option value="" disabled selected>{{_('Selecciona el Departamento')}}</option>
+        <option value="Tierra">Tierra</option>
+        <option value="Agua">Agua</option>
+        <option value="Fuego">Fuego</option>
+        <option value="Ignis">Ignis</option>
+        <option value="Aire">Aire</option>
+        <option value="Ether">Ether</option>
+        <option value="Digimundo">Digimundo</option>
+    </select>
+
+    <button id="borrado" class="actualizar" onclick="regresar()"> borrar filtro </button>
+    <button id="borrado" class="actualizar" onclick="llenado()"> Calcular </button>
+
+    <table id="myTable"
+        style="text-align: center; justify-content: center; align-items: center; width: 100%; height: 100%; margin-bottom: 20px;">
+
+        <tr class="header">
+            <th>numero</th>
+            <th>Actividad</th>
+            <th>Descripcion</th>
+            <th>Hat</th>
+            <th>Responsable</th>
+            <th>Departamento</th>
+            <th>Fecha y hora</th>
+        </tr>
+        {% for ac in actividades %}
+        <tr>
+            <td>{{ ac.id }} </td>
+            <td>{{ ac.actividades }}</td>
+            <td>{{ac.descripcion}} </td>
+            <td>{{ac.hat.nombre_hat}}</td>
+
+            {% for a in asighat %}
+
+            {% if ac.hat_id == a.hat_id %}
+            <td>{{a.user.username}}</td>
+
+            {% for info in info %}
+            {% if a.user_id == info.user_id %}
+            <td id="{{info.departamento}}">{{info.departamento}}</td>
+            {% endif %}
+            {% endfor %}
+
+            {% endif %}
+
+            {% endfor %}
+
+            <td>{{ac.create_at}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- <button name="boton" onclick="contarFilas()" type="submit" class="actualizar">Calcular</button> -->
+
+</div>
+
+<!-- grafica de ganancias por comisiones -->
+<div class="col-md-4 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+            <div id="plotlyChart"></div>
+            <div id="plotlyChart2" style="display: flex; align-items: center; justify-content: center;"></div>
+            <div id="plotlyChart3" style="display: flex; align-items: center; justify-content: center;"></div>
+            <div id="plotlyChartPrueba" style="display: flex; align-items: center; justify-content: center;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- fin de grafica de ganancias por comisiones-->
+
+
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var Tierra = 0, Agua = 0, Fuego = 0, Ignis = 0, Aire = 0, Ether = 0, Digimundo = 0;
+    var parametros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+    var valores = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    $('#myTable tbody tr').each(function () {
+        var v = $(this).find("td:eq(5)").text();
+        if (v == 'Tierra') {
+            Tierra += 1;
+        } else if (v == 'Agua') {
+            Agua += 1;
+        } else if (v == 'Fuego') {
+            Fuego += 1;
+        } else if (v == 'Ignis') {
+            Ignis += 1;
+        } else if (v == 'Aire') {
+            Aire += 1;
+        } else if (v == 'Ether') {
+            Ether += 1;
+        } else if (v == 'Digimundo') {
+            Digimundo += 1;
+        }
+    });
+
+    $(document).ready(function () {
+
+        var $num = document.getElementById('myTable').getElementsByTagName('tr').length - 1;
+        console.log($num);
+        $('#idput-1').val($num);
+
+        var ganancia = $('#idput-1').val();
+        var ganancia2 = 2;
+        var data = [
+            {
+                x: ['Tierra', 'Agua', 'Fuego', 'Ignis', 'Aire', 'Ether', 'Digimundo'],
+                y: [Tierra, Agua, Fuego, Ignis, Aire, Ether, Digimundo],
+                type: 'bar',
+                marker: {
+                    /* color: '#C8A2C8' */
+                    color: ['rgba(128, 64, 0,1)', 'rgba(0,170,228,1)', 'rgba(255,0,0,1)', 'rgba(239,184,16,1)', 'rgba(204,204,204,1)', 'rgba(104,255,0,1)', 'rgba(22,75,157,1)'],
+                    line: {
+                        width: 2.5
+                    }
+                }
+            }
+        ];
+
+        var layout = {
+            title: 'Actividades Realizadas por Departamento',
+            font: { size: 18 }
+        };
+
+        Plotly.newPlot('plotlyChart', data, layout, { responsive: true });
+    });
+
+    var data = [{
+        values: [Tierra, Agua, Fuego, Ignis, Aire, Ether, Digimundo],
+        labels: ['Tierra', 'Agua', 'Fuego', 'Ignis', 'Aire', 'Ether', 'Digimundo'],
+        type: 'pie',
+        insidetextorientation: "radial"
+    }];
+
+
+    var layout = {
+        height: 600,
+        width: 600
+    };
+
+    Plotly.newPlot('plotlyChart2', data, layout);
+
+    var data = [{
+        x: ['Tierra', 'Agua', 'Fuego', 'Ignis', 'Aire', 'Ether', 'Digimundo'],
+        y: [Tierra, Agua, Fuego, Ignis, Aire, Ether, Digimundo],
+        type: 'linear',
+    }];
+
+
+    var layout = {
+        height: 600,
+        width: 600
+    };
+
+    Plotly.newPlot('plotlyChart3', data, layout);
+
+    function llenado() {
+        $('#myTable tbody').find('tr').each(function (i, el) {
+            var fecha = $(this).find('td').eq(6).text();
+            var sep = fecha.split(' ');
+            var separado = sep[0];
+            console.log(separado);
+
+            for (var i = 0; i < parametros.length; i++) {
+            var a = valores[i];
+            console.log(a);
+            var b = a + i;
+            console.log(b);
+            var agr = b;
+            valores[i] = valores[i] + 1;
+            
+        }
+        
+        });
+
+
+        var data = [{
+            x: parametros,
+            y: valores,
+            type: 'bar',
+        }];
+
+
+        var layout = {
+            title: 'Actividades Realizadas por Dia',
+            font: { size: 18 },
+            height: 600,
+            width: 600
+        };
+
+        Plotly.newPlot('plotlyChartPrueba', data, layout);
+    }
+</script>
+
+
+<script>
+    var a = ""
+
+    function regresar() {
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        $('#hatput').val(a);
+        $('#hatput2').val(a);
+        $('#hatput3').val(a);
+        for (i = 0; i < tr.length; i++) {
+            tr[i].style.display = "";
+        }
 
     }
-  </script>
+    function filtra_movi() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = $("#hatput").val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        $('#hatput2').val(a);
+        $('#hatput3').val(a);
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[3];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function filtra_user() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = $("#hatput2").val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        $('#hatput').val(a);
+        $('#hatput3').val(a);
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[4];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function filtra_dept() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = $("#hatput3").val();
+        filter = input.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        $('#hatput').val(a);
+        $('#hatput2').val(a);
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[5];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+<script>
+    function post() {
+        $.ajax({
+            url: "{% url 'hats' %}",
+            type: "POST",
+            data: {
+                'actividad': $('#actividadField').val(),
+                'descripcion': $('#descripcionField').val(),
+                'hat_id': $('#hatField').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+
+
+            },
+            success: function (data) {
+                console.log(data)
+                console.log("Success");
+
+            }
+        });
+
+    }
+</script>
 <!-- Profile -->
 <!-- <div class="profile">
     {% load static from static %}

@@ -24,13 +24,15 @@ def hats(request, username=None):
     users = User.objects.all()
     asighat = AsignacionHat.objects.order_by('user_id')
     hat = Hat.objects.all()
+    info = Information.objects.all()
+    actividades = Actividades.objects.all()
     if request.method == 'POST':
             actividad = Actividades.objects.create(
                 actividades=request.POST['actividad'], descripcion=request.POST['descripcion'], 
                 hat_id=request.POST['hat_id'])
             actividad.save()
 
-    context = {'users': users,'asighat':asighat,'hat':hat}
+    context = {'users': users,'asighat':asighat,'hat':hat,'actividades': actividades, 'info':info}
     
     return render(request, template, context)
  

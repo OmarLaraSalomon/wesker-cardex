@@ -25,7 +25,7 @@ def hats(request, username=None):
     asighat = AsignacionHat.objects.order_by('user_id')
     hat = Hat.objects.all()
     info = Information.objects.all()
-    actividades = Actividades.objects.all()
+    actividades = Actividades.objects.order_by('id')
     if request.method == 'POST':
             actividad = Actividades.objects.create(
                 actividades=request.POST['actividad'], descripcion=request.POST['descripcion'], 

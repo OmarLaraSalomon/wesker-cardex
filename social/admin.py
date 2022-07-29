@@ -33,6 +33,7 @@ class PostAdmin(ImportExportModelAdmin):
     list_display = ('user','timestamp','content','status','activate')
     list_filter = (('timestamp',DateRangeFilter),('timestamp',DateTimeRangeFilter),'user',)
     
+    
 #informacion del perfil
 
 @admin.register(Information)

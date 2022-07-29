@@ -129,10 +129,11 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
-        verbose_name_plural = 'Entradas/Salidas'
+        verbose_name_plural = 'Entradas/Salidas' 
     
     def clean_renewal_date(self):
         data = self.full_clean['timestamp']
+
 
 
 

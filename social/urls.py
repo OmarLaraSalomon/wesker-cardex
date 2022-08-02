@@ -29,6 +29,7 @@ urlpatterns = [
     path('verdatosmedicos/<str:username>/', views.verdatosmedicos, name='verdatosmedicos'),
 
     url(r'^regasis/$', views.regasis, name='regasis'),
+    url(r'^asistencia/$', views.asistencia, name='asistencia'),
     
     #Perfil Psicologico
     url(r'^perfilpsico/$', views.perfilpsico, name='perfilpsico'),

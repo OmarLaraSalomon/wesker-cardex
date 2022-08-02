@@ -1,0 +1,424 @@
+{% extends 'social/feed.html' %}
+{% load static %}
+
+{% block content %}
+<link href='https://fonts.googleapis.com/css?family=Cabin+Condensed:700' rel='stylesheet' type='text/css'>
+
+<head>
+    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+    <script src="{% static 'xlsx.full.min.js' %}"></script>
+    <script src="{% static 'FileSaver.min.js' %}"></script>
+    <script src="{% static 'tableexport.min.js' %}"></script>
+</head>
+<table id="myTable">
+
+    <tr class="header">
+        <th>Fecha salida</th>
+        <th>Nombre</th>
+        <th>Contenido</th>
+    </tr>
+    {% for post in posts%}
+    {% if post.content == "salida oficina" %}
+    <tr>
+        <td>{{ post.timestamp }}</td>
+        <td id="user">{{ post.user.username }}</td>
+        <td>{{ post.content }}</td>
+        {% elif post.content == "salida homeofice" %}
+        <td>{{ post.timestamp }}</td>
+        <td id="user">{{ post.user.username }}</td>
+        <td>{{ post.content }}</td>
+        {% endif %}
+    </tr>
+
+    {% endfor %}
+
+    <script>
+        $(document).ready(function () {
+            var sa = $("#info").val();
+            console.log(sa);
+
+            $('#tabla tbody tr').each(function () {
+                var fecha2;
+                var salida = "-";
+                var v = $(this).find("td:eq(0)").text();
+                var sep = v.split(' ');
+                var separado = sep[0] + " " + sep[1] + " " + sep[2] + " " + sep[3] + " " + sep[4];
+                var hora = sep[7];
+                console.log(separado);
+                console.log(hora);
+                for (var i = 0; i < 730; i++) {
+                    $(this).find("td:eq(1)").text(separado);
+                    $(this).find("td:eq(4)").text(hora);
+                }
+            });
+
+        });
+    </script>
+
+
+    <button style="font-size: 20px;" id="btnExportar">
+        Exportar
+    </button>
+
+    <article>
+        <div>
+
+            <div class="scroll_horizontal">
+                <table id="tabla">
+
+                    <tr class="header">
+                        <th>Fecha entrada</th>
+                        <th>Fecha salida</th>
+                        <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Hora de entrada</th>
+                        <th>Hora de salida </th>
+                        <th>Status</th>
+                        <th>Contenido</th>
+                    </tr>
+                    {% for post in posts%}
+                    {% if post.content == "entrada oficina" %}
+                    <tr>
+                        <td>{{ post.timestamp }}</td>
+                        <td></td>
+                        <td id="user">{{ post.user.username }}</td>
+                        <td>{{ post.user.information.departamento }}</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ post.status }}</td>
+                        <td>{{ post.content }}</td>
+                    </tr>
+                    {% elif post.content == "entrada homeofice" %}
+                    <tr>
+                        <td>{{ post.timestamp }}</td>
+                        <td></td>
+                        <td id="user">{{ post.user.username }}</td>
+                        <td>{{ post.user.information.departamento }}</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ post.status }}</td>
+                        <td>{{ post.content }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+
+        </div>
+    </article>
+
+    <script>
+        const $btnExportar = document.querySelector("#btnExportar"),
+            $tabla = document.querySelector("#tabla");
+
+        $btnExportar.addEventListener("click", function () {
+            let tableExport = new TableExport($tabla, {
+                exportButtons: false, // No queremos botones
+                filename: "Reporte de prueba", //Nombre del archivo de Excel
+                sheetname: "Reporte de prueba", //Título de la hoja
+            });
+            let datos = tableExport.getExportData();
+            let preferenciasDocumento = datos.tabla.xlsx;
+            tableExport.export2file(preferenciasDocumento.data,
+                preferenciasDocumento.mimeType, preferenciasDocumento.filename,
+                preferenciasDocumento.fileExtension, preferenciasDocumento.merges,
+                preferenciasDocumento.RTL, preferenciasDocumento.sheetname);
+        });
+    </script>
+    <!-- Fin script exportar -->
+
+    <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        .scroll_horizontal {
+            overflow-y: hidden;
+            overflow-x: auto;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #myInput {
+            background-image: url('/css/searchicon.png');
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+        }
+
+        #tabla {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            font-size: 18px;
+        }
+
+        #tabla th,
+        #tabla td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        #tabla tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        #tabla tr.header,
+        #tabla tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        svg {
+            position: absolute;
+            top: 50%;
+            margin-top: -60px;
+            left: 30%;
+            margin-left: -225px;
+        }
+
+        /* @media (max-width:768px) {
+        svg {
+            font-size: 150px;
+            position: absolute;
+            top: 33%;
+            margin-top: 15px;
+            left: 28%;
+            margin-left: -112px;
+        }
+    }
+
+    @media (max-width:768px) {
+        svg text {
+            font-size: 110px;
+
+        }
+    } */
+    </style>
+
+    <!-- Profile -->
+    <!-- <div class="profile">
+    {% load static from static %}
+    <img src="{{user.profile.image.url}}">
+    <h2>{{ user.username }}</h2>
+
+</div>
+
+<div class="profile">
+    {% if user.is_superuser%}
+    <h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
+    {%else%}
+    <h2> No eres Admin :(</h2> 
+    {%endif%}
+</div>
+
+
+
+
+{% for user in users %}
+<div class="espaciohats">
+
+    <div class="hats">
+        <div class="carta_perfi">
+            <div class="carta_header">
+                <div class="avatar">
+                    <img src="{{ user.profile.image.url }}" alt="">
+                </div>
+                <div class="textos">
+                    <h2 class="username"><a href="{%url 'profile' user.username%}"><span>
+                                {{user.information.first_name}}
+                                {{ user.information.last_name }}</span></a></h2>
+                    <h4>Hats:</h4>
+                </div>
+            </div>
+            <div class="carta_body">
+                <div class="carta_contenido">
+                    <ul class="lista">
+                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Puesto: {{ user.information.puesto }}
+                        </li>
+                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Departamento:
+                            {{user.information.departamento }}</li>
+                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Ingreso: {{ user.egresos.ingreso }}</li>
+                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Egreso: {{ user.egresos.egreso}}</li>
+                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Correo: {{ user.email }}</li>
+                    </ul>
+                    <div class="carta_pie">
+                        <button class="carta_boton" type="button">Ver mas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endfor %} -->
+
+
+    <style>
+        .espaciohats {
+            margin-bottom: 0px;
+            margin-top: 100px;
+            margin-left: -50px;
+        }
+
+        @media (max-width:720px) {
+            .espaciohats {
+                margin-left: -100px;
+                display: block;
+                width: 100%;
+            }
+        }
+
+        .hats {
+            justify-content: center;
+            align-items: center;
+            margin-left: 32%;
+            margin-right: 50%;
+            display: block;
+            width: 100%;
+        }
+
+
+        .carta_perfi img {
+            width: 100%;
+        }
+
+        .carta_perfi {
+            display: flex;
+            -webkit-flex-wrap: wrap;
+            -moz-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            -o-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-flex-direction: column;
+            -moz-flex-direction: column;
+            -ms-flex-direction: column;
+            -o-flex-direction: column;
+            flex-direction: column;
+            background-color: #fff;
+            width: 330px;
+            position: relative;
+        }
+
+        .carta_perfi .carta_header {
+            display: flex;
+            width: 100%;
+            height: 120px;
+            -webkit-flex-wrap: wrap;
+            -moz-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            -o-flex-wrap: wrap;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: center;
+            position: absolute;
+            background-color: #1594A6;
+            top: 0;
+            padding-bottom: 15px;
+            text-align: center;
+            color: #fff;
+            transition: all ease-in 350ms;
+            z-index: 1;
+            border-radius: .75rem;
+            line-height: .2;
+        }
+
+        .carta_perfi .carta_header .textos h3 {
+            font-size: 1.3em;
+            margin-bottom: 0;
+        }
+
+        .carta_perfi .carta_header .textos h4 {
+            font-size: .8em;
+            font-style: italic;
+        }
+
+        .carta_perfi .carta_header .avatar {
+            display: block;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background-color: #E1E8F0;
+            top: -50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid #fff;
+            box-shadow: 0 0 4px 1px rgba(0, 0, 0, .1);
+        }
+
+
+
+        .carta_perfi .carta_header button:hover {
+            background-color: #E9E9E9;
+
+        }
+
+        .carta_perfi .carta_body {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+            height: 0px;
+            overflow: hidden;
+            padding-bottom: 20px;
+            box-shadow: 0 0 15px 2px rgba(0, 0, 0, .1), 0 0 8px 1px rgba(0, 0, 0, .1);
+            border-radius: .75rem;
+            opacity: 0;
+            height: 375px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .carta_perfi .carta_body ul {
+            margin-bottom: 1.75rem;
+            list-style: none;
+        }
+
+        .carta_perfi .carta_body ul li {
+            margin-bottom: .5rem;
+        }
+
+        .carta_perfi .carta_body ul i {
+            margin-right: 1rem;
+            display: inline-block;
+            transform: scale(1.25);
+        }
+
+        .carta_perfi .carta_body ul li:nth-child(1) i {
+            color: #668EE8;
+        }
+
+        .carta_perfi .carta_body ul li:nth-child(2) i {
+            color: #5BC7B1;
+        }
+
+        .carta_perfi .carta_body ul li:nth-child(3) i {
+            color: #FF5050;
+        }
+
+        .carta_perfi .carta_body .carta_pie {
+            text-align: center;
+        }
+
+        .carta_perfi .carta_body .carta_boton {
+            padding: 10px 25px;
+            border-radius: .25rem;
+            border: 0;
+            background-color: #1594A6;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .carta_perfi .carta_body .carta_boton:active {
+            background-color: #188291;
+        }
+    </style>
+
+
+    {% endblock %}

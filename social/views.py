@@ -532,6 +532,5 @@ def asistencia(request):
     template = 'social/asistencia.html'
     posts = Post.objects.all()
 
-
     context = {'posts': posts}
     return render(request,template,context)

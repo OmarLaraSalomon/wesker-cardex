@@ -16,7 +16,7 @@
 
 </head>
 
-<table id="tabla-salidas" style="display: none;">
+<table id="tabla-salidas" style="display: block;">
     <tr>
         <th>datos</th>
     </tr>
@@ -39,7 +39,7 @@
     </tbody>
 </table>
 
-<!-- <script>
+<script>
     var info = [];
     var fechas = [];
     var horas = [];
@@ -65,7 +65,7 @@
         });
     }
 
-    $(document).ready(function () {
+    function registros() {
         let date = new Date();
         completo();
         salidas();
@@ -84,7 +84,7 @@
 
                 for (var i = 0; i <= tamaño; i++) {
                     $(this).find("td:eq(3)").text(hora);
-                for (var i = 0; i <= info.length; i++) {
+                /* for (var i = 0; i <= info.length; i++) {
                     var fechacom = info[i + 1];
                     var horacom = horas[i + 1];
                     var usuariocom = usuarios[i + 1];
@@ -102,13 +102,13 @@
                             }
                         }
                     }
-                }
+                } */
             }
         });
-    });
-</script> -->
+    }
+</script>
 
-<!-- <script>
+<script>
     function completo() {
         $('#tabla tbody tr').each(function () {
             var v = $(this).find("td:eq(0)").text();
@@ -117,19 +117,21 @@
             }
         });
     }
-</script> -->
+</script>
 
 <div style="text-align: center; justify-content: center; align-items: center; padding-top: 4%;">
     <button style="font-size: 20px;" id="btnExportar">
         Exportar
     </button>
+
+    <button onclick="registros()"> llenar </button>
 </div>
 <article>
     <div>
 
         <div class="scroll_horizontal">
             <table id="tabla" class="display" style="width:100%">
-
+              <thead>
                 <tr class="header">
                     <th>Fecha</th>
                     <th>Nombre</th>
@@ -139,6 +141,8 @@
                     <th>Status</th>
                     <th>Contenido</th>
                 </tr>
+            </thead>
+            <tbody>
                 {% for post in posts%}
                 {% if post.content == "entrada oficina" %}
                 <tr>
@@ -162,6 +166,7 @@
                 </tr>
                 {% endif %}
                 {% endfor %}
+            </tbody>
             </table>
         </div>
 
@@ -178,30 +183,7 @@
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
       $(document).ready( function () {
-      $('#tabla').DataTable({
-        language: {
-          processing: "Tratamiento en curso...",
-          search: "Buscar&nbsp;:",
-          lengthMenu: "Agrupar de MENU registros",
-          info: "Mostrando del registro START al END de un total de TOTAL registros",
-          infoEmpty: "No existen datos.",
-          infoFiltered: "(filtrado de MAX elementos en total)",
-          infoPostFix: "",
-          loadingRecords: "Cargando...",
-          zeroRecords: "No se encontraron datos con tu busqueda",
-          emptyTable: "No hay datos disponibles en la tabla.",
-          paginate: {
-            first: "Primero",
-            previous: "Anterior",
-            next: "Siguiente",
-            last: "Último"
-          },
-          aria: {
-            sortAscending: ": active para ordenar la columna en Orden ascendente",
-            sortDescending: ": active para ordenar la columna en orden descendente."
-          }
-        }
-      });
+      $('#tabla').DataTable({});
       } );
 </script>
 

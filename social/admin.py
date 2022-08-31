@@ -7,6 +7,8 @@ from import_export.fields import Field
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import Document, Documentosmedicos, Kaisen, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+from .models import TimestampedItem
+from admintimestamps import TimestampedAdminMixin
 # Register your models here.
 admin.site.register(Relationship)
 
@@ -90,3 +92,9 @@ class DocumentoslegalesAdmin(admin.ModelAdmin):
 
     list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')
     list_filter = ('id','user_id')
+
+
+class TimestampedAdmin(TimestampedAdminMixin, admin.ModelAdmin):
+    pass
+
+admin.site.register(TimestampedItem, TimestampedAdmin)

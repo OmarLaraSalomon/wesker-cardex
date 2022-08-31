@@ -16,9 +16,9 @@
 
 </head>
 
-<table id="tabla-salidas" style="display: block;">
+<table id="tabla-salidas" style="display: none;">
     <tr>
-        <th>datos</th>
+        <th>Datos</th>
     </tr>
     {% for post in posts%}
     {% if post.content == "salida oficina" %}
@@ -29,7 +29,7 @@
     </tr>
     {% elif post.content == "salida homeofice" %}
     <tr>
-        <!-- <td>{{ post.timestamp }} {{ post.user.username }} {{ post.content }}</td> -->
+    <!------------- <td>{{ post.timestamp }} {{ post.user.username }} {{ post.content }}</td> --------------- esta linea la comento carlos  -->
         <td>{{ post.timestamp }}</td>
         <td>{{ post.user.username }}</td>
         <td>{{ post.content }}</td>
@@ -39,85 +39,6 @@
     </tbody>
 </table>
 
-<script>
-    var info = [];
-    var fechas = [];
-    var horas = [];
-    var usuarios = [];
-    var a = 0;
-    var b = 0;
-    var tamaño = 0;
-
-    function salidas() {
-        $('#tabla-salidas tbody tr').each(function () {
-            var salida1 = $(this).find("td:eq(0)").text();
-            var sep = salida1.split(' ');
-            var separado = sep[0] + " " + sep[1] + " " + sep[2] + " " + sep[3] + " " + sep[4];
-            var hora = sep[7];
-            info.push(separado)
-            horas.push(hora)
-            var user = $(this).find("td:eq(1)").text();
-            usuarios.push(user)
-
-            /* console.log(info);
-            console.log(horas);
-            console.log(usuarios); */
-        });
-    }
-
-    function registros() {
-        let date = new Date();
-        completo();
-        salidas();
-        $('#tabla tbody tr').each(function () {
-
-            var fecha2;
-            var v = $(this).find("td:eq(0)").text();
-            var usuario = $(this).find("td:eq(1)").text();
-            var sep = v.split(' ');
-            var separado = sep[0] + " " + sep[1] + " " + sep[2] + " " + sep[3] + " " + sep[4];
-            var hora = sep[7];
-            fechas.push(separado)
-
-            comes = sep[2];
-            fecha = date.getMonth();
-
-                for (var i = 0; i <= tamaño; i++) {
-                    $(this).find("td:eq(3)").text(hora);
-                /* for (var i = 0; i <= info.length; i++) {
-                    var fechacom = info[i + 1];
-                    var horacom = horas[i + 1];
-                    var usuariocom = usuarios[i + 1];
-
-                    for (var j = 0; j <= fechas.length; j++) {
-                        var fechaen = fechas[j + 1];
-
-                        console.log("si " + fechacom + " es igual a " + fechaen);
-                        if (fechacom == fechaen) {
-                            console.log("si me cumpli fecha");
-                            if (usuariocom == usuario) {
-                                console.log("si me cumpli usuario");
-                                console.log(horacom);
-                                $(this).find("td:eq(4)").text(horacom);
-                            }
-                        }
-                    }
-                } */
-            }
-        });
-    }
-</script>
-
-<script>
-    function completo() {
-        $('#tabla tbody tr').each(function () {
-            var v = $(this).find("td:eq(0)").text();
-            if (v) {
-                tamaño += 1;
-            }
-        });
-    }
-</script>
 
 <div style="text-align: center; justify-content: center; align-items: center; padding-top: 4%;">
     <button style="font-size: 20px;" id="btnExportar">
@@ -131,42 +52,42 @@
 
         <div class="scroll_horizontal">
             <table id="tabla" class="display" style="width:100%">
-              <thead>
-                <tr class="header">
-                    <th>Fecha</th>
-                    <th>Nombre</th>
-                    <th>Departamento</th>
-                    <th>Hora de entrada</th>
-                    <th>Hora de salida </th>
-                    <th>Status</th>
-                    <th>Contenido</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for post in posts%}
-                {% if post.content == "entrada oficina" %}
-                <tr>
-                    <td>{{ post.timestamp }}</td>
-                    <td id="user">{{ post.user.username }}</td>
-                    <td>{{ post.user.information.departamento }}</td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ post.status }}</td>
-                    <td>Oficina</td>
-                </tr>
-                {% elif post.content == "entrada homeofice" %}
-                <tr>
-                    <td>{{ post.timestamp }}</td>
-                    <td id="user">{{ post.user.username }}</td>
-                    <td>{{ post.user.information.departamento }}</td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ post.status }}</td>
-                    <td>HomeOffice</td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
+                <thead>
+                    <tr class="header">
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Hora de entrada</th>
+                        <th>Hora de salida </th>
+                        <th>Status</th>
+                        <th>Contenido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts%}
+                    {% if post.content == "entrada oficina" %}
+                    <tr>
+                        <td>{{ post.timestamp }}</td>
+                        <td id="user">{{ post.user.username }}</td>
+                        <td>{{ post.user.information.departamento }}</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ post.status }}</td>
+                        <td>Oficina</td>
+                    </tr>
+                    {% elif post.content == "entrada homeofice" %}
+                    <tr>
+                        <td>{{ post.timestamp }}</td>
+                        <td id="user">{{ post.user.username }}</td>
+                        <td>{{ post.user.information.departamento }}</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ post.status }}</td>
+                        <td>HomeOffice</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
 
@@ -182,9 +103,9 @@
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
-      $(document).ready( function () {
-      $('#tabla').DataTable({});
-      } );
+    $(document).ready(function () {
+        $('#tabla').DataTable({});
+    });
 </script>
 
 <script>

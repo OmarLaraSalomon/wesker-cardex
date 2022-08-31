@@ -8,6 +8,7 @@ from .models import Information
 from .models import DatosMedicos
 from .models import AsignacionHat
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 from . import models
 from django.shortcuts import render
@@ -532,5 +533,8 @@ def asistencia(request):
     template = 'social/asistencia.html'
     posts = Post.objects.all()
 
-    context = {'posts': posts}
+    salidas = Post.objects.filter( content='salida oficina')
+    remoto = Post.objects.filter( content='salida homeofice')
+
+    context = {'posts': posts,'salidas': salidas,'remoto': remoto}
     return render(request,template,context)

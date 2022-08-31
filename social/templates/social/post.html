@@ -3,15 +3,22 @@
 {% block content %}
 
 <script>
+	var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 	window.onload = function () {
 		let date = new Date();
 		var hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-		var hora1 = date.getHours()
-		/* console.log(hora1);
-		  */
+		var hora1 = date.getHours();
+		var mes = date.getMonth();
+		var dia = date.getDate();
+		var año = date.getFullYear();
+		var fechac = dia +" de " +meses[mes] +" de " + año;
+		 
 		var hora2 = date.getMinutes()
 		var hocom = hora
 		$('#hora1').val(hocom);
+		$('#id_entrada').val(hocom);
+		$('#id_Fecha').val(fechac);
+
 
 		var mensaje1 = "A Tiempo"
 		var mensaje2 = "Retardo"
@@ -51,8 +58,12 @@
 
 	}
 
-	#id_status{
-		display: block;
+	#id_status {
+		display: none;
+	}
+
+	#id_entrada, #id_Fecha{
+		display: none;
 	}
 
 	.entradas select {

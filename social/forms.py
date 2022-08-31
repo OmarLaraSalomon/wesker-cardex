@@ -33,7 +33,7 @@ class UserRegisterForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['status', 'content']
+        fields = ['status', 'content', 'Fecha','entrada']
         
 
 

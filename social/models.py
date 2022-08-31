@@ -126,6 +126,8 @@ class Post(models.Model):
     activate = models.BooleanField(default=True,null=True)
     fullname = models.CharField(max_length = 200,null=True)
     status = models.TextField(choices=RETCA,default=True,null=True)
+    Fecha = models.CharField(max_length = 200,null=True)
+    entrada = models.CharField(max_length = 200,null=True)
 
     class Meta:
         ordering = ['-timestamp']
@@ -133,6 +135,13 @@ class Post(models.Model):
     
     def clean_renewal_date(self):
         data = self.full_clean['timestamp']
+    
+    class MyModelAdmin(admin.ModelAdmin):
+        list_display = ('datetime',)
+
+    class MyModel(models.Model):
+        datetime = models.DateTimeField(auto_now_add=True, verbose_name="Uploaded at")
+
 
 
 
@@ -212,3 +221,7 @@ class Actividades(models.Model):
     hat = models.ForeignKey(
         Hat, on_delete=models.CASCADE, related_name='actividades', null=True)
     create_at = models.DateTimeField(auto_now_add=True, null=True)
+
+class TimestampedItem(models.Model):
+    created = models.DateTimeField('created', auto_now_add=True)
+    modified = models.DateTimeField('modified', auto_now=True)

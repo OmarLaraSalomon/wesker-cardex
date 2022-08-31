@@ -111,7 +111,6 @@ INSTALLED_APPS = [
     'rangefilter',
     'django_seed'
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

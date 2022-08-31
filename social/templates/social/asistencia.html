@@ -7,45 +7,19 @@
 <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
 
 <head>
-    <!-- <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
     <script src="{% static 'xlsx.full.min.js' %}"></script>
     <script src="{% static 'FileSaver.min.js' %}"></script>
-    <script src="{% static 'tableexport.min.js' %}"></script> -->
+    <script src="{% static 'tableexport.min.js' %}"></script>
 
 
 
 </head>
 
-<table id="tabla-salidas" style="display: none;">
-    <tr>
-        <th>Datos</th>
-    </tr>
-    {% for post in posts%}
-    {% if post.content == "salida oficina" %}
-    <tr>
-        <td>{{ post.timestamp }}</td>
-        <td>{{ post.user.username }}</td>
-        <td>{{ post.content }}</td>
-    </tr>
-    {% elif post.content == "salida homeofice" %}
-    <tr>
-    <!------------- <td>{{ post.timestamp }} {{ post.user.username }} {{ post.content }}</td> --------------- esta linea la comento carlos  -->
-        <td>{{ post.timestamp }}</td>
-        <td>{{ post.user.username }}</td>
-        <td>{{ post.content }}</td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-    </tbody>
-</table>
-
-
 <div style="text-align: center; justify-content: center; align-items: center; padding-top: 4%;">
     <button style="font-size: 20px;" id="btnExportar">
         Exportar
     </button>
-
-    <button onclick="registros()"> llenar </button>
 </div>
 <article>
     <div>
@@ -67,21 +41,41 @@
                     {% for post in posts%}
                     {% if post.content == "entrada oficina" %}
                     <tr>
-                        <td>{{ post.timestamp }}</td>
+                        <td>{{ post.Fecha }}</td>
                         <td id="user">{{ post.user.username }}</td>
                         <td>{{ post.user.information.departamento }}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ post.entrada }}</td>
+
+                        {% for postb in posts%}
+                        {% if postb.user.username == post.user.username %}
+                        {% if postb.content == "salida oficina" %}
+                        {% if postb.Fecha == post.Fecha %}
+                        <td>{{ postb.entrada }}</td>
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+
                         <td>{{ post.status }}</td>
                         <td>Oficina</td>
                     </tr>
                     {% elif post.content == "entrada homeofice" %}
                     <tr>
-                        <td>{{ post.timestamp }}</td>
+                        <td>{{ post.Fecha }}</td>
                         <td id="user">{{ post.user.username }}</td>
                         <td>{{ post.user.information.departamento }}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ post.entrada }}</td>
+
+                        {% for postb in posts%}
+                        {% if postb.user.username == post.user.username %}
+                        {% if postb.content == "salida homeofice" %}
+                        {% if postb.Fecha == post.Fecha %}
+                        <td>{{ postb.entrada }}</td>
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+
                         <td>{{ post.status }}</td>
                         <td>HomeOffice</td>
                     </tr>
@@ -93,12 +87,12 @@
 
     </div>
 </article>
-<!-- <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -129,29 +123,13 @@
 <!-- Fin script exportar -->
 
 <style>
-    .scroll_horizontal {
-        overflow-y: hidden;
-        overflow-x: auto;
-    }
 
-    * {
-        box-sizing: border-box;
-    }
-
-    #myInput {
-        background-image: url('/css/searchicon.png');
-        background-position: 10px 10px;
-        background-repeat: no-repeat;
-        width: 100%;
-        font-size: 16px;
-        padding: 12px 20px 12px 40px;
-        border: 1px solid #ddd;
-        margin-bottom: 12px;
-    }
-
+.scroll_horizontal{
+    overflow-y: scroll;
+}
     #tabla {
         border-collapse: collapse;
-        width: 100%;
+        width: 80%;
         border: 1px solid #ddd;
         font-size: 18px;
     }

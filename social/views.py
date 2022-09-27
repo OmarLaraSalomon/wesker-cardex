@@ -7,6 +7,7 @@ from .models import Profile
 from .models import Information
 from .models import DatosMedicos
 from .models import AsignacionHat
+from .models import documentacion
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -154,7 +155,8 @@ def perfillegal(request, username=None):
     template = 'social/perfillegal.html'
     users = User.objects.all()
     legals = Documentoslegales.objects.all()
-    context = {"legalfiles": legals, 'users': users}
+    documentoP = documentacion.objects.all()
+    context = {"legalfiles": legals, 'users': users,"documentoP": documentoP,}
     
     return render(request, template, context) 
 #Files Psicologicos
@@ -276,6 +278,34 @@ def uploadpsico(request, username=None):
     documents = models.Document.objects.all()
     return render(request, template, {
         "files": documents, 'users': users })
+
+def legalDocumentos(request, username=None):
+    template = 'social/legalDocumentos.html'
+    documentoP = documentacion.objects.all()
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+    else:
+        user = current_user
+
+    context = {'user': user, 'documentoP': documentoP}
+    return render(request, template, context)
+
+def subirdocumentacion(request):
+    if request.method == "POST":
+        # Fetching the form data
+        TipoDocumento = request.POST["TipoDocumento"]
+        uploadedFile = request.FILES["uploadedFile"]
+        userid = request.POST["userid"]
+        # Saving the information in the database
+        documento1 = models.documentacion(
+            TipoDocumento = TipoDocumento,
+            uploadedFile = uploadedFile,
+            user_id = userid,
+            
+        )
+        documento1.save()
+    return render(request, 'social/legalDocumentos.html')
     
 
 #Subir archivos A Perfil Medico
@@ -488,9 +518,6 @@ def profile(request, username=None):
         posts = current_user.posts.all()
         user = current_user
     return render(request, 'social/profile.html', {'user': user, 'posts': posts, 'hat' : hat, 'registros' : registros})
-
-
-
 
 
 def follow(request, username):

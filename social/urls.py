@@ -60,6 +60,7 @@ urlpatterns = [
     #Subir Archivos Legales
     url(r'^uploadlegal/$', views.uploadlegal, name='uploadlegal'),
     path(r'^uploadlegal/<str:username>/', views.uploadlegal, name='uploadlegal'),
+    url(r'^subirdocumentacion/$', views.subirdocumentacion, name='subirdocumentacion'),
     
     #Datos Psicologicos
     url(r'^files/$', views.files, name='files'),
@@ -71,6 +72,9 @@ urlpatterns = [
     #Datos Legales
     url(r'^legalfiles/$', views.legalfiles, name='legalfiles'),
     path(r'^legalfiles/<str:username>/', views.legalfiles, name='legalfiles'),
+
+    path('legalDocumentos/', views.legalDocumentos, name='legalDocumentos'),
+    path('legalDocumentos/<str:username>/', views.legalDocumentos, name='legalDocumentos'),
     
     #Justificantes Medicos
     url(r'^justifyfiles/$', views.justifyfiles, name='justifyfiles'),

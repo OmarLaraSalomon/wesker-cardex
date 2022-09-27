@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
+    <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
 
 
 </head>
@@ -15,104 +16,107 @@
 <div class="profile">
     {% load static from static %}
     <img src="{{user.profile.image.url}}">
-    <h2> {{ user.information.first_name }}  {{user.information.last_name }}</h2>
+    <h2> {{ user.information.first_name }} {{user.information.last_name }}</h2>
 
 </div>
 
-<div class="profile">
-    {% if user.is_superuser%}
-    <h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
-    {%else%}
-    <!-- <h2> No eres Admin :(</h2> -->
-    {%endif%}
-</div>
-
-<div style="background-color:red;">
-
-
-    <hr>
-
-    <div class="profile" style="margin-top: 20px;">
-        <h2 style="color: white;"><i class="fa fa-line-chart"></i>&nbsp;Perfiles de Actas Kaizen</h2>
-      </div>
-
-    <hr>
-
-
-</div>
-
-
-<div style="margin: 10px;">
-
-   
-
-
-    <div class="container">
-
-        <div class="profile">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-
-                        <img src="{{ user.profile.image.url }}" alt="Person" class="card__image">
-                     
-                        <p style="color: black;" class="card__name">{{ user.information.first_name }}  {{user.information.last_name }}
-                        </p>
-                        <p style="color: black;" class="card__name">Puesto: {{ user.information.puesto }}</p>
-                        <p style="color: black;" class="card__name">Departamento: {{user.information.departamento}}</p>
-                        <div style="color: black;" class="grid-child-posts">
-                            Ingreso: {{ user.egresos.ingreso }}
-                        </div>
-
-                        <div style="color: black;" class="grid-child-followers">
-                            Egreso: {{ user.egresos.egreso}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card1">
-                    <div class="card-body">
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                
-                        <h5 class="card-title"> <a style="cursor:pointer;" class="boton-datosmedicos"
-                                onclick="direccionkaisen()">Ver
-                                actas kaisen</a></h5>
-                        <hr>
-                        <input type="hidden" value=" {{ user.id}}" id="id_us">
-
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'kaisenfiles' user.username %}">Adjuntar
-                                Acta kaisen</a></h5>
-                        <hr>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-   
-
-</div>
-
-<script>
-
-    function direccionkaisen() {
-        let id_us = $("#id_us").val();
-        console.log("EL ID ES: "+id_us)
-       /*  window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/" */
-       window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/kaisen/"+"?user_id__id__exact="+id_us
-      
+<style>
+    .subida {
+        width: 500px;
+        height: 250px;
+        /* border-style: solid; */
+        display: none;
     }
-</script>
-<script>
 
-</script>
+    .form-select{
+        text-align: center;
+    }
+</style>
+
+<div class="container">
+
+    <div class="subida">
+        <form method="post" action="{% url 'subirdocumentacion' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="numerocontrato"> </label>
+            <div class="alinea">
+                <select name="TipoDocumento" id="TipoDocumento" class="form-select" required>
+                    <option value="" disabled selected>Selecciona el tipo de documento</option>
+                    <option value="INE">INE</option>
+                    <option value="Contratos">Contratos</option>
+                    <option value="Prestaciones">Prestaciones</option>
+                    <option value="NDA">NDA</option>
+                    <option value="Reglamento">Reglamento</option>
+                    <option value="Priv de datos">Privacidad de datos</option>
+                </select>
+            </div>
+
+            <div class="alinea">
+                <input type="file" name="uploadedFile" multiple class="btn" id="uploadedFile" required>
+            </div>
+
+            <input type="text" name="userid" multiple class="btn" id="userid" required value="{{user.id}}"
+                style="display: none;">
+
+            <input type="submit" value="Subir" style="cursor:pointer" class="hov">
+        </form>
+    </div>
+
+    <div class="scroll_horizontal">
+        <table id="tabla" class="display" style="width:100%">
+            <thead>
+                <tr class="header">
+                    <th>Tipo de documento</th>
+                    <th>Archivo</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in documentoP %}
+                {% if a.user_id == user.id %}
+                <tr>
+                    <td>{{ a.TipoDocumento }}</td>
+                    <td><!-- <a href="{% url 'admin:index' %}"> ver documento </a> --> <!-- {{ a.uploadedFile }} --> 
+                    <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"></td>
+                    <td>{{ a.dateTimeOfUpload }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<style>
+
+    .scroll_horizontal{
+        padding: 2%;
+    }
+        #tabla {
+            border-collapse: collapse;
+            width: 80%;
+            border: 1px solid #ddd;
+            font-size: 18px;
+        }
+    
+        #tabla th,
+        #tabla td {
+            text-align: center;
+            padding: 12px;
+        }
+    
+        #tabla tr {
+            border-bottom: 1px solid #ddd;
+        }
+    
+        #tabla tr.header,
+        #tabla tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
 
@@ -122,8 +126,6 @@
         grid-gap: 50px;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        background: url(../../static/gris.jpg) no-repeat;
         font-family: 'Baloo Paaji 2', cursive;
         border-radius: 30px;
 
@@ -329,6 +331,22 @@
         opacity: 0.5;
     }
 </style>
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable({});
+    });
+</script>
+
 
 
 {% endblock %}

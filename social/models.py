@@ -37,6 +37,8 @@ class Document(models.Model):
 
     class Meta:
         ordering = ['-dateTimeOfUpload']
+        verbose_name_plural = 'Documentos Psicologicos'
+
         
         
     
@@ -71,6 +73,15 @@ class Justificantesmedicos(models.Model):
     
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']
+
+DOCUMENTOS = (
+    ('INE','INE'),
+    ('Contratos','Contratos'),
+    ('Prestaciones', 'Prestaciones'),
+    ('NDA', 'NDA'),
+    ('Reglamento', 'Reglamento'),
+    ('Priv Datos', 'Priv Datos'),
+)
 
 
 class Documentoslegales(models.Model):
@@ -110,12 +121,21 @@ ENTRADAS_SALIDAS = (
     ('entrada homeofice','ENTRADA HOMEOFICE'),
     ('salida oficina', 'SALIDA OFICINA'),
     ('salida homeofice', 'SALIDA HOMEOFICE')
-
 )
 
 RETCA = (
     ('A Tiempo','A Tiempo'),
     ('Retardo','Retardo')
+)
+
+TIPO_DOC = (
+    ('INE','INE'),
+    ('Contrato','Contrato'),
+    ('NDA', 'NDA'),
+    ('Reglamento', 'Reglamento'),
+    ('Priv datos', 'Priv datos'),
+    ('Domicilio', 'Reglamento'),
+    ('Acta nacimiento', 'Acta nacimiento')
 )
 
 class Post(models.Model):
@@ -141,9 +161,6 @@ class Post(models.Model):
 
     class MyModel(models.Model):
         datetime = models.DateTimeField(auto_now_add=True, verbose_name="Uploaded at")
-
-
-
 
 
 class Relationship(models.Model):
@@ -177,6 +194,9 @@ class Information(models.Model):
     departamento = models.CharField(max_length=250, null=True)
     is_leader = models.BooleanField(default=False,null=True)
 
+    class Meta:
+        verbose_name_plural = 'Informacion Personal'
+
 
    
       
@@ -185,6 +205,9 @@ class Egresos(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=True)
     ingreso = models.CharField(max_length=250, null=True)
     egreso = models.CharField(max_length=250, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Salida empresa'
     
 
 class DatosMedicos(models.Model):
@@ -225,3 +248,17 @@ class Actividades(models.Model):
 class TimestampedItem(models.Model):
     created = models.DateTimeField('created', auto_now_add=True)
     modified = models.DateTimeField('modified', auto_now=True)
+
+class documentacion(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='documentfiles', null=True)
+    TipoDocumento = models.CharField(max_length = 200)
+    uploadedFile = models.FileField(upload_to = "Documentos Personales/")
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
+    
+    class Meta:
+        ordering = ['-dateTimeOfUpload']
+        verbose_name_plural = 'Documentos Personales'
+    
+    def clean_renewal_date(self):
+        data = self.full_clean['dateTimeOfUpload']

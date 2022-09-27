@@ -5,7 +5,7 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from import_export.fields import Field
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Document, Documentosmedicos, Kaisen, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales
+from .models import Document, Documentosmedicos, Kaisen, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales, documentacion
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 from .models import TimestampedItem
 from admintimestamps import TimestampedAdminMixin
@@ -33,7 +33,7 @@ class PostAdmin(ImportExportModelAdmin):
     """Profile model admin."""
 
     list_display = ('user','timestamp','content','status','activate')
-    list_filter = (('timestamp',DateRangeFilter),('timestamp',DateTimeRangeFilter),'user',)
+    list_filter = (('timestamp',DateRangeFilter),('timestamp',DateTimeRangeFilter),'user','content')
     
     
 #informacion del perfil
@@ -93,8 +93,9 @@ class DocumentoslegalesAdmin(admin.ModelAdmin):
     list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')
     list_filter = ('id','user_id')
 
+@admin.register(documentacion)
+class Documentacion(admin.ModelAdmin):
+    """Profile model admin."""
 
-class TimestampedAdmin(TimestampedAdminMixin, admin.ModelAdmin):
-    pass
-
-admin.site.register(TimestampedItem, TimestampedAdmin)
+    list_display = ('user', 'TipoDocumento', 'uploadedFile', 'dateTimeOfUpload')
+    list_filter = ('id','user_id')

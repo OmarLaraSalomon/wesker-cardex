@@ -5,6 +5,7 @@
 <head>
   <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
 </head>
+
 <!-- Profile -->
 <div class="profile">
   {% load static from static %}
@@ -13,88 +14,117 @@
 
 </div>
 
-<div class="profile">
-  {% if user.is_superuser%}
-  <h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
-  {%else%}
-  <!-- <h2> No eres Admin :(</h2> -->
-  {%endif%}
-</div>
-
 <div style="background-color: #4b3621;">
-
-
   <hr>
 
   <div class="profile" style="margin-top: 20px;">
-    <h2 style="color: white;"><i class="fa fa-gavel"></i>&nbsp;Pefiles Legales</h2>
+    <h2 style="color: white;"><i class="fa fa-line-chart"></i>&nbsp;Documentos Legales</h2>
   </div>
-
-  <hr>
 
 </div>
 
+<div style="width: 100%; text-align: center; margin-top: 3%;">
+  <label for="" style="font-size: 15px;">Busqueda por persona </label>
+  <div style="width: 100%; margin-top: 1%;">
+    <input type="text" id="myInputname" onkeyup="myFunctionname()"
+      placeholder="Escribe el nombre del usuario para buscar" title="Type in a name">
+  </div>
 
-<div style="margin: 10px;">
+  <label for="" style="font-size: 15px;">Busqueda por departamento </label>
+  <div style="width: 100%; margin-top: 1%;">
+    <input type=text list=browsers id="myInput" onkeyup="myFunction()" placeholder="Elige Departamento a buscar">
+    <datalist id=browsers>
+      <option value="Digimundo">Digimundo</option>
+      <option value="Aire">Aire</option>
+      <option value="Fuego">Fuego</option>
+      <option value="Ignis">Ignis</option>
+      <option value="Tierra">Tierra</option>
+      <option value="Agua">Agua</option>
+      <option value="Ether">Ether</option>
+    </datalist>
+  </div>
 
-  {% for user in users %}
+</div>
 
+<article>
+  <div>
 
-  <div class="container">
-    <div class="card">
-      <img src="{{ user.profile.image.url }}" alt="Person" class="card__image">
-      <p style="color: black;" class="card__name"> {{ user.information.first_name}} {{ user.information.last_name }}</p>
-      <p style="color: black;" class="card__name">Puesto: {{ user.information.puesto }}</p>
-      <p style="color: black;" class="card__name">Departamento: {{user.information.departamento}}</p>
-      <div class="grid-container">
+    <div class="scroll_horizontal">
+      <table id="myTable">
 
-        <div style="color: black;" class="grid-child-posts">
-          Ingreso: {{ user.egresos.ingreso }}
-        </div>
+        <tr class="header">
+          <th style="width:20%;">Foto</th>
+          <th style="width:20%;">Usuario</th>
+          <th style="width:20%;">Departamento</th>
 
-        <div style="color: black;" class="grid-child-followers">
-          Egreso: {{ user.egresos.egreso}}
-        </div>
-
-      </div>
-      <!-- <ul class="social-icons">
-                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                <li><a href="#"><i class="fa fa-codepen"></i></a></li>
-              </ul> -->
-      <div class="profile">
-        <a class="boton-datosmedicos" style="background-color: #4b3621;"
-          href="{% url 'verdatosmedicos' user.username %}">Ver datos legales</a>
-        <a style="cursor:pointer; background-color: #4b3621;" class="boton-datosmedicos" onclick="docslegales()">Ver
-          archivos legales</a>
-        <!-- <a style="cursor:pointer;" class="boton-datosmedicos" onclick="direccionjustificantes()">Ver Justificantes</a> -->
-      </div>
-      <div class="profile">
-        <a class="boton-datosmedicos" style="background-color: #4b3621;"
-          href="{% url 'datosmedicos' user.username %}">Actualizar datos Juridicos</a>
-        <a class="boton-datosmedicos" style="background-color: #4b3621;"
-          href="{% url 'legalfiles' user.username %}">Adjuntar archivos legales</a>
-        <!-- <a class="boton-datosmedicos" href="{% url 'justifyfiles' user.username %}">Adjuntar reportes</a> -->
-      </div>
-
-
+        </tr>
+        {% for user in users %}
+        <tr>
+          <td>
+            <div class="container-article"><a href="{% url 'legalDocumentos' user.username %}"><img
+                  src="{{ user.profile.image.url }}"></a></div>
+          </td>
+          <td><a href="{% url 'legalDocumentos' user.username %}">{{ user.information.first_name }} {{user.information.last_name }}</a></td>
+          <td>{{ user.information.departamento }}</td>
+        </tr>
+        {% endfor %}
+      </table>
     </div>
 
   </div>
+</article>
 
-  {% endfor %}
-
-</div>
 
 <script>
-  function docslegales() {
-    window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentoslegales/"
+  function myFunctionname() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInputname");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[2];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
   }
 </script>
 <script>
-
+  function direccionmedica() {
+    window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/"
+  }
+  function direccionjustificantes() {
+    window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/"
+  }
 </script>
+
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
 
@@ -270,6 +300,69 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
     font-size: 1.2em;
+  }
+
+  .scroll_horizontal {
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  #myInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 80%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  #myInputname {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 80%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  #myTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 18px;
+  }
+
+  #myTable th,
+  #myTable td {
+    text-align: left;
+    padding: 12px;
+  }
+
+  #myTable tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+  #myTable tr.header,
+  #myTable tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    margin-top: -60px;
+    left: 30%;
+    margin-left: -225px;
   }
 </style>
 

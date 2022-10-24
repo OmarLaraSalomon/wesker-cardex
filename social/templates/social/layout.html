@@ -10,12 +10,14 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
+	<link rel="icon" href="{% static 'batman.png' %}" type="image/x-icon">
 
 
 
 	<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://kit.fontawesome.com/2aa4b284c9.js" crossorigin="anonymous"></script>
+	<!-- <script src="https://kit.fontawesome.com/2aa4b284c9.js" crossorigin="anonymous"></script> -->
+	<script src="https://kit.fontawesome.com/bdad33e746.js" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
@@ -120,7 +122,7 @@
 					</li>
 					<li><a href="{% url 'perfilmedico' %}" class="green"><i class="fa fa-stethoscope"></i>&nbsp; Perfil
 							Medico</a></li>
-					<li><a href="{% url 'perfillegal' %}" class="green"><i class="fa fa-gavel"></i>&nbsp; Legal</a></li>
+					<li><a href="{% url 'perfillegal' %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Documentacion</a></li>
 					<li><a href="#" class="yellow"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a>
 					<li><a href="#" class="red"><i class="fa fa-money"></i>&nbsp; Contabilidad</a></li>
 					<li><a href="#" class="red"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a></li>
@@ -174,7 +176,7 @@
 				{% endif %}
 				{% if request.user.is_authenticated %}
 				<a class="hero1" href="{% url 'perfillegal' %}" style="background-color: #4b3621;"><i
-						style="background-color: #4b3621;" class="fa fa-gavel"></i>&nbsp; Legal</a>
+						style="background-color: #4b3621;" class="fa-solid fa-passport"></i>&nbsp; Documentacion </a>
 				<br>
 				{% endif %}
 				{% if request.user.is_authenticated %}
@@ -237,8 +239,8 @@
 			<p>TESCA CORPORATION</p>
 		</div>
 	</footer>
-	<script src="https://kit.fontawesome.com/2aa4b284c9.js" crossorigin="anonymous"></script>
-	<script src="https://kit.fontawesome.com/e12947a646.js" crossorigin="anonymous"></script>
+<!-- 	<script src="https://kit.fontawesome.com/2aa4b284c9.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/e12947a646.js" crossorigin="anonymous"></script> -->
 	
 	<script>
 		var MainMenu = (function () {

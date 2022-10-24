@@ -230,6 +230,8 @@ class DatosMedicos(models.Model):
 class Hat(models.Model):
     nombre_hat = models.CharField(max_length=500, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
+    class meta:
+        verbose_name_plural = 'Hats'
 
 class AsignacionHat(models.Model):
     user = models.ForeignKey(
@@ -237,6 +239,9 @@ class AsignacionHat(models.Model):
     hat = models.ForeignKey(
         Hat, on_delete=models.CASCADE, related_name='hats', null=True)
     create_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    class meta:
+        verbose_name_plural = 'Asignacion de Hats'
 
 class Actividades(models.Model):
     actividades = models.CharField(max_length=500, null=True)

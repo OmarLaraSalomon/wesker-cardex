@@ -75,6 +75,10 @@ urlpatterns = [
 
     path('legalDocumentos/', views.legalDocumentos, name='legalDocumentos'),
     path('legalDocumentos/<str:username>/', views.legalDocumentos, name='legalDocumentos'),
+
+    path('inclusiondocumentos/', views.inclusiondocumentos, name='inclusiondocumentos'),
+    path('inclusiondocumentos/<str:username>/', views.inclusiondocumentos, name='inclusiondocumentos'),
+    url(r'^subirinclusion/$', views.subirinclusion, name='subirinclusion'),
     
     #Justificantes Medicos
     url(r'^justifyfiles/$', views.justifyfiles, name='justifyfiles'),

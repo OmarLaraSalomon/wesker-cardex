@@ -1,28 +1,109 @@
 {% extends 'social/layout.html' %}
 {% load humanize %}
 {% block content %}
+{% load static from static %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
 {% for post in posts %}
 
-<article>
-    <div class="container-article">
-        <img src="{{ post.user.profile.image.url }}">
+<div class="scroll_horizontal" id="existente">
+
+    <h2 style="font-size: 40px;">Entradas</h2>
+
+    <table id="tabla" class="display" style="width:100%">
+        <thead>
+            <tr class="header">
+                <th></th>
+                <th>Usuario</th>
+                <th>Motivo</th>
+                <th>status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for post in posts %}
+            <tr>
+            <td><img src="{{ post.user.profile.image.url }}" style="width: 100px; width: 100px;"></td>
+            <td>{{ post.user.username }}</td>
+            <td> <strong> Tu {{ post.content }}</strong>
+                del {{ post.Fecha }} fue a las {{ post.entrada }}</td>
+            <td>
+                {% if post.status == 'A Tiempo' %}
+                <div class="post1" style="color: green;"> {{ post.status }} </div>
+                {% elif post.status == 'Retardo' %}
+                <div class="post1" style="color: red;"> {{ post.status }} </div>
+                {% endif %}
+            </td>
+        </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+
+    <!-- {% for a in documentoP %}
+                    {% endfor %} -->
+    <!-- <img src="{{ post.user.profile.image.url }}">
         <div>
             <h2 class="username"><a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a></h2>
-            <time style="color: #14344F;"> <strong> Tu hora de {{ post.content }} del día </strong>
-                {{ post.timestamp }}</time>
+            <time style="color: #14344F;"> <strong> Tu {{ post.content }}</strong>
+                del {{ post.Fecha }} fue a las {{ post.entrada }} </time>
             <div class="post1">{{ post.content }}</div>
             {% if post.status == 'A Tiempo' %}
-            <div class="post1" style="text-align: center; color: green;"> {{ post.status }} </div>
+            <div class="post1" style="color: green;"> {{ post.status }} </div>
             {% elif post.status == 'Retardo' %}
-            <div class="post1" style="text-align: center; color: red;"> {{ post.status }} </div>
-            {% endif %}
-<!-- {{ post.status }} -->
-        </div>
-    </div>
-</article>
+            <div class="post1" style="color: red;"> {{ post.status }} </div>
+            {% endif %} -->
+    <!-- {{ post.status }} -->
+</div>
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable();
+    });
+</script>
 
 
+<style>
+    .scroll_horizontal {
+        padding: 2%;
+        text-align: center;
+    }
+
+    #tabla {
+        border-collapse: collapse;
+        width: 80%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #tabla th,
+    #tabla td {
+        text-align: center;
+        padding: 12px;
+    }
+
+    #tabla tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #tabla tr.header,
+    #tabla tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
 {% endfor %}
 
 {% endblock %}

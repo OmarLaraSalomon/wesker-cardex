@@ -4,6 +4,7 @@
 
 <head>
   <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+  <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
 </head>
 
 <!-- Profile -->
@@ -22,7 +23,7 @@
   {%endif%}
 </div>
 
-<div style="background-color:red;" >
+<div style="background-color:red;">
 
 
   <hr>
@@ -47,10 +48,11 @@
   <h1 style="justify-content: center; display: flex;">Aqui podras ver los usuarios para asignar actas Kaizen</h1>
 </div>
 <label for="" style="font-size: 15px;">Busqueda por persona </label>
-<input type="text" id="myInputname" onkeyup="myFunctionname()" placeholder="Escribe el nombre del usuario para buscar" title="Type in a name">
+<input type="text" id="myInputname" onkeyup="myFunctionname()" placeholder="Escribe el nombre del usuario para buscar"
+  title="Type in a name">
 
 <label for="" style="font-size: 15px;">Busqueda por departamento </label>
-<input type=text list=browsers id="myInput" onkeyup="myFunction()" placeholder="Elige Departamento a buscar" >
+<input type=text list=browsers id="myInput" onkeyup="myFunction()" placeholder="Elige Departamento a buscar">
 <datalist id=browsers style="background-color:red ;">
   <option value="Digimundo">Digimundo</option>
   <option value="Aire">Aire</option>
@@ -60,29 +62,32 @@
   <option value="Agua">Agua</option>
   <option value="Ether">Ether</option>
 </datalist>
- 
- <article>
+
+<article>
   <div>
 
     <div class="scroll_horizontal">
       <table id="myTable">
-
-        <tr class="header">
-          <th style="width:20%;">Foto</th>
-          <th style="width:20%;">Usuario</th>
-          <th style="width:20%;">Departamento</th>
-         
-        
-        </tr>
+        <thead>
+          <tr class="header">
+            <th style="width:20%;">Foto</th>
+            <th style="width:20%;">Usuario</th>
+            <th style="width:20%;">Departamento</th>
+          </tr>
+        </thead>
+        <tbody>
         {% for user in users %}
-        <tr> 
+        <tr>
           <td>
-            <div class="container-article"><a href="{% url 'perfilKaisen' user.username %}"><img src="{{ user.profile.image.url }}"></a></div>
+            <div class="container-article"><a href="{% url 'perfilKaisen' user.username %}"><img
+                  src="{{ user.profile.image.url }}"></a></div>
           </td>
-          <td><a href="{% url 'perfilKaisen' user.username %}">{{ user.information.first_name }} {{ user.information.last_name }}</a></td>
+          <td><a href="{% url 'perfilKaisen' user.username %}">{{ user.information.first_name }} {{
+              user.information.last_name }}</a></td>
           <td>{{ user.information.departamento }}</td>
         </tr>
         {% endfor %}
+      </tbody>
       </table>
     </div>
 
@@ -95,45 +100,55 @@
 
 <script>
   function myFunctionname() {
-      var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("myInputname");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("myTable");
-      tr = table.getElementsByTagName("tr");
-      for (i = 0; i < tr.length; i++) {
-          td = tr[i].getElementsByTagName("td")[1];
-          if (td) {
-              txtValue = td.textContent || td.innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                  tr[i].style.display = "";
-              } else {
-                  tr[i].style.display = "none";
-              }
-          }
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInputname");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
       }
+    }
   }
 </script>
 
 <script>
   function myFunction() {
-      var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("myInput");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("myTable");
-      tr = table.getElementsByTagName("tr");
-      for (i = 0; i < tr.length; i++) {
-          td = tr[i].getElementsByTagName("td")[2];
-          if (td) {
-              txtValue = td.textContent || td.innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                  tr[i].style.display = "";
-              } else {
-                  tr[i].style.display = "none";
-              }
-          }
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[2];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
       }
+    }
   }
 </script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+
+
 <script>
   function direccionmedica() {
     window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/"
@@ -321,63 +336,65 @@
   }
 
   .scroll_horizontal {
-        overflow-y: hidden;
-        overflow-x: auto;
-    }
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
 
-    * {
-        box-sizing: border-box;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    #myInput {
-        background-image: url('/css/searchicon.png');
-        background-position: 10px 10px;
-        background-repeat: no-repeat;
-        width: 100%;
-        font-size: 16px;
-        padding: 12px 20px 12px 40px;
-        border: 1px solid #ddd;
-        margin-bottom: 12px;
-    }
-    #myInputname {
-        background-image: url('/css/searchicon.png');
-        background-position: 10px 10px;
-        background-repeat: no-repeat;
-        width: 100%;
-        font-size: 16px;
-        padding: 12px 20px 12px 40px;
-        border: 1px solid #ddd;
-        margin-bottom: 12px;
-    }
+  #myInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
 
-    #myTable {
-        border-collapse: collapse;
-        width: 100%;
-        border: 1px solid #ddd;
-        font-size: 18px;
-    }
+  #myInputname {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
 
-    #myTable th,
-    #myTable td {
-        text-align: left;
-        padding: 12px;
-    }
+  #myTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 18px;
+  }
 
-    #myTable tr {
-        border-bottom: 1px solid #ddd;
-    }
+  #myTable th,
+  #myTable td {
+    text-align: left;
+    padding: 12px;
+  }
 
-    #myTable tr.header,
-    #myTable tr:hover {
-        background-color: #f1f1f1;
-    }
-    svg {
-        position: absolute;
-        top: 50%;
-        margin-top: -60px;
-        left: 30%;
-        margin-left: -225px;
-    }
+  #myTable tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+  #myTable tr.header,
+  #myTable tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    margin-top: -60px;
+    left: 30%;
+    margin-left: -225px;
+  }
 </style>
 
 

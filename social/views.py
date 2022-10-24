@@ -23,7 +23,7 @@ from boto3.session import Session
     
 def hats(request, username=None):
     template = 'social/hats.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     asighat = AsignacionHat.objects.order_by('user_id')
     hat = Hat.objects.all()
     info = Information.objects.all()
@@ -40,7 +40,7 @@ def hats(request, username=None):
  
 def rewards(request, username=None):
     template = 'social/rewards.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
 
     context = {'users': users}
     
@@ -48,7 +48,7 @@ def rewards(request, username=None):
 
 def perfilkaisen(request, username=None):
     template = 'social/perfilkaisen.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
 
     context = {'users': users}
     
@@ -71,7 +71,7 @@ def perfilkaisenusuario(request, username=None):
 
 def perfilmedico(request, username=None):
     template = 'social/perfilmedico.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
 
     context = {'users': users}
     
@@ -145,7 +145,7 @@ def verdatosmedicos(request, username=None):
     
 def perfilpsico(request, username=None):
     template = 'social/perfilpsico.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     documents = Document.objects.all()
     context = {"files": documents, 'users': users}
     
@@ -153,10 +153,12 @@ def perfilpsico(request, username=None):
 
 def perfillegal(request, username=None):
     template = 'social/perfillegal.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     legals = Documentoslegales.objects.all()
     documentoP = documentacion.objects.all()
-    context = {"legalfiles": legals, 'users': users,"documentoP": documentoP,}
+    registros = AsignacionHat.objects.all()
+    hat = Hat.objects.order_by('id')
+    context = {"legalfiles": legals, 'users': users,"documentoP": documentoP,'registros':registros, 'hat':hat}
     
     return render(request, template, context) 
 #Files Psicologicos
@@ -186,7 +188,7 @@ def medicfiles(request, username=None):
 #subir Kaisen
 def uploadkaisen(request, username=None):
     template = 'social/perfilkaisen.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     if request.method == "POST":
         # Fetching the form data
         fileTitle = request.POST["fileTitle"]
@@ -258,7 +260,7 @@ def legalfiles(request, username=None):
 #Subir archivos a perfil Psicologico
 def uploadpsico(request, username=None):
     template = 'social/files.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     if request.method == "POST":
         
         # Fetching the form data
@@ -292,6 +294,11 @@ def legalDocumentos(request, username=None):
     return render(request, template, context)
 
 def subirdocumentacion(request):
+    users = User.objects.all().exclude(is_active = "False")
+    legals = Documentoslegales.objects.all()
+    documentoP = documentacion.objects.all()
+    registros = AsignacionHat.objects.all()
+    hat = Hat.objects.order_by('id')
     if request.method == "POST":
         # Fetching the form data
         TipoDocumento = request.POST["TipoDocumento"]
@@ -305,13 +312,48 @@ def subirdocumentacion(request):
             
         )
         documento1.save()
-    return render(request, 'social/legalDocumentos.html')
+        context = {'users': users, 'legals' : legals, 'documentoP': documentoP,'registros':registros,'hat':hat}
+    return render(request, 'social/perfillegal.html', context)
+
+def inclusiondocumentos(request, username=None):
+    template = 'social/inclusiondocumentos.html'
+    documentoP = documentacion.objects.all()
+    current_user = request.user
+    if username and username != current_user.username:
+        user = User.objects.get(username=username)
+    else:
+        user = current_user
+
+    context = {'user': user, 'documentoP': documentoP}
+    return render(request, template, context)
+
+def subirinclusion(request):
+    users = User.objects.all().exclude(is_active = "False")
+    legals = Documentoslegales.objects.all()
+    documentoP = documentacion.objects.all()
+    registros = AsignacionHat.objects.all()
+    hat = Hat.objects.order_by('id')
+    if request.method == "POST":
+        # Fetching the form data
+        TipoDocumento = request.POST["TipoDocumento"]
+        uploadedFile = request.FILES["uploadedFile"]
+        userid = request.POST["userid"]
+        # Saving the information in the database
+        documento1 = models.documentacion(
+            TipoDocumento = TipoDocumento,
+            uploadedFile = uploadedFile,
+            user_id = userid,
+            
+        )
+        documento1.save()
+        context = {'users': users, 'legals' : legals, 'documentoP': documentoP,'registros':registros,'hat':hat}
+    return render(request, 'social/perfillegal.html',context)
     
 
 #Subir archivos A Perfil Medico
 def uploadmedic(request, username=None):
     template = 'social/perfilmedico.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     if request.method == "POST":
         
         # Fetching the form data
@@ -335,7 +377,7 @@ def uploadmedic(request, username=None):
 #Subir archivos a Justificantes Medicos 
 def uploadmedicjust(request, username=None):
     template = 'social/perfilmedico.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     if request.method == "POST":
         
         # Fetching the form data
@@ -360,7 +402,7 @@ def uploadmedicjust(request, username=None):
 #Subir archivos a perfil legal
 def uploadlegal(request, username=None):
     template = 'social/perfillegal.html'
-    users = User.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
     if request.method == "POST":
         
         # Fetching the form data
@@ -383,9 +425,6 @@ def uploadlegal(request, username=None):
 
 def inicio(request, username=None):
     template = 'social/dashboard.html'
-    """ posts = Post.objects.all()
-
-    context = {'posts': posts} """
     if request.user.is_authenticated:
         current_user = request.user
         if username and username != current_user.username:
@@ -436,9 +475,6 @@ def regasis(request, username=None):
 #Fin de asistencias 
 
 def feed(request, username=None):
-    """  posts = Post.objects.all()
-
-    context = {'posts': posts} """
     if request.user.is_authenticated:
         current_user = request.user
         if username and username != current_user.username:
@@ -558,10 +594,8 @@ def asignarhat(request):
 
 def asistencia(request):
     template = 'social/asistencia.html'
-    posts = Post.objects.all()
+    posts = Post.objects.filter(activate=True)
+    users = User.objects.all()
 
-    salidas = Post.objects.filter( content='salida oficina')
-    remoto = Post.objects.filter( content='salida homeofice')
-
-    context = {'posts': posts,'salidas': salidas,'remoto': remoto}
+    context = {'posts': posts,'users': users}
     return render(request,template,context)

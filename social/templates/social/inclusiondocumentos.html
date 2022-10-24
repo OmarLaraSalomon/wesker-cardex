@@ -8,8 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
-    <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
-
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
 </head>
 <!-- Profile -->
@@ -73,18 +72,16 @@
     </div>
 
     <div class="subida" id="nuevo">
-        <form method="post" action="{% url 'subirdocumentacion' %}" enctype="multipart/form-data">
+        <form method="post" action="{% url 'subirinclusion' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="numerocontrato"> </label>
             <div class="alinea">
                 <select name="TipoDocumento" id="TipoDocumento" class="form-select" required>
                     <option value="" disabled selected>Selecciona el tipo de documento</option>
                     <option value="INE">INE</option>
-                    <option value="Contratos">Contratos</option>
-                    <option value="Prestaciones">Prestaciones</option>
-                    <option value="NDA">NDA</option>
                     <option value="Reglamento">Reglamento</option>
-                    <option value="Priv de datos">Privacidad de datos</option>
+                    <option value="Domicilio">Domicilio</option>
+                    <option value="Acta nacimiento">Acta nacimiento</option>
                 </select>
             </div>
 
@@ -158,9 +155,9 @@
                 </tr>
 
                 <tr>
-                    <td> Contratos </td>
+                    <td> Reglamento </td>
                     {% for a in documentoP %}
-                    {% if a.TipoDocumento == 'Contratos' %}
+                    {% if a.TipoDocumento == 'Reglamento' %}
                     {% if a.user_id == user.id %}
                     <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
                     <td>
@@ -176,9 +173,9 @@
                 </tr>
 
                 <tr>
-                    <td> Prestaciones </td>
+                    <td> Domicilio </td>
                     {% for a in documentoP %}
-                    {% if a.TipoDocumento == 'Prestaciones' %}
+                    {% if a.TipoDocumento == 'Domicilio' %}
                     {% if a.user_id == user.id %}
                     <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
                     <td>
@@ -194,9 +191,9 @@
                 </tr>
 
                 <tr>
-                    <td> NDA </td>
+                    <td> Acta nacimiento </td>
                     {% for a in documentoP %}
-                    {% if a.TipoDocumento == 'NDA' %}
+                    {% if a.TipoDocumento == 'Acta nacimiento' %}
                     {% if a.user_id == user.id %}
                     <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
                     <td>
@@ -204,42 +201,6 @@
                         <button onclick="mostrar4()" id="btnn03"> Mostrar </button>
                         <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
                         id="documentPDF4">
-                    </td>
-                    <td>{{ a.dateTimeOfUpload }} </td>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-
-                <tr>
-                    <td> Reglamento </td>
-                    {% for a in documentoP %}
-                    {% if a.TipoDocumento == 'Reglamento' %}
-                    {% if a.user_id == user.id %}
-                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
-                    <td>
-                        <button onclick="ocultar5()" id="btnn4"> Ocultar </button>
-                        <button onclick="mostrar5()" id="btnn04"> Mostrar </button>
-                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
-                        id="documentPDF5">
-                    </td>
-                    <td>{{ a.dateTimeOfUpload }} </td>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-
-                <tr>
-                    <td> Privacidad de datos </td>
-                    {% for a in documentoP %}
-                    {% if a.TipoDocumento == 'Privacidad de datos' %}
-                    {% if a.user_id == user.id %}
-                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
-                    <td>
-                        <button onclick="ocultar6()" id="btnn5"> Ocultar </button>
-                        <button onclick="mostrar6()" id="btnn05"> Mostrar </button>
-                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
-                        id="documentPDF6">
                     </td>
                     <td>{{ a.dateTimeOfUpload }} </td>
                     {% endif %}
@@ -398,46 +359,6 @@
         const boton2 = document.getElementById("btnn3");
         boton2.style.display = "none";
     }
-
-    function mostrar5() {
-        const mostpdf = document.getElementById("documentPDF5");
-        mostpdf.style.display = "initial";
-        const boton1 = document.getElementById("btnn04");
-        boton1.style.display = "none";
-
-        const boton2 = document.getElementById("btnn4");
-        boton2.style.display = "initial";
-    }
-
-    function ocultar5() {
-        const registro2 = document.getElementById("documentPDF5");
-        registro2.style.display = "none";
-        const boton1 = document.getElementById("btnn04");
-        boton1.style.display = "initial";
-
-        const boton2 = document.getElementById("btnn4");
-        boton2.style.display = "none";
-    }
-
-    function mostrar6() {
-        const mostpdf = document.getElementById("documentPDF6");
-        mostpdf.style.display = "initial";
-        const boton1 = document.getElementById("btnn05");
-        boton1.style.display = "none";
-
-        const boton2 = document.getElementById("btnn5");
-        boton2.style.display = "initial";
-    }
-
-    function ocultar6() {
-        const registro2 = document.getElementById("documentPDF6");
-        registro2.style.display = "none";
-        const boton1 = document.getElementById("btnn05");
-        boton1.style.display = "initial";
-
-        const boton2 = document.getElementById("btnn5");
-        boton2.style.display = "none";
-    }
 </script>
 
 <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
@@ -451,7 +372,7 @@
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#tabla').DataTable({});
+        $('#tabla').DataTable();
     });
 </script>
 

@@ -5,10 +5,8 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from import_export.fields import Field
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Document, Documentosmedicos, Kaisen, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales, documentacion
+from .models import Document, Documentosmedicos, Kaisen, Post, Profile, Relationship,Information,Egresos, Justificantesmedicos, Documentoslegales, AsignacionHat, Hat
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
-from .models import TimestampedItem
-from admintimestamps import TimestampedAdminMixin
 # Register your models here.
 admin.site.register(Relationship)
 
@@ -23,27 +21,37 @@ class PostResource(resources.ModelResource):
  
     class Meta:
         model = Post
-        fields = ('fullname','timestamp','content','status',)
+        fields = ('fullname','timestamp','content','status','Fecha','entrada')
         exclude = ('activate', )
-        export_order = ('fullname','timestamp','content','status',)
+        export_order = ('fullname','timestamp','content','status','Fecha','entrada')
 
 @admin.register(Post)
 class PostAdmin(ImportExportModelAdmin):
     resource_class = PostResource
     """Profile model admin."""
 
-    list_display = ('user','timestamp','content','status','activate')
+    list_display = ('user','timestamp','content','status','activate','Fecha','entrada')
     list_filter = (('timestamp',DateRangeFilter),('timestamp',DateTimeRangeFilter),'user','content')
-    
-    
-#informacion del perfil
+
+class InfoResource(resources.ModelResource): 
+ 
+    class Meta:
+        model = Information
+        fields = ('id','first_name','last_name','telefono','telefono_casa','nacimiento','direccion','contacto_emergencia','telefono_emergencia','puesto','departamento',)
+        exclude = ('is_leader')
+        export_order = ('id','first_name','last_name','telefono','telefono_casa','nacimiento','direccion','contacto_emergencia','telefono_emergencia','puesto','departamento',)
+
+
 
 @admin.register(Information)
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(ImportExportModelAdmin):
+    resource_class = InfoResource
     """Profile model admin."""
 
     list_display = ('id','first_name','last_name','telefono','telefono_casa','nacimiento','direccion','contacto_emergencia','telefono_emergencia','puesto','departamento','is_leader')
     list_filter = ('first_name','departamento','is_leader')
+
+
 
 @admin.register(Egresos)
 class EgresoAdmin(admin.ModelAdmin):
@@ -93,9 +101,15 @@ class DocumentoslegalesAdmin(admin.ModelAdmin):
     list_display = ('user', 'title', 'uploadedFile', 'dateTimeOfUpload')
     list_filter = ('id','user_id')
 
-@admin.register(documentacion)
-class Documentacion(admin.ModelAdmin):
+@admin.register(AsignacionHat)
+class AsignacionHat(admin.ModelAdmin):
     """Profile model admin."""
 
-    list_display = ('user', 'TipoDocumento', 'uploadedFile', 'dateTimeOfUpload')
+    list_display = ('create_at', 'hat_id', 'user_id')
     list_filter = ('id','user_id')
+
+@admin.register(Hat)
+class Hat(admin.ModelAdmin):
+    """Profile model admin."""
+
+    list_display = ('id','nombre_hat')

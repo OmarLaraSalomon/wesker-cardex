@@ -8,56 +8,42 @@
     crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
-{% for post in posts %}
-
 <div class="scroll_horizontal" id="existente">
 
-    <h2 style="font-size: 40px;">Entradas</h2>
+    <div class="banner">
+        
+<h2 style="font-size: 20px; color: white;">Entradas y salidas </h2>
+    </div>
 
-    <table id="tabla" class="display" style="width:100%">
-        <thead>
-            <tr class="header">
-                <th></th>
-                <th>Usuario</th>
-                <th>Motivo</th>
-                <th>status</th>
-            </tr>
-        </thead>
 
-        <tbody>
-            {% for post in posts %}
-            <tr>
-            <td><img src="{{ post.user.profile.image.url }}" style="width: 100px; width: 100px;"></td>
-            <td>{{ post.user.username }}</td>
-            <td> <strong> Tu {{ post.content }}</strong>
-                del {{ post.Fecha }} fue a las {{ post.entrada }}</td>
-            <td>
-                {% if post.status == 'A Tiempo' %}
-                <div class="post1" style="color: green;"> {{ post.status }} </div>
-                {% elif post.status == 'Retardo' %}
-                <div class="post1" style="color: red;"> {{ post.status }} </div>
-                {% endif %}
-            </td>
+
+<table id="tabla" class="display" style="width:100%">
+    <thead>
+        <tr class="header">
+            <th></th>
+            <th>Motivo</th>
+            <th>status</th>
         </tr>
-            {% endfor %}
-            
-        </tbody>
-    </table>
-
-    <!-- {% for a in documentoP %}
-                    {% endfor %} -->
-    <!-- <img src="{{ post.user.profile.image.url }}">
-        <div>
-            <h2 class="username"><a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a></h2>
-            <time style="color: #14344F;"> <strong> Tu {{ post.content }}</strong>
-                del {{ post.Fecha }} fue a las {{ post.entrada }} </time>
-            <div class="post1">{{ post.content }}</div>
+    </thead>
+<!-- local -->
+    <tbody>
+        {% for post in posts %}
+        <tr>
+        <td><img src="{{ post.user.profile.image.url }}" style="width: 50px; width: 50px; border-radius: 50%;"></td>
+        <td> <strong> {{ post.content }}</strong>
+            del {{ post.Fecha }} a las {{ post.entrada }}</td>
+        <td>
             {% if post.status == 'A Tiempo' %}
             <div class="post1" style="color: green;"> {{ post.status }} </div>
             {% elif post.status == 'Retardo' %}
             <div class="post1" style="color: red;"> {{ post.status }} </div>
-            {% endif %} -->
-    <!-- {{ post.status }} -->
+            {% endif %}
+        </td>
+    </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
 </div>
 
 <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
@@ -82,6 +68,14 @@
         text-align: center;
     }
 
+    .banner{
+        width: 100%;
+        height: 50px;
+        margin-bottom: 2%;
+        padding-top: 0.1%;
+        background: #105db0;
+    }
+
     #tabla {
         border-collapse: collapse;
         width: 80%;
@@ -104,6 +98,7 @@
         background-color: #f1f1f1;
     }
 </style>
-{% endfor %}
+
+
 
 {% endblock %}

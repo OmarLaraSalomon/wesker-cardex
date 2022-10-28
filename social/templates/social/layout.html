@@ -51,24 +51,20 @@
 					<li><a href="{% url 'inicio' %}"><i class="fa fa-home"></i>&nbsp;Inicio</a></li>
 					<li><a href="{% url 'profile' request.user.username %}"><i class="fa fa-user"></i>&nbsp;Mi
 							Perfil</a></li>
+							
+					{% if user.is_superuser%}
+					<li><a href="{% url 'admin:index' %}"><i class="fa fa-cogs"></i>&nbsp;Panel de Control</a></li>
+					{%endif%}
 					<li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>&nbsp;Salir</a></li>
 
-					{% if user.is_superuser%}
-
-					<li><a href="{% url 'admin:index' %}"><i class="fa fa-cogs"></i>&nbsp;Panel de Control</a></li>
-
-					{%else%}
-					<!-- <h2> No eres Admin :(</h2> -->
-					{%endif%}
-
 
 				</div>
+				{% else %}
 				<div class="menu">
-					{% else %}
 					<li><a href="{% url 'register' %}">Registrarse</a></li>
 					<li><a href="{% url 'login' %}">Entrar</a></li>
-					{% endif %}
 				</div>
+				{% endif %}
 			</ul>
 			{% if request.user.is_authenticated %}
 			<!-- <img style="margin-left: -50px; margin-right: 50px; padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
@@ -114,8 +110,8 @@
 
 					<li><a href="{% url 'regasis' %}" class="orange"><i class="fa fa-clock-o"></i>&nbsp;
 							Asistencias</a></li>
-					<li><a href="#" class="orange"><i class="fa fa-trophy"></i>&nbsp;
-							Reconocimientos</a></li>
+					<!-- <li><a href="#" class="orange"><i class="fa fa-trophy"></i>&nbsp;
+							Reconocimientos</a></li> -->
 					<li><a href="{% url 'perfilKaisen' %}" class="green"><i class="fa fa-line-chart"></i>&nbsp; Actas Kaizen</a></li>
 					<li><a href="{% url 'perfilpsico' %}" class="yellow"><i class="fa fa-lightbulb-o"></i>&nbsp; Perfil
 							Psicologico</a>
@@ -123,9 +119,9 @@
 					<li><a href="{% url 'perfilmedico' %}" class="green"><i class="fa fa-stethoscope"></i>&nbsp; Perfil
 							Medico</a></li>
 					<li><a href="{% url 'perfillegal' %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Documentacion</a></li>
-					<li><a href="#" class="yellow"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a>
-					<li><a href="#" class="red"><i class="fa fa-money"></i>&nbsp; Contabilidad</a></li>
-					<li><a href="#" class="red"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a></li>
+					<!-- <li><a href="#" class="yellow"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a> -->
+					<!-- <li><a href="#" class="red"><i class="fa fa-money"></i>&nbsp; Contabilidad</a></li>
+					<li><a href="#" class="red"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a></li> -->
 
 					</li>
 
@@ -151,10 +147,10 @@
 					Asistencias</a>
 				<br>
 				{% endif %}
-				{% if request.user.is_authenticated %}
+				<!-- {% if request.user.is_authenticated %}
 				<a class="hero1" href="#"><i class="fa fa-trophy"></i>&nbsp; Reconocimientos</a>
 				<br>
-				{% endif %}
+				{% endif %} -->
 				{% if request.user.is_authenticated %}
 				<a style="background-color:red;" class="hero1" href="{% url 'perfilKaisen' %}"><i  class="fa fa-line-chart"></i>&nbsp; Actas Kaizen</a></a>
 				<br>
@@ -170,23 +166,23 @@
 						style="background-color: rgb(0, 89, 86);" class="fa fa-stethoscope"></i>&nbsp; Perfil Medico</a>
 				<br>
 				{% endif %}
-				{% if request.user.is_authenticated %}
+				<!-- {% if request.user.is_authenticated %}
 				<a class="hero1" href="#"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a>
 				<br>
-				{% endif %}
+				{% endif %} -->
 				{% if request.user.is_authenticated %}
 				<a class="hero1" href="{% url 'perfillegal' %}" style="background-color: #4b3621;"><i
 						style="background-color: #4b3621;" class="fa-solid fa-passport"></i>&nbsp; Documentacion </a>
 				<br>
 				{% endif %}
-				{% if request.user.is_authenticated %}
+				<!-- {% if request.user.is_authenticated %}
 				<a class="hero1" href="#"><i class="fa fa-money"></i>&nbsp; Contabilidad</a>
 				<br>
 				{% endif %}
 				{% if request.user.is_authenticated %}
 				<a class="hero1" href="#"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a>
 				<br>
-				{% endif %}
+				{% endif %} -->
 
 
 
@@ -672,8 +668,11 @@
 				right: 0;
 				left: 0;
 				margin-right: 10px;
+				margin-top: 5%;
 				text-align: right;
 				padding: 10px 0;
+				z-index: 10;
+				/* text-align: center; */
 			}
 
 			.menu li:hover {

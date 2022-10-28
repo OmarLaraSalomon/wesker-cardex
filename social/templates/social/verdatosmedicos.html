@@ -3,11 +3,15 @@
 {% load i18n %}
 
 {% block link %}
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
 {% endblock link %}
@@ -16,374 +20,531 @@ Information
 {% endblock title %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
+<style>
+  .boton {
+    float: right;
+    background-color: rgb(0, 89, 86);
+    margin: 5px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+  }
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
-</head>
+  .profile h2{
+    text-transform: uppercase;
+  }
+</style>
 
 <body>
-    <div class="profile">
-        {% load static from static %}
-        <img src="{{user.profile.image.url}}">
+  <div class="profile">
+    <a class="boton" href="{% url 'perfilmedico' %}" class="go-back"> <i class="fa fa-arrow-circle-left"></i>&nbsp;
+      Regresar </a>
 
+  </div>
+  <div class="profile" style="margin-top: 5%">
+    <h2>DATOS MEDICOS DE {{ user.information.first_name }} {{ user.information.last_name }}</h2>
+  </div>
+
+  <style>
+    form {
+      padding-left: 20%;
+    }
+
+    .prueba {
+      width: 70%;
+      height: 470px;
+      text-align: center;
+      padding-top: 3%;
+      padding-left: 5%;
+      padding-right: 5%;
+      /* display: none; */
+    }
+
+    .prueba input {
+      text-align: center;
+    }
+
+    .prueba3 {
+      width: 70%;
+      height: 450px;
+      padding-top: 3%;
+      text-align: center;
+      display: none;
+    }
+
+    .prueba3 input {
+      text-align: center;
+    }
+
+    .prueba4 {
+      width: 70%;
+      height: 600px;
+      padding-top: 3%;
+      text-align: center;
+      display: none;
+    }
+
+    .prueba4 input {
+      text-align: center;
+    }
+
+    .prueba4 select {
+      width: 90%;
+      text-align: center;
+      margin-top: 2%;
+      margin-bottom: 2%;
+    }
+
+    .btnNext {
+      margin-top: 5%;
+      margin-left: 30%;
+      border-style: solid;
+      background-color: rgb(0, 89, 86);
+      border: 1px solid rgb(0, 89, 86);
+      font-weight: 600;
+      position: relative;
+      outline: none;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      height: 45px;
+      width: 130px;
+      opacity: 1;
+      color: white;
+    }
+
+    .btnBack1 {
+      border-style: solid;
+      background-color: rgb(0, 89, 86);
+      border: 1px solid rgb(0, 89, 86);
+      font-weight: 600;
+      position: relative;
+      outline: none;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      height: 45px;
+      width: 130px;
+      opacity: 1;
+      color: white;
+    }
+
+    .btnNext1 {
+      /* margin-top: 5%; */
+      margin-left: 3%;
+      border-style: solid;
+      background-color: rgb(0, 89, 86);
+      border: 1px solid rgb(0, 89, 86);
+      font-weight: 600;
+      position: relative;
+      outline: none;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      height: 45px;
+      width: 130px;
+      opacity: 1;
+      color: white;
+    }
+
+    .btnNext:hover,
+    .btnNext1:hover,
+    .btnBack1:hover {
+      background: black;
+      color: white;
+    }
+
+    .btns {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 5%;
+    }
+  </style>
+
+  <form>
+    <!-- div 1 -->
+    <div class="prueba" id="prueba">
+      <div class="form-group">
+        <input type="hidden" class="form-control" id="idField" value="{{user.id}}">
+      </div>
+      <div class="form-group">
+        <label for="edadField">{{_('1: Edad')}}</label>
+        <input type="text" class="form-control" id="edadField"
+          placeholder="{{ _('Escribe la edad de') }} {{user.username}}" required>
+      </div>
+      <div class="form-group">
+        <label for="pesoField">{{_('2: Peso')}}</label>
+        <input type="text" class="form-control" id="pesoField"
+          placeholder="{{ _('Escribe el peso de') }} {{user.username}}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="estaturaField">{{_('3: Estatura')}}</label>
+        <input type="text" class="form-control" id="estaturaField"
+          placeholder="{{ _('Escribe la estatura de ') }} {{user.username}}" required>
+      </div>
+
+      <label for="chec">4: ¿Tienes alguna alergia?</label>
+
+      <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
+        <table>
+
+          <tr>
+
+            <td> <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton(this,'No');">No</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a alimentos()');">Alergia a
+              alimentos</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a fármacos()');">Alergia a
+              fármacos.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Asma alérgico');">Asma
+              alérgico.</input></td>
+
+          </tr>
+
+          <tr>
+
+            <td><input type="checkbox" onclick="javacript:EnableDisableButton(this,'Dermatitis atópica');">Dermatitis
+              atópica.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Poliposis nasal');">Poliposis
+              nasal.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Rinitis alérgica');">Rinitis
+              alérgica.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Urticaria crónica');">Urticaria
+              crónica.</input><br></td>
+
+          </tr>
+        </table>
+        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px; display: none;"
+          class="form-control" id="alergiasField" type="textarea" name="t2" required></textarea>
+
+      </div>
+      <a onclick="siguiente1()" style="cursor: pointer;" class="btnNext">Siguiente</a>
+    </div>
+
+    <!-- div 2  -->
+
+    <div class="prueba3" id="prueba3">
+      <div class="form-group">
+        <label for="sangreField">{{_('5: Tipo de sangre')}}</label>
+        <input type="text" class="form-control" id="sangreField"
+          placeholder="{{ _('Escribe el tipo de sangre de ') }} {{user.username}}" required>
+      </div>
+
+      <label for="checy">6: ¿Padeces de alguna enfermedad?</label>
+
+      <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
+        <table>
+
+          <tr>
+
+            <td> <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton2(this,'No');">No</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Síndrome metabólico o cardiovascular');">Síndrome
+              metabólico
+              o cardiovascular</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Obesidad');">Obesidad.</input>
+            </td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Hipertensión arterial');">Hipertensión arterial</input>
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Colesterol alto');">Colesterol
+              alto</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Triglicéridos');">Triglicéridos</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Diabetes');">Diabetes</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Enfermedad Intestinal');">Enfermedad
+              Intestinal</input><br></td>
+
+          </tr>
+
+          <tr>
+
+            <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedad hepática');">Enfermedad
+              hepática</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Enfermedades cerebrovasculares');">Enfermedades
+              cerebrovasculares </input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Enfermedades respiratorias');">Enfermedades
+              respiratorias</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Malformaciones()');">Malformaciones</input><br></td>
+
+          </tr>
+        </table>
+        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px; display: none;"
+          class="form-control" id="enfermedadField" type="textarea" name="t3" required></textarea>
+
+      </div>
+
+      <div class="btns">
+        <a onclick="anterior2()" style="cursor: pointer;" class="btnBack1">Anterior</a>
+        <a onclick="siguiente2()" style="cursor: pointer;" class="btnNext1">Siguiente</a>
+      </div>
 
     </div>
-    <div class="follow">
-        <div>
-            <h5>Nombre Completo</h5>
-            <h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span>
-            </h2>
-        </div>
-    </div>
 
-    <div class="profile" style="margin-top: 20px;">
-        <h2>DATOS MEDICOS </h2>
-    </div>
+    <!-- div 3 -->
+    <div class="prueba4" id="prueba4">
+      <div class="form-group">
+        <label for="lentesField">{{_('7: ¿Usas Lentes?')}}</label>
+        <select name="select" id="lentesField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
 
-    <div id="container">
+        </select>
 
-        <!-- Start	Product details -->
-        <div class="product-details">
+      </div>
 
-            <h1>{{ user.information.first_name }} {{ user.information.last_name }}</h1>
-    
-            <div>
-                {% if user.information.is_leader %}
-        
-                <h5 style='padding-bottom: 20px'> <i style="color: gold;" class="fa fa-star" aria-hidden="true"></i>&nbsp;Es
-                    Lider
-                    del equipo {{user.information.departamento}} </h5>
-        
-                {% else %}
-                <h5 style='padding-bottom: 20px'> <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Es Parte del equipo
-                    {{user.information.departamento}}</h5>
-                {% endif %}
-            </div>
+      <div class="form-group">
+        <label for="fumasField">{{_('8: ¿Fumas?')}}</label>
+        <select name="select" id="fumasField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
 
+        </select>
 
-            <!-- The most important information about the product -->
-            <h2>Datos Medicos</h2>
-            <ul>
-                <li style="font-size: 15px;"><strong>Edad: </strong>{{user.datosmedicos.edad}} años</li>
-                <li style="font-size: 15px;"><strong>Estatura: </strong>{{user.datosmedicos.estatura}} cm</li>
-                <li style="font-size: 15px;"><strong>Peso: </strong>{{user.datosmedicos.peso}} kg</li>
-                <li style="font-size: 15px;"><strong>Tipo de sangre: </strong> {{user.datosmedicos.sangre}} </li>
-                <li style="font-size: 15px;"><strong>Alergias: </strong>{{user.datosmedicos.alergias}} </li>
-                <li style="font-size: 15px;"><strong>Enfermeda: </strong>{{user.datosmedicos.enfermedad}}</li>
-                <li style="font-size: 15px;"><strong>Usa lentes: </strong>{{user.datosmedicos.lentes}}</li>
-                <li style="font-size: 15px;"><strong>Consume bebidad alcoholicas: </strong>{{user.datosmedicos.tomas}}</li>
-                <li style="font-size: 15px;"><strong>Fuma: </strong>{{user.datosmedicos.fumas}}</li>
-                <li style="font-size: 15px;"><strong>Deporte: </strong>{{user.datosmedicos.deporte}}</li>
-                <li style="font-size: 15px;"><strong>Horas de Sueño: </strong>{{user.datosmedicos.sueño}} horas</li>
-                <li style="font-size: 15px;"><strong>Tiene sus dos vacunas: </strong>{{user.datosmedicos.vacuna}}</li>
-                <li style="font-size: 15px;"><strong>Se ha contagiado de COVID: </strong>{{user.datosmedicos.covid}}</li>
+      </div>
 
-            </ul>
+      <div class="form-group">
+        <label for="tomasField">{{_('9: ¿Tomas?')}}</label>
+        <select name="select" id="tomasField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
 
+        </select>
 
+      </div>
 
-           
-            <div class="control">
+      <div class="form-group">
+        <label for="deporteField">{{_('10: ¿Realizas algun deporte o actividad fisica ?')}}</label>
+        <input type="text" class="form-control" id="deporteField"
+          placeholder="{{ _('Coloca la actividad fisica que realiza ') }} {{user.username}}" required>
+      </div>
 
-              
-                <button class="btn">
-                  
-                    <span class="price"><i style="color: gold;" class='fas fa-crown'></i></span>
-                    
-                    <span class="shopping-cart"><i class="fa fa-check" aria-hidden="true"></i></span>
-                   
+      <div class="form-group">
+        <label for="sueñoField">{{_('11: ¿Cuantas horas de sueño tienes al dia ?')}}</label>
+        <input type="text" class="form-control" id="sueñoField"
+          placeholder="{{ _('Coloca las horas de sueño de ') }} {{user.username}}" required>
+      </div>
 
-                    <a class="buy"  href="{% url 'perfilmedico' %}">Todo en Orden</a>
-                </button>
-               
+      <div class="form-group">
+        <label for="covidField">{{_('12: ¿Te dio Covid alguna vez?')}}</label>
+        <select name="select" id="covidField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
 
-            </div>
+        </select>
+      </div>
 
-        </div>
+      <div class="form-group">
+        <label for="vacunaField">{{_('13: ¿Ya tienes las 2 vacunas?')}}</label>
+        <select name="select" id="vacunaField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
 
-       
+        </select>
 
+      </div>
 
-
-       
-
-        <div class="product-image">
-
-            <img  src="{{user.profile.image.url}}"
-                alt="Omar Dsoky">
-
-            <!-- 	product Information-->
-            <div class="info">
-                <h2>Datos Medicos</h2>
-                <ul>
-                    <li><strong>Edad: </strong>{{user.datosmedicos.edad}} años</li>
-                    <li><strong>Estatura: </strong>{{user.datosmedicos.estatura}} cm</li>
-                    <li><strong>Peso: </strong>{{user.datosmedicos.peso}} kg</li>
-                    <li><strong>Tipo de sangre: </strong> {{user.datosmedicos.sangre}} </li>
-                    <li><strong>Alergias: </strong>{{user.datosmedicos.alergias}} </li>
-                    <li><strong>Enfermeda: </strong>{{user.datosmedicos.enfermedad}}</li>
-                    <li><strong>Usa lentes: </strong>{{user.datosmedicos.lentes}}</li>
-                    <li><strong>Consume bebidad alcoholicas: </strong>{{user.datosmedicos.tomas}}</li>
-                    <li><strong>Fuma: </strong>{{user.datosmedicos.fumas}}</li>
-                    <li><strong>Deporte: </strong>{{user.datosmedicos.deporte}}</li>
-                    <li><strong>Horas de Sueño: </strong>{{user.datosmedicos.sueño}} horas</li>
-                    <li><strong>Tiene sus dos vacunas: </strong>{{user.datosmedicos.vacuna}}</li>
-                    <li><strong>Se ha contagiado de COVID: </strong>{{user.datosmedicos.covid}}</li>
-
-                </ul>
-            </div>
-        </div>
-        <!--  End product image  -->
-
+      <div class="btns">
+        <a onclick="anterior3()" style="cursor: pointer;" class="btnBack1">Anterior</a>
+        <button name="boton" onclick="hacer()" class="btnNext1">{{_('Registrar')}}</button>
+      </div>
 
     </div>
 
+  </form>
 
+  <script>
+    function siguiente1() {
+      document.getElementById("prueba").style.display = "none";
+      document.getElementById("prueba3").style.display = "block";
+    }
 
-    <style>
-        /* fonts  */
-        @import url('https://fonts.googleapis.com/css?family=Abel|Aguafina+Script|Artifika|Athiti|Condiment|Dosis|Droid+Serif|Farsan|Gurajada|Josefin+Sans|Lato|Lora|Merriweather|Noto+Serif|Open+Sans+Condensed:300|Playfair+Display|Rasa|Sahitya|Share+Tech|Text+Me+One|Titillium+Web');
+    function anterior2() {
+      document.getElementById("prueba").style.display = "block";
+      document.getElementById("prueba3").style.display = "none";
+    }
 
+    function siguiente2() {
+      document.getElementById("prueba3").style.display = "none";
+      document.getElementById("prueba4").style.display = "block";
+    }
 
-        #container {
-            box-shadow: 0 15px 30px 1px rgba(128, 128, 128, 0.31);
-            background: rgba(255, 255, 255, 0.90);
-            text-align: center;
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 5em auto;
-            height: 600px;
-            width: 750px;
-            box-shadow:black ;
+    function anterior3() {
+      document.getElementById("prueba3").style.display = "block";
+      document.getElementById("prueba4").style.display = "none";
+    }
+  </script>
+<!-- instalar npm con npm install sweetalert2-->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <script>
+
+    function get_cookie(name) {
+      let cookie_value = null;
+      if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = jQuery.trim(cookies[i]);
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
         }
+      }
+      return cookie_value;/**/
+    }
+
+    let csrf_token = get_cookie('csrftoken');
+
+    function hacer() {
+      if (document.getElementById('edadField').value == "" && document.getElementById('vacunaField').value == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Parece que no has llenado todos los campos!'
+        })
+
+      } else {
+        $.ajax({
+          url: "{% url 'verdatosmedicos' %}",
+          type: "POST",
+          data: {
+
+            'edad': $('#edadField').val(),
+            'peso': $('#pesoField').val(),
+            'estatura': $('#estaturaField').val(),
+            'alergias': $('#alergiasField').val(),
+            'sangre': $('#sangreField').val(),
+            'enfermedad': $('#enfermedadField').val(),
+            'lentes': $('#lentesField').val(),
+            'fumas': $('#fumasField').val(),
+            'tomas': $('#tomasField').val(),
+            'deporte': $('#deporteField').val(),
+            'sueño': $('#sueñoField').val(),
+            'covid': $('#covidField').val(),
+            'vacuna': $('#vacunaField').val(),
+            'user_id': $('#idField').val(),
+            csrfmiddlewaretoken: csrf_token,
+
+
+          },
+          success: function (data) {
+            console.log(data)
+            console.log("Success");
+            window.location.href = "{% url 'perfilmedico' %}";
+          }
+        });
+      }
+    }
+  </script>
+
+  <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+  <script>
+
+
+    /* script para lista de alergias */
+    var idList = " "
+    document.getElementById('alergiasField').value = idList;
+
+    function EnableDisableButton(cb, id) {
+
+      if (cb.checked == 1) {
+        idList = idList + id + " "
+        document.getElementById('alergiasField').value = idList;
+      }
+
+      if (cb.checked == 0) {
+        var v;
+        v = " " + id + " "
+        idList = idList.replace(v, " ");
+        document.getElementById('alergiasField').value = idList;
+      }
+
+      if (idList == " ") {
+        document.getElementById('button1').disabled = true;
+      } else {
+        document.getElementById('button1').disabled = false;
+      }
+
+    }
 
 
 
-        /* 	Product details  */
-        .product-details {
-            position: relative;
-            text-align: left;
-            overflow: hidden;
-            padding: 30px;
-            height: 100%;
-            float: left;
-            width: 40%;
 
-        }
-
-        /* 	Product Name */
-        #container .product-details h1 {
-            font-family: 'Old Standard TT', serif;
-            display: inline-block;
-            position: relative;
-            font-size: 34px;
-            color: #344055;
-            margin: 0;
-
-        }
-
-        #container .product-details h1:before {
-            position: absolute;
-            content: '';
-            right: 0%;
-            top: 0%;
-            transform: translate(25px, -15px);
-            font-family: 'Farsan', cursive;
-            display: inline-block;
-            background: rgb(0, 31, 66);
-            border-radius: 5px;
-            font-size: 14px;
-            padding: 5px;
-            color: #FFF;
-            margin: 0;
-            animation: chan-sh 6s ease infinite;
-
-        }
+  </script>
 
 
-        @keyframes chan-sh {
-            from {
-                content: 'Datos Medicos';
-            }
+  <script>
+    /* script para lista de enfermedades */
+    var idList2 = " "
+    document.getElementById('enfermedadField').value = idList2;
 
-            to {
-                content: 'Cuida tu Salud';
-            }
+    function EnableDisableButton2(cbb, ids) {
 
-        }
+      if (cbb.checked == 1) {
+        idList2 = idList2 + ids + " "
+        document.getElementById('enfermedadField').value = idList2;
+      }
 
-        /*Product Rating  */
-        .hint-star {
-            display: inline-block;
-            margin-left: 0.5em;
-            color: gold;
-            width: 50%;
-        }
+      if (cbb.checked == 0) {
+        var b;
+        b = " " + ids + " "
+        idList2 = idList2.replace(b, " ");
+        document.getElementById('enfermedadField').value = idList2;
+      }
 
+      if (idList2 == " ") {
+        document.getElementById('button2').disabled = true;
+      } else {
+        document.getElementById('button2').disabled = false;
+      }
 
-        /* The most important information about the product */
-        #container .product-details>p {
-            font-family: 'Farsan', cursive;
-            text-align: center;
-            font-size: 20px;
-            color: #7d7d7d;
+    }
 
-        }
-
-        /* control */
-
-        .control {
-            position: absolute;
-            bottom: 20%;
-            left: 22.8%;
-
-        }
-
-        /* the Button */
-        .btn {
-            transform: translateY(0px);
-            transition: 0.3s linear;
-            background: #49C608;
-            border-radius: 5px;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            outline: none;
-            border: none;
-            color: #eee;
-            padding: 0;
-            margin: 0;
-
-        }
-
-        .btn:hover {
-            transform: translateY(-4px);
-        }
-
-        .btn span {
-            font-family: 'Farsan', cursive;
-            transition: transform 0.3s;
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            margin: 0;
-
-        }
-
-        /* shopping cart icon */
-        .btn .price,
-        .shopping-cart {
-            background: #333;
-            border: 0;
-            margin: 0;
-        }
-
-        .btn .price {
-            transform: translateX(-10%);
-            padding-right: 15px;
-        }
-
-        /* the Icon */
-        .btn .shopping-cart {
-            transform: translateX(-100%);
-            position: absolute;
-            background: #333;
-            z-index: 1;
-            left: 0;
-            top: 0;
-        }
-
-        /* buy */
-        .btn .buy {
-            z-index: 3;
-            font-weight: bolder;
-            color: white;
-            padding: 10px;
-        }
-
-        .btn:hover .price {
-            transform: translateX(-110%);
-        }
-
-        .btn:hover .shopping-cart {
-            transform: translateX(0%);
-        }
-
-
-
-        /* product image  */
-        .product-image {
-            transition: all 0.3s ease-out;
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            float: right;
-            width: 50%;
-            display: inline-block;
-        }
-
-        #container img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .info {
-            background: rgba(27, 26, 26, 0.9);
-            font-family: 'Farsan', cursive;
-            transition: all 0.3s ease-out;
-            transform: translateX(-100%);
-            position: absolute;
-            line-height: 1.9;
-            text-align: left;
-            font-size: 120%;
-            cursor: no-drop;
-            color: #FFF;
-            height: 100%;
-            width: 100%;
-            left: 0;
-            top: 0;
-        }
-
-        .info h2 {
-            text-align: center
-        }
-
-        .product-image:hover .info {
-            transform: translateX(0);
-        }
-
-        .info ul li {
-            transition: 0.3s ease;
-        }
-
-        .info ul li:hover {
-            transform: translateX(50px) scale(1.3);
-        }
-
-        .product-image:hover img {
-            transition: all 0.3s ease-out;
-        }
-
-        .product-image:hover img {
-            transform: scale(1.2, 1.2);
-        }
-    </style>
-
-
-    <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-
-
+  </script>
 </body>
 
 </html>

@@ -1,6 +1,5 @@
 {% extends 'social/feed.html' %}
-
-<!--{% load static %}-->
+{% load static from static %}
 {% block content %}
 
 <head>
@@ -8,350 +7,438 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bdad33e746.js" crossorigin="anonymous"></script>
 
 
 </head>
-<!-- Profile -->
-<div class="profile">
-    {% load static from static %}
-    <img src="{{user.profile.image.url}}">
-    <h2> {{ user.information.first_name }}  {{user.information.last_name }}</h2>
+
+<style>
+    .banner {
+        width: 100%;
+        height: 70px;
+        margin-bottom: 2%;
+        padding-top: 1%;
+        padding-bottom: 1%;
+        background-color: rgb(0, 89, 86);
+        text-align: center;
+    }
+
+    .boton {
+    float: right;
+    background-color: rgb(0, 89, 86);
+    margin: 5px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+  }
+
+  .profile{
+    /* border-style: solid; */
+    height: 40px;
+    padding-bottom: 2%;
+  }
+</style>
+
+<div style="font-size: 20px;" class="banner">
+
+    <h2 style="color: white;"><i class="fa fa-stethoscope"></i>&nbsp;Datos Medicos</h2>
 
 </div>
 
 <div class="profile">
-    {% if user.is_superuser%}
-    <h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
-    {%else%}
-    <!-- <h2> No eres Admin :(</h2> -->
-    {%endif%}
-</div>
+    <a class="boton" href="{% url 'perfilmedico' %}" class="go-back"> <i class="fa fa-arrow-circle-left"></i>&nbsp;
+      Regresar </a>
 
-<div style="background-color: rgba(77, 76, 83, 0.572)">
+  </div>
 
 
-    <hr>
+<div style="display: flex; justify-content: center; align-items: center; padding-top: 2%; margin-bottom: 2%;">
 
-    <div class="profile" style="margin-top: 20px;">
-        <h2 style="color: black;"><i class="fa fa-stethoscope"></i>&nbsp;Perfiles Medicos</h2>
-    </div>
+    <div class="card card--19">
+        <div class="card__header card__header--19">
 
-    <hr>
+            <h1 class="card__title card__will-animate">{{ user.information.first_name }} {{user.information.last_name }}
+            </h1>
+            {% if user.datosmedicos %}
+            <ul class="card__subtitle card__will-animate">
+                <li><strong>Edad: </strong>{{user.datosmedicos.edad}} años</li>
+                <li><strong>Estatura: </strong>{{user.datosmedicos.estatura}} cm</li>
+                <li><strong>Peso: </strong>{{user.datosmedicos.peso}} kg</li>
+                <li><strong>Tipo de sangre: </strong> {{user.datosmedicos.sangre}} </li>
+                <li><strong>Alergias: </strong>{{user.datosmedicos.alergias}} </li>
+                <li><strong>Enfermedad: </strong>{{user.datosmedicos.enfermedad}}</li>
+                <li><strong>Usa lentes: </strong>{{user.datosmedicos.lentes}}</li>
+                <li><strong>Consume bebidad alcoholicas: </strong>{{user.datosmedicos.tomas}}</li>
+                <li><strong>Fuma: </strong>{{user.datosmedicos.fumas}}</li>
+                <li><strong>Deporte: </strong>{{user.datosmedicos.deporte}}</li>
+                <li><strong>Horas de Sueño: </strong>{{user.datosmedicos.sueño}} horas</li>
+                <li><strong>Tiene sus dos vacunas: </strong>{{user.datosmedicos.vacuna}}</li>
+                <li><strong>Se ha contagiado de COVID: </strong>{{user.datosmedicos.covid}}</li>
+            </ul>
+            {% else %}
+            <style>
+                .datosF{
+                    width: 100%;
+                    height: 50px;
+                    border-radius: 20px;
+                    border-style: solid;
+                    text-align: center;
+                    padding-bottom: 5%;
+                }
 
+                .datosF h2{
+                    font-size: 25px;
+                    color: red;
+                }
 
-</div>
+                .datosF i{
+                    font-size: 30px;
+                }
+            </style>
 
-
-<div style="margin: 10px;">
-
-   
-
-
-    <div class="container">
-
-        <div class="profile">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-
-                        <img src="{{ user.profile.image.url }}" alt="Person" class="card__image">
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <p style="color: black;" class="card__name"> {{ user.information.first_name }}  {{user.information.last_name }}
-                        </p>
-                        <p style="color: black;" class="card__name">Puesto: {{ user.information.puesto }}</p>
-                        <p style="color: black;" class="card__name">Departamento: {{user.information.departamento}}</p>
-                        <div style="color: black;" class="grid-child-posts">
-                            Ingreso: {{ user.egresos.ingreso }}
-                        </div>
-
-                        <div style="color: black;" class="grid-child-followers">
-                            Egreso: {{ user.egresos.egreso}}
-                        </div>
-                    </div>
-                </div>
+            <div class="datosF">
+                <h2><i class="fa-solid fa-circle-exclamation"></i> te falta llenar tu informacion medica</h2>
             </div>
-            <div class="col-sm-6">
-                <div class="card1">
-                    <div class="card-body">
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <hr>
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'verdatosmedicos' user.username %}">Ver
-                                datos medicos</a></h5>
-                        <hr>
-                        <h5 class="card-title"> <a style="cursor:pointer;" class="boton-datosmedicos"
-                                onclick="direccionmedica()">Ver
-                                archivos medicos</a></h5>
-                        <hr>
-                        <input type="hidden" value=" {{ user.id}}" id="id_us">
-                        <h5 class="card-title"> <a style="cursor:pointer;" class="boton-datosmedicos"
-                                onclick="direccionjustificantes()">Ver Justificantes</a></h5>
-                        <hr>
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'datosmedicos' user.username %}">Actualizar
-                                datos medicos</a></h5>
-                        <hr>
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'medicfiles' user.username %}">Adjuntar
-                                archivos medicos</a></h5>
-                        <hr>
-                        <h5 class="card-title"> <a class="boton-datosmedicos"
-                                href="{% url 'justifyfiles' user.username %}">Adjuntar
-                                Justificantes</a></h5>
-                        <hr>
-                    </div>
-                </div>
+            {% endif %}
+        </div>
+
+        <div class="card__body">
+
+            <div class="imgC">
+                <img src="{{user.profile.image.url}}">
             </div>
+            {% if user.datosmedicos %}
+            <a class="card__wish-list card__wish-list--19 card__will-animate"
+                href="{% url 'datosmedicos' user.username %}">Actualizar Datos medicos</a>
+            {% else %}
+            <a class="card__wish-list card__wish-list--19 card__will-animate"
+                href="{% url 'verdatosmedicos' user.username %}">Llenar Datos medicos</a>
+            {% endif %}
         </div>
     </div>
-   
+
 
 </div>
+
+<div class="menuM">
+    <div class="medico">
+        <h1> Datos Medicos</h1>
+
+        <a style="cursor:pointer;" class="boton-datosmedicos" onclick="direccionmedica()"> <i
+                class="fa-solid fa-file-medical"></i> Ver</a>
+
+        <a class="boton-datosmedicos" href="{% url 'medicfiles' user.username %}"><i
+                class="fa-solid fa-file-medical"></i>
+            <i class="fa-solid fa-plus"></i> Adjuntar</a>
+    </div>
+
+    <div class="justificante">
+        <h1>Justificantes</h1>
+
+        <a style="cursor:pointer;" class="boton-datosmedicos" onclick="direccionjustificantes()"><i
+                class="fa-solid fa-book-medical"></i> Ver</a>
+
+
+        <a class="boton-datosmedicos" href="{% url 'justifyfiles' user.username %}"><i
+                class="fa-solid fa-book-medical"></i>
+            <i class="fa-solid fa-plus"></i> Adjuntar</a>
+    </div>
+</div>
+
+</div>
+
+
+
+<style>
+    /* menu */
+    .menuM {
+        width: 100%;
+        height: 200px;
+        /* padding-top: 1%; */
+        background-color: transparent;
+        display: flex;
+        
+    }
+
+    .medico {
+        float: left;
+        width: 50%;
+        height: 100%;
+        text-align: center;
+    }
+
+    .justificante {
+        float: right;
+        width: 50%;
+        height: 100%;
+        text-align: center;
+    }
+
+    .medico h1,
+    .justificante h1 {
+        margin-bottom: 10%;
+        font-size: 30px;
+    }
+
+    .boton-datosmedicos {
+        background-color: rgb(0, 89, 86);
+        height: 100%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-radius: 20px;
+        box-shadow: 5px 5px 5px black;
+    }
+
+    .boton-datosmedicos:hover {
+        background-color: black;
+        color: white;
+    }
+
+    .menuM i {
+        font-size: 25px;
+    }
+
+    /* card  */
+    .card {
+        width: 90%;
+        display: flex;
+        border-radius: 15px;
+    }
+
+    .card__header {
+        width: 50%;
+        height: 100%;
+        border-top-right-radius: 15px;
+        border-top-left-radius: 15px;
+        color: #fff;
+        float: left;
+    }
+
+    .card__title {
+        text-align: center;
+        font-size: 40px;
+        line-height: 1.1em;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: black;
+    }
+
+    .card__subtitle {
+        display: block;
+        font-size: 13px;
+        font-weight: 300;
+        color: black;
+    }
+
+    .card__body {
+        width: 50%;
+        height: 370px;
+        text-align: center;
+        float: right;
+    }
+
+    .card__wish-list {
+        display: block;
+        width: 50%;
+        margin: 0 auto 15px;
+        margin-bottom: -10px;
+        padding: 15px;
+        border-radius: 20px;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 14px;
+        border-style: solid;
+    }
+
+    .card__wish-list--19 {
+        color: black;
+        border-color: black;
+        background: transparent;
+    }
+
+    .card__wish-list--19:hover {
+        color: white;
+        border-color: black;
+        background: black;
+    }
+
+    .card__header ul {
+        font-size: 17px;
+        margin-left: 10px;
+    }
+
+    .card__body img {
+        margin-top: 5%;
+        width: 190px;
+        height: 180px;
+        border-radius: 50px;
+    }
+
+    .imgC {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5%;
+        margin-left: -3%;
+    }
+
+    @media (max-width: 768px) {
+        .card {
+            width: 90%;
+            display: block;
+        }
+
+        .card__header {
+            position: relative;
+            height: auto;
+            padding: 30px 30px 20px;
+            border-top-right-radius: 15px;
+            border-top-left-radius: 15px;
+            color: #fff;
+            float: none;
+            width: 80%;
+            height: auto;
+            border-style: none;
+        }
+
+        .card__title {
+            text-align: center;
+            font-size: 25px;
+            line-height: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .card__subtitle {
+            display: block;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+        .card__body {
+            position: relative;
+            padding: 40px 30px 20px;
+            float: none;
+            width: 80%;
+            height: 150px;
+            border-style: none;
+        }
+
+        .card__wish-list {
+            display: block;
+            width: 50%;
+            margin: 0 auto 15px;
+            margin-bottom: -10px;
+            padding: 15px;
+            border: 2px solid #fff;
+            border-radius: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .card__wish-list--19 {
+            color: black;
+            border-color: black;
+            background: transparent;
+        }
+
+        .card__header ul {
+            font-size: 17px;
+            margin-left: -60px;
+        }
+
+        .card__body img {
+            width: 130px;
+            height: 120px;
+            border-radius: 50px;
+        }
+
+        .imgC {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: -60px;
+            margin-left: -10px;
+            margin-bottom: 3%;
+        }
+
+        .datosF{
+            margin-bottom: 10%;
+        }
+
+        /* menu botones abajo */
+
+        .menuM {
+        width: 380px;
+        height: 900px;
+        /* padding-top: 1%; */
+        margin-left: 0%;
+        background-color: transparent;
+        display: inline;
+    }
+
+    .medico {
+        float: none;
+        width: 95%;
+        height: 150px;
+        text-align: center;
+    }
+
+    .justificante {
+        float: none;
+        width: 95%;
+        height: 150px;
+        text-align: center;
+    }
+
+    .medico h1,
+    .justificante h1 {
+        margin-bottom: 10%;
+        font-size: 30px;
+    }
+
+    .boton-datosmedicos {
+        background-color: rgb(0, 89, 86);
+        height: 100%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-radius: 20px;
+        box-shadow: 5px 5px 5px black;
+    }
+
+    .boton-datosmedicos:hover {
+        background-color: black;
+        color: white;
+    }
+
+    .menuM i {
+        font-size: 25px;
+    }
+
+    }
+</style>
 
 <script>
     function direccionmedica() {
         let id_me = $("#id_us").val();
-        console.log("EL ID ES: "+id_me)
-        window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/"+"?user_id__id__exact="+id_me
+        console.log("EL ID ES: " + id_me)
+        window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/documentosmedicos/" + "?user_id__id__exact=" + id_me
     }
     function direccionjustificantes() {
         let id_us = $("#id_us").val();
-        console.log("EL ID ES: "+id_us)
-       /*  window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/" */
-       window.location.href = " https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/"+"?user_id__id__exact="+id_us
-      
+        console.log("EL ID ES: " + id_us)
+        /*  window.location.href = "https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/" */
+        window.location.href = " https://cardex.tescacorporation.com/only-admin-cardex/social/justificantesmedicos/" + "?user_id__id__exact=" + id_us
+
     }
 </script>
 <script>
 
 </script>
-<style>
-    @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
-
-    .container {
-        display: center;
-        grid-template-columns: 300px 300px 300px;
-        grid-gap: 50px;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: url(../../static/gris.jpg) no-repeat;
-        font-family: 'Baloo Paaji 2', cursive;
-        border-radius: 30px;
-
-    }
-
-    .card {
-        background-color: rgba(255, 255, 255, .15);
-        backdrop-filter: blur(20px);
-        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
-        height: 37rem;
-        border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-
-        color: white;
-        /*  border: solid 1px black ; */
-    }
-
-    .card1 {
-        background: url(../../static/minimalista2.jpeg) no-repeat;
-        backdrop-filter: blur(20px);
-        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
-        height: 37rem;
-        border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-
-        /*  border: solid 1px black ; */
-
-
-    }
-
-    .card-body {
-        flex: 1 1 auto;
-        padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-        color: var(--bs-card-color)
-    }
-
-    .col-sm-6 {
-        flex: 0 0 auto;
-        width: 50%
-    }
-
-    .card__name {
-        margin-top: 15px;
-        font-size: 1.5em;
-    }
-
-    .card__image {
-        height: 160px;
-        width: 160px;
-        border-radius: 50%;
-        border: 5px solid #272133;
-        margin-top: 20px;
-        box-shadow: 0 10px 50px rgb(0, 89, 86);
-    }
-
-
-    .draw-border {
-        box-shadow: inset 0 0 0 4px #58cdd1;
-        color: #58afd1;
-        -webkit-transition: color 0.25s 0.0833333333s;
-        transition: color 0.25s 0.0833333333s;
-        position: relative;
-    }
-
-    .draw-border::before,
-    .draw-border::after {
-        border: 0 solid transparent;
-        box-sizing: border-box;
-        content: '';
-        pointer-events: none;
-        position: absolute;
-        width: 0rem;
-        height: 0;
-        bottom: 0;
-        right: 0;
-    }
-
-    .draw-border::before {
-        border-bottom-width: 4px;
-        border-left-width: 4px;
-    }
-
-    .draw-border::after {
-        border-top-width: 4px;
-        border-right-width: 4px;
-    }
-
-    .draw-border:hover {
-        color: #ffe593;
-    }
-
-    .draw-border:hover::before,
-    .draw-border:hover::after {
-        border-color: #eb196e;
-        -webkit-transition: border-color 0s, width 0.25s, height 0.25s;
-        transition: border-color 0s, width 0.25s, height 0.25s;
-        width: 100%;
-        height: 100%;
-    }
-
-    .draw-border:hover::before {
-        -webkit-transition-delay: 0s, 0s, 0.25s;
-        transition-delay: 0s, 0s, 0.25s;
-    }
-
-    .draw-border:hover::after {
-        -webkit-transition-delay: 0s, 0.25s, 0s;
-        transition-delay: 0s, 0.25s, 0s;
-    }
-
-    .btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        line-height: 1.5;
-        font: 700 1.2rem 'Roboto Slab', sans-serif;
-        padding: 0.75em 2em;
-        letter-spacing: 0.05rem;
-        margin: 1em;
-        width: 13rem;
-    }
-
-    .btn:focus {
-        outline: 2px dotted #55d7dc;
-    }
-
-
-    .social-icons {
-        padding: 0;
-        list-style: none;
-        margin: 1em;
-    }
-
-    .social-icons li {
-        display: inline-block;
-        margin: 0.15em;
-        position: relative;
-        font-size: 1em;
-    }
-
-    .social-icons i {
-        color: #fff;
-        position: absolute;
-        top: 0.95em;
-        left: 0.96em;
-        transition: all 265ms ease-out;
-    }
-
-    .social-icons a {
-        display: inline-block;
-    }
-
-    .social-icons a:before {
-        transform: scale(1);
-        -ms-transform: scale(1);
-        -webkit-transform: scale(1);
-        content: " ";
-        width: 45px;
-        height: 45px;
-        border-radius: 100%;
-        display: block;
-        background: linear-gradient(45deg, #ff003c, #c648c8);
-        transition: all 265ms ease-out;
-    }
-
-    .social-icons a:hover:before {
-        transform: scale(0);
-        transition: all 265ms ease-in;
-    }
-
-    .social-icons a:hover i {
-        transform: scale(2.2);
-        -ms-transform: scale(2.2);
-        -webkit-transform: scale(2.2);
-        color: #ff003c;
-        background: -webkit-linear-gradient(45deg, #ff003c, #c648c8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        transition: all 265ms ease-in;
-    }
-
-    .grid-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 20px;
-        font-size: 1.2em;
-    }
-
-    hr {
-        display: block;
-        height: 1px;
-        border: 0;
-        border-top: 1px solid #ccc;
-        margin: 1em 0;
-        padding: 0;
-        Background-color: transparent;
-        opacity: 0.5;
-    }
-</style>
 
 
 {% endblock %}

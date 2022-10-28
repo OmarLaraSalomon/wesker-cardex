@@ -95,27 +95,21 @@ def perfilmedicodentro(request, username=None):
 def datosmedicos(request, username=None):
 
     if request.method == 'POST':
-        if DatosMedicos.objects.filter(user_id=request.POST['user_id']).count():
-            infomedica = DatosMedicos.objects.update(
-                edad=request.POST['edad'], peso=request.POST['peso'], 
-                estatura=request.POST['estatura'], alergias=request.POST['alergias'],
-                sangre=request.POST['sangre'],enfermedad=request.POST['enfermedad'],
-                lentes=request.POST['lentes'], fumas=request.POST['fumas'], 
-                tomas=request.POST['tomas'], deporte=request.POST['deporte'],
-                sueño=request.POST['sueño'], covid=request.POST['covid'],
-                vacuna=request.POST['vacuna'],user_id=request.POST['user_id'])
-            infomedica.save()
-        else:
-            infomedica = DatosMedicos.objects.create(
-                edad=request.POST['edad'], peso=request.POST['peso'], 
-                estatura=request.POST['estatura'], alergias=request.POST['alergias'],
-                sangre=request.POST['sangre'],enfermedad=request.POST['enfermedad'],
-                lentes=request.POST['lentes'], fumas=request.POST['fumas'], 
-                tomas=request.POST['tomas'], deporte=request.POST['deporte'],
-                sueño=request.POST['sueño'], covid=request.POST['covid'],
-                vacuna=request.POST['vacuna'],user_id=request.POST['user_id'])
-            infomedica.save()
-
+        medical= DatosMedicos.objects.get(user_id=request.POST['user_id'])
+        medical.edad=request.POST['edad']
+        medical.peso=request.POST['peso']
+        medical.estatura=request.POST['estatura']
+        medical.alergias=request.POST['alergias']
+        medical.sangre=request.POST['sangre']
+        medical.enfermedad=request.POST['enfermedad']
+        medical.lentes=request.POST['lentes']
+        medical.fumas=request.POST['fumas']
+        medical.tomas=request.POST['tomas']
+        medical.deporte=request.POST['deporte']
+        medical.sueño=request.POST['sueño']
+        medical.covid=request.POST['covid']
+        medical.vacuna=request.POST['vacuna']
+        medical.save()
     context = {}
 
     current_user = request.user
@@ -133,6 +127,17 @@ def datosmedicos(request, username=None):
 
 def verdatosmedicos(request, username=None):
     template = 'social/verdatosmedicos.html'
+    if request.method == 'POST':
+        infomedica = DatosMedicos.objects.create(
+                edad=request.POST['edad'], peso=request.POST['peso'], 
+                estatura=request.POST['estatura'], alergias=request.POST['alergias'],
+                sangre=request.POST['sangre'],enfermedad=request.POST['enfermedad'],
+                lentes=request.POST['lentes'], fumas=request.POST['fumas'], 
+                tomas=request.POST['tomas'], deporte=request.POST['deporte'],
+                sueño=request.POST['sueño'], covid=request.POST['covid'],
+                vacuna=request.POST['vacuna'],user_id=request.POST['user_id'])
+        infomedica.save()
+
     current_user = request.user
     if username and username != current_user.username:
         user = User.objects.get(username=username)
@@ -429,9 +434,9 @@ def inicio(request, username=None):
         current_user = request.user
         if username and username != current_user.username:
             user = User.objects.get(username=username)
-            posts = user.posts.all()
+            posts = user.posts.all().exclude(activate = "False")
         else:
-            posts = current_user.posts.all()
+            posts = current_user.posts.all().exclude(activate = "False")
             user = current_user
             return render(request, template, {'user': user, 'posts': posts})
     else:

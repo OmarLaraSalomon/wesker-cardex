@@ -44,6 +44,7 @@
                         <td>{{ user.information.departamento }}</td>
                         <td>
                             <div class="profile">
+                                <input type="text" value="{{user.id}}" id="id_us" style="display: none;">
                                 <a class="boton-datosmedicos justify" style="background-color: #7f00b2; cursor: pointer; text-align: center;"
                                     href="{% url 'files' user.username %}"><i class="fa-solid fa-file-import"></i> Subir Perfil
                                     Psicologico</a>
@@ -63,7 +64,9 @@
 
 <script>
     function direccion() {
-        window.location.href = "http://127.0.0.1:8000/only-admin-cardex/social/document/"
+        let id_me = $("#id_us").val();
+        console.log("EL ID ES: " + id_me)
+        window.location.href = "http://127.0.0.1:8000/only-admin-cardex/social/document/"+ "?user_id__id__exact=" + id_me
     }
 </script>
 

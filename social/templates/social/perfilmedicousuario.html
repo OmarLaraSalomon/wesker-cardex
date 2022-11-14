@@ -59,9 +59,9 @@
 
     <div class="card card--19">
         <div class="card__header card__header--19">
-
             <h1 class="card__title card__will-animate">{{ user.information.first_name }} {{user.information.last_name }}
             </h1>
+            <input type="text" value="{{user.id}}" id="id_us" style="display: none;">
             {% if user.datosmedicos %}
             <ul class="card__subtitle card__will-animate">
                 <li><strong>Edad: </strong>{{user.datosmedicos.edad}} años</li>

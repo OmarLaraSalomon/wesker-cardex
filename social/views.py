@@ -604,3 +604,13 @@ def asistencia(request):
 
     context = {'posts': posts,'users': users}
     return render(request,template,context)
+
+def credencial(request, id=None):
+    template = 'social/credencial.html'
+    usuario = id
+    user = User.objects.get(id=usuario)
+    puesto = AsignacionHat.objects.filter(user_id=usuario)
+    hats = Hat.objects.all()
+    print(puesto)
+    context = {'user': user, 'puesto': puesto, 'hats':hats}
+    return render(request, template, context)

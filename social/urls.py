@@ -83,6 +83,10 @@ urlpatterns = [
     #Justificantes Medicos
     url(r'^justifyfiles/$', views.justifyfiles, name='justifyfiles'),
     path(r'^justifyfiles/<str:username>/', views.justifyfiles, name='justifyfiles'),
+
+    # cards QR
+    path('credencial/', views.credencial, name='credencial'),
+    path('credencial/<str:id>/', views.credencial, name='credencial'),
     
     
     url(r'^viewfiles/$', views.viewfiles, name='viewfiles'),

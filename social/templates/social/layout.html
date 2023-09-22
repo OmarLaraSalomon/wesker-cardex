@@ -117,7 +117,7 @@
 							Medico</a></li>
 					<li><a href="{% url 'perfillegal' %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Documentacion</a></li>
 
-					<li><a href="{% url 'credencial' user.id %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Credencial </a></li>
+					<li><a href="{% url 'contrataciones' %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Contrataciones </a></li>
 					<!-- <li><a href="#" class="yellow"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a> -->
 					<!-- <li><a href="#" class="red"><i class="fa fa-money"></i>&nbsp; Contabilidad</a></li>
 					<li><a href="#" class="red"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a></li> -->
@@ -172,8 +172,12 @@
 				{% if request.user.is_authenticated %}
 				<a class="hero1" href="{% url 'perfillegal' %}" style="background-color: #4b3621;"><i
 						style="background-color: #4b3621;" class="fa-solid fa-passport"></i>&nbsp; Documentacion </a>
-				<br>
-				<a class="hero1" href="{% url 'credencial' user.id %}" style="background-color: #1e9a94;"><i class="fa-solid fa-passport"></i>&nbsp; Credencial </a></li>
+			<br> <!-- user.id  -->
+				<a class="hero1" href="{% url 'contrataciones' %}" style="background-color: #032531;"><i class="fa-solid fa-passport"></i>&nbsp; Contrataciones </a></li>
+
+				<a class="hero1" href="{% url 'egg' %}" style="background-color: #4b3621;"><i
+					style="background-color: #4b3621;" class="fa-solid fa-passport"></i>&nbsp; egg </a>
+		<br>
 				{% endif %}
 				<!-- {% if request.user.is_authenticated %}
 				<a class="hero1" href="#"><i class="fa fa-money"></i>&nbsp; Contabilidad</a>

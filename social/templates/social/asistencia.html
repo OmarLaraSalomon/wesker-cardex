@@ -4,7 +4,7 @@
 {% block content %}
 <!-- <link href='https://fonts.googleapis.com/css?family=Cabin+Condensed:700' rel='stylesheet' type='text/css'>
 <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'> -->
-<link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
+<!-- <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'> -->
 
 <head>
     <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
@@ -16,11 +16,22 @@
 
 </head>
 
-<div style="text-align: center; justify-content: center; align-items: center; padding-top: 4%;">
+<div class="btn-export" style="text-align: center; justify-content: center; align-items: center; padding-top: 4%;">
     <button style="font-size: 20px;" id="btnExportar">
         Exportar
     </button>
 </div>
+
+<form method="get" action="{% url 'asistencia' %}" class="filter-form">
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+      <input type="text" name="search" value="{{ request.GET.search }}" class="search-input" placeholder="Buscar...">
+      <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+      {% if request.GET.search %}
+      <a href="{% url 'asistencia' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>y
+    {% endif %}
+    </div>
+  </form>
+
 <article>
     <div>
 
@@ -87,6 +98,112 @@
 
     </div>
 </article>
+
+<div class="pagination">
+
+    <div class="previous">
+        {% if posts.has_previous %}
+        <div class="previous-1">
+            <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+        </div>
+        <div class="previous-1">
+            <a href="?page={{ posts.previous_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-left"></i> </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="current">
+        <span class="current-page">{{ posts.number }}</span>
+    </div>
+
+    <div class="next">
+        {% if posts.has_next %}
+        <div class="next-1">
+            <a href="?page={{ posts.next_page_number }}" class="btn-action">  <i class="fa-solid fa-angle-right"></i></a>
+        </div>
+        <div class="next-1">
+            <a href="?page={{ posts.paginator.num_pages }}" class="btn-action"> <i class="fa-solid fa-angles-right"></i></a>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+<style>
+    .pagination {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* Divide el contenedor en tres columnas de igual ancho */
+        height: 80px;
+    }
+
+    .previous {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .previous-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    .next {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .next-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current span {
+        padding: 15px;
+        background: #105db0;
+        color: white;
+        border-radius: 50%;
+        font-size: 15px;
+    }
+
+    .btn-action:hover{
+        background: #105db0;
+        padding: 15px;
+        border-radius: 30%;
+        color: white;
+        z-index: 2;
+    }
+
+    .search-input{
+        width: 80%;
+    }
+
+    .clean-input{
+        font-size: 1rem;
+        padding: 0.4rem 1.4rem;
+        background: red;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-primary,.clean-input{
+        margin: 1%;
+    }
+
+    @media screen and (max-width: 800px){
+        .btn-export{
+            margin-top: 50px;
+        }
+    }
+
+</style>
 <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -95,12 +212,12 @@
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#tabla').DataTable({});
     });
-</script>
+</script> -->
 
 <script>
     const $btnExportar = document.querySelector("#btnExportar"),

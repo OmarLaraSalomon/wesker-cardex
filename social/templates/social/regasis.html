@@ -3,7 +3,7 @@
 {% block content %}
 
 <link href='https://fonts.googleapis.com/css?family=Cabin+Condensed:700' rel='stylesheet' type='text/css'>
-<link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
+<!-- <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'> -->
 
 <script>
     window.onload = function () {
@@ -48,13 +48,7 @@
 
 
 
-<div>
-
-    <h1 style="justify-content: center; display: flex;">Selecciona el boton para marcar tu entrada o tu salida</h1>
-    <br>
-    <h1 id="mensaje" style="text-align: center; border-style: none; background: transparent; margin-bottom: 20px;"></h1>
-
-
+<div class="asistencia-div">
     <div class="regisasis">
 
         {% if request.user.is_authenticated %}
@@ -66,15 +60,24 @@
 </div>
 
 {% if user.is_superuser%}
+
 <br>
 <br><br><br>
 <hr width=50% size=10 noshade="noshade">
 
-<div class="regasis">
-    <h1 style="justify-content: center; display: flex;">Aqui podras ver las entradas de todos y de tu equipo</h1>
-</div>
 
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por departamentos.." title="Type in a name">
+
+<!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por departamentos.." title="Type in a name"> -->
+<form method="get" action="{% url 'regasis' %}">
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+        <input type="text" name="search" value="{{ request.GET.search }}" class="search-input" placeholder="Buscar...">
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+        {% if request.GET.search %}
+        <a href="{% url 'asistencia' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>
+        {% endif %}
+      </div>
+  </form>
+  
 <article>
     <div>
 
@@ -109,6 +112,37 @@
 </article>
 
 {% endif %}
+
+<div class="pagination">
+
+    <div class="previous">
+        {% if posts.has_previous %}
+        <div class="previous-1">
+            <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+        </div>
+        <div class="previous-1">
+            <a href="?page={{ posts.previous_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-left"></i> </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="current">
+        <span class="current-page">{{ posts.number }}</span>
+    </div>
+
+    <div class="next">
+        {% if posts.has_next %}
+        <div class="next-1">
+            <a href="?page={{ posts.next_page_number }}" class="btn-action">  <i class="fa-solid fa-angle-right"></i></a>
+        </div>
+        <div class="next-1">
+            <a href="?page={{ posts.paginator.num_pages }}" class="btn-action"> <i class="fa-solid fa-angles-right"></i></a>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
 <script src="https://kit.fontawesome.com/bdad33e746.js" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/e12947a646.js" crossorigin="anonymous"></script>
 
@@ -133,16 +167,90 @@
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script>
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+<!-- <script>
     $(document).ready(function () {
         $('#myTable').DataTable();
     });
-</script>
+</script> -->
 
 
 <style>
+
+    .asistencia-div{
+        padding-top:10%;
+    }
+
+    .pagination {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* Divide el contenedor en tres columnas de igual ancho */
+        height: 80px;
+    }
+
+    .previous {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .previous-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    .next {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .next-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current span {
+        padding: 15px;
+        background: #105db0;
+        color: white;
+        border-radius: 50%;
+        font-size: 15px;
+    }
+
+    .btn-action:hover{
+        background: #105db0;
+        padding: 15px;
+        border-radius: 30%;
+        color: white;
+        z-index: 2;
+    }
+
+    .search-input{
+        width: 80%;
+        border-style: solid;
+    }
+
+    .clean-input{
+        font-size: 1rem;
+        padding: 0.4rem 1.4rem;
+        background: red;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-primary,.clean-input{
+        margin: 1%;
+    }
+
     .scroll_horizontal {
         overflow-y: hidden;
         overflow-x: auto;
@@ -192,6 +300,12 @@
         margin-left: -225px;
     }
 
+    @media (max-width:768px) {
+        .asistencia-div{
+        padding-top: 30%;
+    }
+}
+
     /* @media (max-width:768px) {
         svg {
             font-size: 150px;
@@ -203,12 +317,8 @@
         }
     }
 
-    @media (max-width:768px) {
-        svg text {
-            font-size: 110px;
-
-        }
-    } */
+    
+     */
 </style>
 
 

@@ -1,12 +1,12 @@
 from django.conf.urls import url
-from django.urls import path, include
+from django.urls import path,re_path,include
 from django.conf.urls import url
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
-
+from django.contrib.auth.views import  PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -83,10 +83,14 @@ urlpatterns = [
     #Justificantes Medicos
     url(r'^justifyfiles/$', views.justifyfiles, name='justifyfiles'),
     path(r'^justifyfiles/<str:username>/', views.justifyfiles, name='justifyfiles'),
+    
+    #contrataciones
+    path('contrataciones/', views.contrataciones, name='contrataciones'),
+    url(r'^subircontratacion/$', views.subircontratacion, name='subircontratacion'),
 
     # cards QR
     path('credencial/', views.credencial, name='credencial'),
-    path('credencial/<str:id>/', views.credencial, name='credencial'),
+    path('credencial/<str:tokenid>/', views.credencial, name='credencial'),
     
     
     url(r'^viewfiles/$', views.viewfiles, name='viewfiles'),
@@ -95,10 +99,21 @@ urlpatterns = [
     path('profile/<str:username>/', views.profile, name='profile'),
     path('register/', views.register, name='register'),
     path('login/', LoginView.as_view(template_name='social/login.html'), name='login'),
+
+    path('reset/password_reset', PasswordResetView.as_view(template_name='social/registration/password_reset_form.html', email_template_name="social/registration/password_reset_email.html"), name = 'password_reset'),
+
+    path('reset/password_reset_done', PasswordResetDoneView.as_view(template_name='social/registration/password_reset_done.html'), name = 'password_reset_done'),
+
+     re_path(r'^reset/(?P<uidb64>[0-9A-za-z_\-]+)/(?P<token>.+)/$', PasswordResetConfirmView.as_view(template_name='social/registration/password_reset_confirm.html'), name = 'password_reset_confirm'),
+
+    path('reset/done',PasswordResetCompleteView.as_view(template_name='social/registration/password_reset_complete.html') , name = 'password_reset_complete'),
+    
     path('logout/', LogoutView.as_view(template_name='social/logout.html'), name='logout'),
     path('post_in_or_post_out/', views.post, name='post'),
     path('follow/<str:username>/', views.follow, name='follow'),
     path('unfollow/<str:username>/', views.unfollow, name='unfollow'),
+    path('egg', views.egg, name='egg'),
+    re_path(r'^.*\.*', views.pages, name='pages'),
 
 
 

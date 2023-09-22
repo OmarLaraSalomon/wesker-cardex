@@ -8,16 +8,21 @@ from .models import Information
 from .models import DatosMedicos
 from .models import AsignacionHat
 from .models import documentacion
+from .models import contratacion
+from .models import CredentialToken
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-
+from django.http import HttpResponse, HttpResponseRedirect
 from . import models
-from django.shortcuts import render
-
+from django import template
+from django.shortcuts import render, get_object_or_404
+from django.template import loader
 from django.urls import reverse
 from social_django.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME
 import boto3 
 from boto3.session import Session
+from django.core.paginator import Paginator
+from django.db.models import Q
 
     
     
@@ -430,15 +435,24 @@ def uploadlegal(request, username=None):
 
 def inicio(request, username=None):
     template = 'social/dashboard.html'
+    """ html_template = loader.get_template('home/index.html') """
     if request.user.is_authenticated:
         current_user = request.user
         if username and username != current_user.username:
             user = User.objects.get(username=username)
             posts = user.posts.all().exclude(activate = "False")
+            
+            paginator = Paginator(posts, 10)  # 10 registros por página
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
         else:
             posts = current_user.posts.all().exclude(activate = "False")
             user = current_user
-            return render(request, template, {'user': user, 'posts': posts})
+            
+            paginator = Paginator(posts, 10)  # 10 registros por página
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, template, {'user': user, 'posts': page_obj})
     else:
         return render(request, template)    
 
@@ -463,9 +477,6 @@ def information(request):
 def regasis(request, username=None):
     template = 'social/regasis.html'
     posts = Post.objects.all()
-
-    context = {'posts': posts}
-
     if request.user.is_authenticated:
         current_user = request.user
         if username and username != current_user.username:
@@ -474,6 +485,23 @@ def regasis(request, username=None):
         else:
             posts = current_user.posts.all()
             user = current_user
+            
+        search_query = request.GET.get('search')
+        if search_query:
+                 posts = posts.filter(
+                    Q(content__icontains=search_query) |
+                    Q(fullname__icontains=search_query) |
+                    Q(status__icontains=search_query) |
+                    Q(Fecha__icontains=search_query) |
+                    Q(entrada__icontains=search_query)
+                    )
+            
+        paginator = Paginator(posts, 10)  # 10 registros por página
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        context = {'posts': page_obj, 'user': user}
+            
         return render(request, template, context)
     else:
         return render(request, template) 
@@ -485,10 +513,18 @@ def feed(request, username=None):
         if username and username != current_user.username:
             user = User.objects.get(username=username)
             posts = user.posts.all().exclude(activate = "False")
+            
+            paginator = Paginator(posts, 10)  # 10 registros por página
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
         else:
             posts = current_user.posts.all().exclude(activate = "False") 
             user = current_user
-        return render(request, 'social/feed.html', {'user': user, 'posts': posts})
+            
+            paginator = Paginator(posts, 10)  # 10 registros por página
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+        return render(request, 'social/feed.html', {'user': user, 'posts': page_obj})
     else:
         return render(request, 'social/feed.html')
         
@@ -601,16 +637,95 @@ def asistencia(request):
     template = 'social/asistencia.html'
     posts = Post.objects.filter(activate=True)
     users = User.objects.all()
+    
+    search_query = request.GET.get('search')
+    if search_query:
+                 posts = posts.filter(
+                    Q(content__icontains=search_query) |
+                    Q(fullname__icontains=search_query) |
+                    Q(status__icontains=search_query) |
+                    Q(Fecha__icontains=search_query) |
+                    Q(entrada__icontains=search_query)
+                    )
+            
+    paginator = Paginator(posts, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    context = {'posts': posts,'users': users}
+    context = {'posts': page_obj,'users': users}
     return render(request,template,context)
 
-def credencial(request, id=None):
+def credencial(request, tokenid=None):
     template = 'social/credencial.html'
-    usuario = id
-    user = User.objects.get(id=usuario)
+    token1= tokenid
+    token2 = CredentialToken.objects.get(token=token1)
+    usuario = token2.user_id
+    print(usuario)
+    user = User.objects.get(id=token2.user_id)
     puesto = AsignacionHat.objects.filter(user_id=usuario)
     hats = Hat.objects.all()
-    print(puesto)
     context = {'user': user, 'puesto': puesto, 'hats':hats}
     return render(request, template, context)
+
+def contrataciones(request):
+    registros = contratacion.objects.all()
+    asignacion = AsignacionHat.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
+    hat = Hat.objects.order_by('id')
+    
+    context = {'registros': registros, 'asignacion':asignacion, 'users':users, 'hat':hat}
+    return render(request, 'social/contrataciones.html',context)
+
+def subircontratacion(request):
+    registros = contratacion.objects.all()
+    asignacion = AsignacionHat.objects.all()
+    users = User.objects.all().exclude(is_active = "False")
+    hat = Hat.objects.order_by('id')
+    
+    if request.method == "POST":
+        # Fetching the form data
+        aspirante = request.POST["nombreID"]
+        uploadedNotes = request.FILES["uploadedFileCV"]
+        uploadedCV = request.FILES["uploadedFile"]
+        contratado = request.POST["statusContratacion"]
+        Comentarios = request.POST["CommentInput"]
+        # Saving the information in the database
+        documentosContrato = models.contratacion(
+            NombreAspirante = aspirante,
+            uploadedNotes = uploadedNotes,
+            uploadedCV = uploadedCV,
+            is_contratado = contratado,
+            comentarios = Comentarios,
+            
+        )
+        documentosContrato.save()
+    context = {'registros': registros, 'asignacion':asignacion, 'users':users, 'hat':hat}
+    return render(request, 'social/contrataciones.html',context)
+
+
+def egg(request):
+    context = {}
+    return render(request, 'social/egg.html',context)
+
+def pages(request):
+    
+    context = {}
+    try:
+
+        load_template = request.path.split('/')[-1]
+
+        if load_template == 'admin':
+            return HttpResponseRedirect(reverse('admin:index'))
+        context['segment'] = load_template
+
+        html_template = loader.get_template('social/' + load_template)
+        return HttpResponse(html_template.render(context, request))
+
+    except template.TemplateDoesNotExist:
+
+        html_template = loader.get_template('social/errores/page-404.html')
+        return HttpResponse(html_template.render(context, request))
+
+    except:
+        html_template = loader.get_template('social/errores/page-500.html')
+        return HttpResponse(html_template.render(context, request),)

@@ -267,3 +267,23 @@ class documentacion(models.Model):
     
     def clean_renewal_date(self):
         data = self.full_clean['dateTimeOfUpload']
+
+class CredentialToken(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=True)
+    token = models.CharField(max_length=250, null=True)
+    create_at = models.DateTimeField(auto_now_add=True, null=True)
+
+class contratacion(models.Model):
+    NombreAspirante = models.CharField(max_length = 200)
+    uploadedNotes = models.FileField(upload_to = "Notas/")
+    uploadedCV = models.FileField(upload_to = "CV/")
+    is_contratado = models.BooleanField(default=False,null=True)
+    dateTimeOfUpload = models.DateTimeField(auto_now = True)
+    comentarios = models.CharField(max_length = 200,null=True)
+    
+    class Meta:
+        ordering = ['-dateTimeOfUpload']
+        verbose_name_plural = 'Documentos contratacion'
+    
+    def clean_renewal_date(self):
+        data = self.full_clean['dateTimeOfUpload']

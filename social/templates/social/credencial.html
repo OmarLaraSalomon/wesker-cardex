@@ -21,42 +21,40 @@
     header {
         width: 100%;
         height: 100px;
-        border-style: solid;
         color: white;
         text-align: center;
         background-color: #001F42;
         padding-top: 1%;
+        /* border-style: solid ; */
     }
 
     .container {
-        /* border-style: solid; */
         display: flex;
         align-items: center;
         justify-content: center;
+        /* border-style: solid; */
     }
 
     .cardGeneral {
-        width: 60%;
+        width: 55%;
         height: 520px;
-        /* border: 1px solid blue; */
         display: flex;
         margin-top: 3%;
         margin-bottom: 3%;
         border-radius: 12px;
-        border-style: solid;
+        /* border-style: solid; */
     }
 
     .info {
         height: 100%;
         width: 50%;
-        /* border: 1px solid yellowgreen; */
         padding-top: 4%;
         justify-content: center;
         align-items: center;
         text-align: center;
     }
 
-    .info img{
+    .info img {
         width: 170px;
         height: 220px;
         border-radius: 50%;
@@ -65,25 +63,20 @@
     .empresa {
         height: 100%;
         width: 50%;
-        /* border: 1px solid red; */
-        /* display: flex;
-        justify-content: center;
-        align-items: center; */
-        padding-top: 15%;
-        /* padding-left: 5%; */
+        padding-top: 12%;
         text-align: center;
     }
 
-    .empName{
+    .empName {
         margin-top: 12%;
     }
 
-    .number{
+    .number {
         text-decoration: none;
     }
 
-    .btn-sitio{
-        background: #001F42;
+    .btn-sitio {
+        background: #424bb4;
         padding-top: 5%;
         padding-bottom: 5%;
         padding-left: 10%;
@@ -95,14 +88,21 @@
     }
 
     .logo-empresa2 {
-        width: 180px;
-        height: 180px;
+        width: 130px;
+        height: 130px;
+        padding-top: 1%;
+    }
+
+    .logo-empresa3 {
+        width: 130px;
+        height: 130px;
+        padding-top: 1%;
+        display: none;
     }
 
     footer {
         width: 100%;
         height: 130px;
-        border-style: solid;
         color: white;
         text-align: center;
         background-color: #001F42;
@@ -124,7 +124,113 @@
     .fa-brands {
         margin-top: 1.5%;
         margin-right: 2%;
-        font-size: 3rem;
+        font-size: 1rem;
+    }
+
+    /* cardGeneral */
+    @media (max-width: 768px) {
+
+        header {
+            height: 170px;
+            position: absolute;
+            background-color: #e6e6e6;
+        }
+
+        header h1 {
+            display: none;
+        }
+
+        .container {
+            padding-top: 16%;
+        }
+
+        .cardGeneral {
+            display: inline;
+            width: 90%;
+            height: 700px;
+            margin-bottom: 8%;
+            position: relative;
+        }
+
+        .info {
+            height: 50%;
+            width: 100%;
+            float: left;
+            justify-content: left;
+            align-items: unset;
+            text-align: left;
+            position: relative;
+        }
+
+        .imgres{
+            width: 100%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .info img {
+            width: 160px;
+            height: 200px;
+        }
+
+        .empresa {
+            height: 50%;
+            width: 100%;
+            margin-top: 120%;
+            padding-top: 6%;
+            justify-content: left;
+            align-items: unset;
+            text-align: left;
+            position: relative;
+            /* border-style: solid; */
+        }
+
+        .logo-empresa2 {
+            width: 100px;
+            height: 100px;
+            padding-top: 1%;
+            display: none;
+        }
+
+        footer {
+            width: 100%;
+            height: 80px;
+            padding-bottom: 2%;
+            background: #b8b8b8;
+        }
+
+        .logo-empresa {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 2%;
+            margin-right: 2%;
+            margin-top: 1.5%;
+            display: none;
+        }
+
+        .logo-empresa3 {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 5%;
+            margin-right: 4%;
+            /* margin-top: 1.5%; */
+            display: inline;
+        }
+
+        .line {
+            margin-right: 2%;
+            font-size: 3rem;
+            color: black;
+        }
+
+        .fa-brands {
+            margin-top: 1.5%;
+            margin-right: 2%;
+            font-size: 1rem;
+            color: black;
+        }
     }
 </style>
 
@@ -136,7 +242,9 @@
         <!-- Content here -->
         <div class="cardGeneral">
             <div class="info">
-                <img src="{{user.profile.image.url}}" alt="">
+                <div class="imgres">
+                    <img src="{{user.profile.image.url}}" alt="">
+                </div>
                 <h1>{{ user.information.first_name }} {{ user.information.last_name }}</h1>
 
                 {% for puesto in puesto %}
@@ -146,7 +254,7 @@
                 {% endif %}
                 {% endfor %}
                 {% endfor %}
-
+                <hr style="height:5px; border-width:0; color:black; background-color:black;">
             </div>
             <div class="empresa">
                 <!-- <img src="{% static 'tesca/tesca-negro.png' %}" class="logo-empresa2"> -->
@@ -154,6 +262,7 @@
                 <h1 class="empName">Tesca Corporation</h1>
                 <h2>Numero telefonico</h2>
                 <h3><a href="tel:+52 55 91 65 02 31" class="number">+52 5591650231</a></h3>
+                <img src="{% static 'tesca/tesca-negro.png' %}" class="logo-empresa2">
             </div>
 
         </div>
@@ -161,11 +270,14 @@
 
 
     <footer>
+
+        <img src="{% static 'tesca/tesca-negro.png' %}" class="logo-empresa3">
         <img src="{% static 'tesca/TESCAOjo.png' %}" class="logo-empresa">
         <i class="line">|</i>
-        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands">2023 - 2024</i>
+        <!-- <i class="fa-brands fa-facebook"></i>
         <i class="fa-brands fa-twitter"></i>
-        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-instagram"></i> -->
     </footer>
 </body>
 

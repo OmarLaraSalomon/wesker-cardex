@@ -94,8 +94,25 @@ def perfilmedico(request, username=None):
     template = 'social/perfilmedico.html'
     users = User.objects.all().exclude(is_active = "False")
 
-    context = {'users': users}
+    search_query = request.GET.get('search')
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |  # Buscar en el nombre de usuario
+            Q(first_name__icontains=search_query) |  # Buscar en el nombre
+            Q(last_name__icontains=search_query) |  # Buscar en el apellido
+            Q(information__departamento__icontains=search_query)  # Buscar en el departamento
+        )
     
+    paginator = Paginator(users, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+
+
+    context = {'users': page_obj, 'page_numbers': page_numbers}
     return render(request, template, context)
 
 def perfilmedicodentro(request, username=None):
@@ -201,7 +218,23 @@ def perfillegal(request, username=None):
     documentoP = documentacion.objects.all()
     registros = AsignacionHat.objects.all()
     hat = Hat.objects.order_by('id')
-    context = {"legalfiles": legals, 'users': users,"documentoP": documentoP,'registros':registros, 'hat':hat}
+    
+    search_query = request.GET.get('search')
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |  # Buscar en el nombre de usuario
+            Q(first_name__icontains=search_query) |  # Buscar en el nombre
+            Q(last_name__icontains=search_query) |  # Buscar en el apellido
+            Q(information__departamento__icontains=search_query)  # Buscar en el departamento
+        )
+    
+    paginator = Paginator(users, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+    context = {"legalfiles": legals, 'users': page_obj,"documentoP": documentoP,'registros':registros, 'hat':hat, 'page_numbers': page_numbers}
     
     return render(request, template, context) 
 #Files Psicologicos

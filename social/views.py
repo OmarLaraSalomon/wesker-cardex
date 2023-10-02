@@ -442,17 +442,19 @@ def inicio(request, username=None):
             user = User.objects.get(username=username)
             posts = user.posts.all().exclude(activate = "False")
             
-            paginator = Paginator(posts, 10)  # 10 registros por página
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
         else:
             posts = current_user.posts.all().exclude(activate = "False")
             user = current_user
             
-            paginator = Paginator(posts, 10)  # 10 registros por página
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, template, {'user': user, 'posts': page_obj})
+            
+        paginator = Paginator(posts, 10)  # 10 registros por página
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        page_num = page_obj.number
+        max_pages_before_and_after = 2
+        page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+
+        return render(request, template, {'user': user, 'posts': page_obj, 'page_numbers': page_numbers})
     else:
         return render(request, template)    
 
@@ -514,17 +516,18 @@ def feed(request, username=None):
             user = User.objects.get(username=username)
             posts = user.posts.all().exclude(activate = "False")
             
-            paginator = Paginator(posts, 10)  # 10 registros por página
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
         else:
             posts = current_user.posts.all().exclude(activate = "False") 
             user = current_user
             
-            paginator = Paginator(posts, 10)  # 10 registros por página
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-        return render(request, 'social/feed.html', {'user': user, 'posts': page_obj})
+        paginator = Paginator(posts, 10)  # 10 registros por página
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        page_num = page_obj.number
+        max_pages_before_and_after = 2
+        page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+
+        return render(request, 'social/feed.html', {'user': user, 'posts': page_obj, 'page_numbers': page_numbers})
     else:
         return render(request, 'social/feed.html')
         

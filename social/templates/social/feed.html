@@ -62,7 +62,13 @@
     </div>
 
     <div class="current">
-        <span class="current-page">{{ posts.number }}</span>
+        {% for page_num in page_numbers %}
+            {% if page_num == posts.number %}
+                <span class="current-page">{{ page_num }}</span>
+            {% else %}
+                <a href="?page={{ page_num }}" class="page-number">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
     </div>
 
     <div class="next">
@@ -139,14 +145,28 @@
         font-size: 15px;
     }
 
-    .btn-action:hover{
+    .page-number {
+        border-style: solid;
+        padding: 5%;
+        border-radius: 15px;
+        color: white;
+        background-color: lightblue;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .page-number:hover {
+        background: #105db0;
+    }
+
+    .btn-action:hover {
         background: #105db0;
         padding: 15px;
         border-radius: 30%;
         color: white;
         z-index: 2;
     }
-
+    
     .scroll_horizontal {
         padding: 2%;
         text-align: center;

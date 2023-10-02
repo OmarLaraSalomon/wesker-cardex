@@ -54,9 +54,25 @@ def rewards(request, username=None):
 def perfilkaisen(request, username=None):
     template = 'social/perfilkaisen.html'
     users = User.objects.all().exclude(is_active = "False")
-
-    context = {'users': users}
+    search_query = request.GET.get('search')
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |  # Buscar en el nombre de usuario
+            Q(first_name__icontains=search_query) |  # Buscar en el nombre
+            Q(last_name__icontains=search_query) |  # Buscar en el apellido
+            Q(information__departamento__icontains=search_query)  # Buscar en el departamento
+        )
     
+    paginator = Paginator(users, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+
+
+    context = {'users': page_obj, 'page_numbers': page_numbers}
     return render(request, template, context)
 
 
@@ -157,7 +173,24 @@ def perfilpsico(request, username=None):
     template = 'social/perfilpsico.html'
     users = User.objects.all().exclude(is_active = "False")
     documents = Document.objects.all()
-    context = {"files": documents, 'users': users}
+    search_query = request.GET.get('search')
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |  # Buscar en el nombre de usuario
+            Q(first_name__icontains=search_query) |  # Buscar en el nombre
+            Q(last_name__icontains=search_query) |  # Buscar en el apellido
+            Q(information__departamento__icontains=search_query)  # Buscar en el departamento
+        )
+    
+    paginator = Paginator(users, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+
+    context = {"files": documents, 'users': page_obj, 'page_numbers': page_numbers}
     
     return render(request, template, context) 
 
@@ -501,8 +534,11 @@ def regasis(request, username=None):
         paginator = Paginator(posts, 10)  # 10 registros por página
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        
-        context = {'posts': page_obj, 'user': user}
+        page_num = page_obj.number
+        max_pages_before_and_after = 2
+        page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+
+        context = {'posts': page_obj, 'user': user, 'page_numbers': page_numbers}
             
         return render(request, template, context)
     else:
@@ -654,8 +690,12 @@ def asistencia(request):
     paginator = Paginator(posts, 10)  # 10 registros por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
 
-    context = {'posts': page_obj,'users': users}
+    context = {'posts': page_obj,'users': users, 'page_numbers': page_numbers}
     return render(request,template,context)
 
 def credencial(request, tokenid=None):

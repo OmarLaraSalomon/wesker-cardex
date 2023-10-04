@@ -211,13 +211,14 @@ def perfilpsico(request, username=None):
     
     return render(request, template, context) 
 
-def perfillegal(request, username=None):
+def perfillegal(request, id=None):
+    user_id2=id
     template = 'social/perfillegal.html'
-    users = User.objects.all().exclude(is_active = "False")
-    legals = Documentoslegales.objects.all()
+    registros = AsignacionHat.objects.filter(user_id=user_id2) #variable para comparar el hat de la cuenta
+    users = User.objects.all().exclude(is_active = "False") #obtiene todos los usuarios
+    tiene_permiso = registros.filter(hat_id__in=[19, 22]).exists()
+    legals = Documentoslegales.objects.all() 
     documentoP = documentacion.objects.all()
-    registros = AsignacionHat.objects.all()
-    hat = Hat.objects.order_by('id')
     
     search_query = request.GET.get('search')
     if search_query:
@@ -234,7 +235,7 @@ def perfillegal(request, username=None):
     page_num = page_obj.number
     max_pages_before_and_after = 2
     page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
-    context = {"legalfiles": legals, 'users': page_obj,"documentoP": documentoP,'registros':registros, 'hat':hat, 'page_numbers': page_numbers}
+    context = {"legalfiles": legals, 'users': page_obj,"documentoP": documentoP,'registros':registros, 'page_numbers': page_numbers, 'tiene_permiso': tiene_permiso, "userid": user_id2}
     
     return render(request, template, context) 
 #Files Psicologicos

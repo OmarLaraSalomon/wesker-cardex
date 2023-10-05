@@ -6,897 +6,415 @@
     <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
 </head>
 
-<form>
-    {% csrf_token %}
+<div style="background-color: #5815af;">
+    <hr>
 
-    <div class="form-group" style="text-align: center; justify-content: center; align-items: center;">
-        <label for="hatField">{{_('hat')}}</label>
-        <select class="cajasTexto selectHat2" id="hatField" name="pais" required class="form-control">
-            <option value="" disabled selected>{{_('Selecciona usuario y su hat')}}</option>
-            {% for a in asighat %}
-            <option value="{{ a.hat_id }}">{{a.user.username}} {{ a.hat.nombre_hat }}</option>
-            {% endfor %}
-
-        </select>
-    </div>
-    <div class="form-group" style="text-align: center; justify-content: center; align-items: center;">
-        <label for="actividadField" style="text-align: center;">{{_('Actividad')}}</label>
-        <input type="text" class="form-control inputact" id="actividadField"
-            placeholder="{{ _('Escribe la actividad') }}" required>
-    </div>
-    <div class="form-group" style="text-align: center; justify-content: center; align-items: center;">
-        <label for="descripcion_Field">{{_('Observaciones')}}</label>
-        <!-- <input type="text" class="form-control inputdes" id="descripcionField" placeholder="{{ _('Coloca la descripcion') }}"> -->
-        <textarea name="comentarios" rows="10" cols="40"
-            placeholder="Escribe las observaciones"></textarea>
+    <div class="profile" style="margin-top: 20px;">
+      <h2 style="color: white;"><i class="fa fa-line-chart"></i>&nbsp;Perfiles generales</h2>
     </div>
 
+  </div>
 
-    <div class="btnact">
-        <button name="boton" onclick="post()" type="submit" class="actualizar">{{_('Registrar')}}</button>
+  <form method="get" action="{% url 'hats' %}" class="filter-form">
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+      <input type="text" name="search" value="{{ request.GET.search }}" class="search search-input"
+        placeholder="Buscar...">
+      <button type="submit" class="btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+      {% if request.GET.search %}
+      <a href="{% url 'hats' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>
+      {% endif %}
     </div>
+  </form>
 
-</form>
+  <article>
+    <div>
 
-<div class="scroll_horizontal" style="text-align: center;">
+      <div class="scroll_horizontal">
+        <table id="myTable">
 
-    <style>
-        .form-control1 {
-            font-size: 15px;
-            outline: none;
-            background: transparent;
-            text-align: center;
-        }
+          <tr class="header">
+            <th style="width:20%;">Foto</th>
+            <th style="width:20%;">Usuario</th>
+            <th style="width:20%;">Departamento</th>
 
-        .selectHat2 {
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .inputact,
-        .inputdes {
-            text-align: center;
-        }
-
-        .selectHat,
-        .selectUser,
-        .selectDepart,
-        .selectHat2 {
-            text-align: center;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            font-size: 15px;
-            border-radius: 5px;
-            height: 25px;
-        }
-    </style>
-    <!-- <input style="width: 30%;" onkeyup="filtra_movi()" id="filtro" class="form-control1 col-lg-3 py-1 mr-5" type="text"
-        placeholder="Filtrar Hats" aria-label="Search"> -->
-
-    <select class="selectHat" id="hatput" name="pais" required class="form-control" onchange="filtra_movi()">
-        <option value="" disabled selected>{{_('Selecciona el Hat')}}</option>
-        {% for hat in hat %}
-        <option value="{{ hat.nombre_hat }}">{{hat.nombre_hat}}</option>
-        {% endfor %}
-    </select>
-
-
-    <select class="selectUser" id="hatput2" name="pais" required class="form-control" onchange="filtra_user()">
-        <option value="" disabled selected>{{_('Selecciona el usuario')}}</option>
-        {% for users in users %}
-        <option value="{{ users.username }}">{{users.username}}</option>
-        {% endfor %}
-    </select>
-
-    <select class="selectDepart" id="hatput3" name="pais" required class="form-control" onchange="filtra_dept()">
-        <option value="" disabled selected>{{_('Selecciona el Departamento')}}</option>
-        <option value="Tierra">Tierra</option>
-        <option value="Agua">Agua</option>
-        <option value="Fuego">Fuego</option>
-        <option value="Ignis">Ignis</option>
-        <option value="Aire">Aire</option>
-        <option value="Ether">Ether</option>
-        <option value="Digimundo">Digimundo</option>
-    </select>
-
-    <button id="borrado" class="actualizar" onclick="regresar()"> borrar filtro </button>
-
-    <div class="scroller">
-
-        <style>
-            .scroller {
-                display: flex;
-                height: 500px;
-                width: auto;
-                overflow-y: scroll;
-            }
-        </style>
-
-        <table id="myTable"
-            style="text-align: center; justify-content: center; align-items: center; width: 100%; height: 100%; margin-bottom: 20px;">
-
-            <tr class="header">
-                <th>numero</th>
-                <th>Actividad</th>
-                <th>Descripcion</th>
-                <th>Hat</th>
-                <th>Responsable</th>
-                <th>Departamento</th>
-                <th>Fecha y hora</th>
-            </tr>
-            {% for ac in actividades %}
-            <tr>
-                <td>{{ ac.id }} </td>
-                <td>{{ ac.actividades }}</td>
-                <td>{{ac.descripcion}} </td>
-                <td>{{ac.hat.nombre_hat}}</td>
-
-                {% for a in asighat %}
-
-                {% if ac.hat_id == a.hat_id %}
-                <td>{{a.user.username}}</td>
-
-                {% for info in info %}
-                {% if a.user_id == info.user_id %}
-                <td id="{{info.departamento}}">{{info.departamento}}</td>
-                {% endif %}
-                {% endfor %}
-
-                {% endif %}
-
-                {% endfor %}
-
-                <td>{{ac.create_at}}</td>
-            </tr>
-            {% endfor %}
+          </tr>
+          {% for user in users %}
+          <tr>
+            <td>
+              <div class="container-article"><a href="{% url 'profile' user.username %}"><img
+                    src="{{ user.profile.image.url }}"></a></div>
+            </td>
+            <td><a href="{% url 'profile' user.username %}">
+              {{user.information.first_name }}
+                {{user.information.last_name }}</a></td>
+            <td>{{ user.information.departamento }}</td>
+          </tr>
+          {% endfor %}
         </table>
-    </div>
-
-    <!-- <button name="boton" onclick="contarFilas()" type="submit" class="actualizar">Calcular</button> -->
-
-</div>
-
-<!-- grafica de ganancias por comisiones -->
-<!-- <div id="plotlyChart3" style="display: flex; align-items: center; justify-content: center;"></div> -->
-<div class="col-md-4 grid-margin stretch-card" id="general">
-    <div class="card">
-        <div class="card-body">
-            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-            <div id="plotlyChart"></div>
-            <div id="plotlyChart2" style="display: flex; align-items: center; justify-content: center;"></div>
-            <div id="plotlyChartAct" style="display: flex; align-items: center; justify-content: center;"></div>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-4 grid-margin stretch-card" id="filtrosGrafica">
-    <div class="card">
-        <div class="card-body">
-            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-            <div id="plotlyChartDept" style="display: flex; align-items: center; justify-content: center;"></div>
-            <div id="plotlyChartDept2" style="display: flex; align-items: center; justify-content: center;"></div>
-            <div id="plotlyChartMeses" style="display: flex; align-items: center; justify-content: center;"></div>
-        </div>
-    </div>
-</div>
-
-<!-- fin de grafica de ganancias por comisiones-->
-
-
-
-<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script>
-    var Tierra = 0, Agua = 0, Fuego = 0, Ignis = 0, Aire = 0, Ether = 0, Digimundo = 0;
-    var parametros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-    var valores = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-    $('#myTable tbody tr').each(function () {
-        var v = $(this).find("td:eq(5)").text();
-        if (v == 'Tierra') {
-            Tierra += 1;
-        } else if (v == 'Agua') {
-            Agua += 1;
-        } else if (v == 'Fuego') {
-            Fuego += 1;
-        } else if (v == 'Ignis') {
-            Ignis += 1;
-        } else if (v == 'Aire') {
-            Aire += 1;
-        } else if (v == 'Ether') {
-            Ether += 1;
-        } else if (v == 'Digimundo') {
-            Digimundo += 1;
-        }
-    });
-
-    $(document).ready(function () {
-
-        var $num = document.getElementById('myTable').getElementsByTagName('tr').length - 1;
-        console.log($num);
-        document.getElementById("filtrosGrafica").style.display = "none";
-        var data = [
-            {
-                x: ['Tierra', 'Agua', 'Fuego', 'Ignis', 'Aire', 'Ether', 'Digimundo'],
-                y: [Tierra, Agua, Fuego, Ignis, Aire, Ether, Digimundo],
-                type: 'bar',
-                marker: {
-                    /* color: '#C8A2C8' */
-                    color: ['rgba(128, 64, 0,1)', 'rgba(0,170,228,1)', 'rgba(255,0,0,1)', 'rgba(239,184,16,1)', 'rgba(204,204,204,1)', 'rgba(104,255,0,1)', 'rgba(22,75,157,1)'],
-                    line: {
-                        width: 2.5
-                    }
-                }
-            }
-        ];
-
-        var layout = {
-            title: 'Actividades Generales Realizadas por Departamento',
-        };
-
-        Plotly.newPlot('plotlyChart', data, layout, { responsive: true });
-    });
-
-    var data = [{
-        values: [Tierra, Agua, Fuego, Ignis, Aire, Ether, Digimundo],
-        labels: ['Tierra', 'Agua', 'Fuego', 'Ignis', 'Aire', 'Ether', 'Digimundo'],
-        type: 'pie',
-        insidetextorientation: "radial"
-    }];
-
-
-    var layout = {
-        height: 600,
-        width: 600,
-        title: 'Actividades Generales Realizadas por Departamento',
-    };
-
-    Plotly.newPlot('plotlyChart2', data, layout);
-
-    /* var data = [{
-        x: ['Tierra', 'Agua', 'Fuego', 'Ignis', 'Aire', 'Ether', 'Digimundo'],
-        y: [Tierra, Agua, Fuego, Ignis, Aire, Ether, Digimundo],
-        type: 'linear',
-    }];
-
-
-    var layout = {
-        height: 600,
-        width: 600
-    };
-
-    Plotly.newPlot('plotlyChart3', data, layout, { responsive: true }); */
-
-    $('#myTable tbody').find('tr').each(function (i, el) {
-        var fecha = $(this).find('td').eq(6).text();
-        var sep = fecha.split(' ');
-        var separado = sep[0];
-        console.log(separado);
-
-        for (var i = 0; i <= parametros.length; i++) {
-            if (separado == i && separado != 0) {
-                valores[i - 1] = valores[i - 1] + 1;
-            }
-
-        }
-
-    });
-    var data = [{
-        x: parametros,
-        y: valores,
-        type: 'bar',
-    }];
-
-
-    var layout = {
-        title: 'Actividades Generales Realizadas por Dia',
-        height: 600,
-        width: 600
-    };
-
-    Plotly.newPlot('plotlyChartAct', data, layout);
-</script>
-
-
-<script>
-    var a = ""
-
-    function regresar() {
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        $('#hatput').val(a);
-        $('#hatput2').val(a);
-        $('#hatput3').val(a);
-        for (i = 0; i < tr.length; i++) {
-            tr[i].style.display = "";
-        }
-        document.getElementById("general").style.display = "initial";
-        document.getElementById("filtrosGrafica").style.display = "none";
-    }
-    function filtra_movi() {
-        var input, filter, table, tr, td, i, txtValue;
-        var dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-        var actividades = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var Enero = 0, Febrero = 0, Marzo = 0, Abril = 0, Mayo = 0, Junio = 0, Julio = 0, Agosto = 0, Septiembre = 0, Octubre = 0, Noviembre = 0, Diciembre = 0;
-        input = $("#hatput").val();
-        filter = input.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        $('#hatput2').val(a);
-        $('#hatput3').val(a);
-        document.getElementById("general").style.display = "none";
-        document.getElementById("filtrosGrafica").style.display = "initial";
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[3];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-
-        $('#myTable tbody').find('tr').each(function (i, el) {
-            var fecha = $(this).find('td').eq(6).text();
-            var hatU = $(this).find('td').eq(3).text();
-            var sep = fecha.split(' ');
-            var separado = sep[0];
-            var separado2 = sep[2];
-            document.getElementById("general").style.display = "none";
-            document.getElementById("filtrosGrafica").style.display = "initial";
-
-            for (var i = 0; i <= dias.length; i++) {
-                if (hatU == input) {
-                    if (separado == i) {
-                        actividades[i - 1] = actividades[i - 1] + 1;
-                    }
-                }
-
-            }
-
-            if (hatU == input) {
-                if (separado2 == 'Enero') {
-                    Enero += 1;
-                } else if (separado2 == 'Febrero') {
-                    Febrero += 1;
-                } else if (separado2 == 'Marzo') {
-                    Marzo += 1;
-                } else if (separado2 == 'Abril') {
-                    Abril += 1;
-                } else if (separado2 == 'Mayo') {
-                    Mayo += 1;
-                } else if (separado2 == 'Junio') {
-                    Junio += 1;
-                } else if (separado2 == 'Julio') {
-                    Julio += 1;
-                } else if (separado2 == 'Agosto') {
-                    Agosto += 1;
-                } else if (separado2 == 'Septiembre') {
-                    Septiembre += 1;
-                } else if (separado2 == 'Octubre') {
-                    Octubre += 1;
-                } else if (separado2 == 'Noviembre') {
-                    Noviembre += 1;
-                } else if (separado2 == 'Diciembre') {
-                    Diciembre += 1;
-                }
-            }
-
-        });
-        var data = [{
-            x: dias,
-            y: actividades,
-            type: 'bar',
-        }];
-        var layout = {
-            title: 'Actividades Diarias Realizadas por ' + input,
-            height: 600,
-            width: 600
-        };
-
-        Plotly.newPlot('plotlyChartDept', data, layout);
-
-        var data = [{
-            x: dias,
-            y: actividades,
-            type: 'linear',
-        }];
-
-        var layout = {
-            title: 'Actividades Diarias Realizadas por ' + input,
-            height: 600,
-            width: 600
-        };
-
-        Plotly.newPlot('plotlyChartDept2', data, layout);
-
-        var data = [
-            {
-                x: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                y: [Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre],
-                type: 'bar',
-            }
-        ];
-
-        var layout = {
-            title: 'Actividades Realizadas por Mes por ' + input,
-        };
-
-        Plotly.newPlot('plotlyChartMeses', data, layout);
-    }
-    function filtra_user() {
-        var input, filter, table, tr, td, i, txtValue;
-        var dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-        var actividades = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var Enero = 0, Febrero = 0, Marzo = 0, Abril = 0, Mayo = 0, Junio = 0, Julio = 0, Agosto = 0, Septiembre = 0, Octubre = 0, Noviembre = 0, Diciembre = 0;
-        input = $("#hatput2").val();
-        filter = input.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        $('#hatput').val(a);
-        $('#hatput3').val(a);
-        document.getElementById("general").style.display = "none";
-        document.getElementById("filtrosGrafica").style.display = "initial";
-
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[4];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-
-        $('#myTable tbody').find('tr').each(function (i, el) {
-            var fecha = $(this).find('td').eq(6).text();
-            var userb = $(this).find('td').eq(4).text();
-            var sep = fecha.split(' ');
-            var separado = sep[0];
-            var separado2 = sep[2];
-
-            for (var i = 0; i <= dias.length; i++) {
-                if (userb == input) {
-                    if (separado == i) {
-                        actividades[i - 1] = actividades[i - 1] + 1;
-                    }
-                }
-
-            }
-
-            if (userb == input) {
-                if (separado2 == 'Enero') {
-                    Enero += 1;
-                } else if (separado2 == 'Febrero') {
-                    Febrero += 1;
-                } else if (separado2 == 'Marzo') {
-                    Marzo += 1;
-                } else if (separado2 == 'Abril') {
-                    Abril += 1;
-                } else if (separado2 == 'Mayo') {
-                    Mayo += 1;
-                } else if (separado2 == 'Junio') {
-                    Junio += 1;
-                } else if (separado2 == 'Julio') {
-                    Julio += 1;
-                } else if (separado2 == 'Agosto') {
-                    Agosto += 1;
-                } else if (separado2 == 'Septiembre') {
-                    Septiembre += 1;
-                } else if (separado2 == 'Octubre') {
-                    Octubre += 1;
-                } else if (separado2 == 'Noviembre') {
-                    Noviembre += 1;
-                } else if (separado2 == 'Diciembre') {
-                    Diciembre += 1;
-                }
-            }
-        });
-
-        var data = [{
-            x: dias,
-            y: actividades,
-            type: 'bar',
-        }];
-        var layout = {
-            title: 'Actividades Diarias Realizadas por ' + input,
-            height: 600,
-            width: 600
-        };
-
-        Plotly.newPlot('plotlyChartDept', data, layout);
-
-        var data = [{
-            x: dias,
-            y: actividades,
-            type: 'linear',
-        }];
-
-        var layout = {
-            title: 'Actividades Diarias Realizadas por ' + input,
-            height: 600,
-            width: 600
-        };
-
-        Plotly.newPlot('plotlyChartDept2', data, layout);
-
-        var data = [
-            {
-                x: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                y: [Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre],
-                type: 'bar',
-            }
-        ];
-
-        var layout = {
-            title: 'Actividades Realizadas por Mes por ' + input,
-        };
-
-        Plotly.newPlot('plotlyChartMeses', data, layout);
-    }
-
-    function filtra_dept() {
-        var input, filter, table, tr, td, i, txtValue;
-        var dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-        var actividades = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var Enero = 0, Febrero = 0, Marzo = 0, Abril = 0, Mayo = 0, Junio = 0, Julio = 0, Agosto = 0, Septiembre = 0, Octubre = 0, Noviembre = 0, Diciembre = 0;
-        var elementos = 0;
-        input = $("#hatput3").val();
-        filter = input.toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        $('#hatput').val(a);
-        $('#hatput2').val(a);
-        document.getElementById("general").style.display = "none";
-        document.getElementById("filtrosGrafica").style.display = "initial";
-
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[5];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                    elementos = elementos + 1;
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-
-        $('#myTable tbody').find('tr').each(function (i, el) {
-            var fecha = $(this).find('td').eq(6).text();
-            var dpto = $(this).find('td').eq(5).text();
-            var sep = fecha.split(' ');
-            var separado = sep[0];
-            var separado2 = sep[2];
-            document.getElementById("general").style.display = "none";
-            document.getElementById("filtrosGrafica").style.display = "initial";
-            for (var i = 0; i <= dias.length; i++) {
-                if (dpto == input) {
-                    if (separado == i) {
-                        actividades[i - 1] = actividades[i - 1] + 1;
-                    }
-                }
-
-            }
-            if (dpto == input) {
-                if (separado2 == 'Enero') {
-                    Enero += 1;
-                } else if (separado2 == 'Febrero') {
-                    Febrero += 1;
-                } else if (separado2 == 'Marzo') {
-                    Marzo += 1;
-                } else if (separado2 == 'Abril') {
-                    Abril += 1;
-                } else if (separado2 == 'Mayo') {
-                    Mayo += 1;
-                } else if (separado2 == 'Junio') {
-                    Junio += 1;
-                } else if (separado2 == 'Julio') {
-                    Julio += 1;
-                } else if (separado2 == 'Agosto') {
-                    Agosto += 1;
-                } else if (separado2 == 'Septiembre') {
-                    Septiembre += 1;
-                } else if (separado2 == 'Octubre') {
-                    Octubre += 1;
-                } else if (separado2 == 'Noviembre') {
-                    Noviembre += 1;
-                } else if (separado2 == 'Diciembre') {
-                    Diciembre += 1;
-                }
-            }
-        });
-
-        var data = [{
-            x: dias,
-            y: actividades,
-            type: 'bar',
-        }];
-        var layout = {
-            title: 'Actividades Diarias Realizadas por ' + input,
-            height: 600,
-            width: 600
-        };
-
-        Plotly.newPlot('plotlyChartDept', data, layout);
-
-        var data = [{
-            x: dias,
-            y: actividades,
-            type: 'linear',
-        }];
-
-        var layout = {
-            title: 'Actividades Diarias Realizadas por ' + input,
-            height: 600,
-            width: 600
-        };
-
-        Plotly.newPlot('plotlyChartDept2', data, layout);
-
-        var data = [
-            {
-                x: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                y: [Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre],
-                type: 'bar',
-            }
-        ];
-
-        var layout = {
-            title: 'Actividades Realizadas por Mes por ' + input,
-        };
-
-        Plotly.newPlot('plotlyChartMeses', data, layout);
-    }
-
-
-</script>
-<script>
-    function post() {
-        $.ajax({
-            url: "{% url 'hats' %}",
-            type: "POST",
-            data: {
-                'actividad': $('#actividadField').val(),
-                'descripcion': $('#descripcionField').val(),
-                'hat_id': $('#hatField').val(),
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-
-
-            },
-            success: function (data) {
-                console.log(data)
-                console.log("Success");
-
-            }
-        });
-
-    }
-</script>
-<!-- Profile -->
-<!-- <div class="profile">
-    {% load static from static %}
-    <img src="{{user.profile.image.url}}">
-    <h2>{{ user.username }}</h2>
-
-</div>
-
-<div class="profile">
-    {% if user.is_superuser%}
-    <h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
-    {%else%}
-    <h2> No eres Admin :(</h2> 
-    {%endif%}
-</div>
-
-
-
-
-{% for user in users %}
-<div class="espaciohats">
-
-    <div class="hats">
-        <div class="carta_perfi">
-            <div class="carta_header">
-                <div class="avatar">
-                    <img src="{{ user.profile.image.url }}" alt="">
-                </div>
-                <div class="textos">
-                    <h2 class="username"><a href="{%url 'profile' user.username%}"><span>
-                                {{user.information.first_name}}
-                                {{ user.information.last_name }}</span></a></h2>
-                    <h4>Hats:</h4>
-                </div>
-            </div>
-            <div class="carta_body">
-                <div class="carta_contenido">
-                    <ul class="lista">
-                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Puesto: {{ user.information.puesto }}
-                        </li>
-                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Departamento:
-                            {{user.information.departamento }}</li>
-                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Ingreso: {{ user.egresos.ingreso }}</li>
-                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Egreso: {{ user.egresos.egreso}}</li>
-                        <li style="font-size: 15px;"><i class="fa fa-check"></i>Correo: {{ user.email }}</li>
-                    </ul>
-                    <div class="carta_pie">
-                        <button class="carta_boton" type="button">Ver mas</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
 
     </div>
-</div>
+  </article>
 
-{% endfor %} -->
+  <div class="pagination">
 
+    <div class="previous">
+      {% if users.has_previous %}
+      <div class="previous-1">
+        <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+      </div>
+      <div class="previous-1">
+        <a href="?page={{ users.previous_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-left"></i> </a>
+      </div>
+      {% endif %}
+    </div>
 
-<style>
-    .espaciohats {
-        margin-bottom: 0px;
-        margin-top: 100px;
-        margin-left: -50px;
+    <div class="current">
+      {% for page_num in page_numbers %}
+            {% if page_num == users.number %}
+                <span class="current-page">{{ page_num }}</span>
+            {% else %}
+                <a href="?page={{ page_num }}" class="page-number">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="next">
+      {% if users.has_next %}
+      <div class="next-1">
+        <a href="?page={{ users.next_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-right"></i></a>
+      </div>
+      <div class="next-1">
+        <a href="?page={{ users.paginator.num_pages }}" class="btn-action"> <i class="fa-solid fa-angles-right"></i></a>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
+  
+    .pagination {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      /* Divide el contenedor en tres columnas de igual ancho */
+      height: 80px;
     }
-
-    @media (max-width:720px) {
-        .espaciohats {
-            margin-left: -100px;
-            display: block;
-            width: 100%;
-        }
+  
+    .previous {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
-
-    .hats {
-        justify-content: center;
-        align-items: center;
-        margin-left: 32%;
-        margin-right: 50%;
-        display: block;
-        width: 100%;
+  
+    .previous-1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-
-
-    .carta_perfi img {
-        width: 100%;
+  
+    .current {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
     }
-
-    .carta_perfi {
-        display: flex;
-        -webkit-flex-wrap: wrap;
-        -moz-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-        -o-flex-wrap: wrap;
-        flex-wrap: wrap;
-        -webkit-flex-direction: column;
-        -moz-flex-direction: column;
-        -ms-flex-direction: column;
-        -o-flex-direction: column;
-        flex-direction: column;
-        background-color: #fff;
-        width: 330px;
-        position: relative;
+  
+    .next {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
-
-    .carta_perfi .carta_header {
-        display: flex;
-        width: 100%;
-        height: 120px;
-        -webkit-flex-wrap: wrap;
-        -moz-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-        -o-flex-wrap: wrap;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        justify-content: center;
-        position: absolute;
-        background-color: #1594A6;
-        top: 0;
-        padding-bottom: 15px;
-        text-align: center;
-        color: #fff;
-        transition: all ease-in 350ms;
-        z-index: 1;
-        border-radius: .75rem;
-        line-height: .2;
+  
+    .next-1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-
-    .carta_perfi .carta_header .textos h3 {
-        font-size: 1.3em;
-        margin-bottom: 0;
+  
+    .current span {
+      padding: 15px;
+      background: #105db0;
+      color: white;
+      border-radius: 50%;
+      font-size: 15px;
     }
-
-    .carta_perfi .carta_header .textos h4 {
-        font-size: .8em;
-        font-style: italic;
+  
+    .page-number {
+      border-style: solid;
+      padding: 5%;
+      border-radius: 15px;
+      color: white;
+      background-color: lightblue;
+      margin-left: 1%;
+      margin-right: 1%;
     }
-
-    .carta_perfi .carta_header .avatar {
-        display: block;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        background-color: #E1E8F0;
-        top: -50px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 5px solid #fff;
-        box-shadow: 0 0 4px 1px rgba(0, 0, 0, .1);
+    
+    .page-number:hover {
+      background: #105db0;
     }
-
-
-
-    .carta_perfi .carta_header button:hover {
-        background-color: #E9E9E9;
-
+  
+    .btn-action:hover {
+      background: #105db0;
+      padding: 15px;
+      border-radius: 30%;
+      color: white;
+      z-index: 2;
     }
-
-    .carta_perfi .carta_body {
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        width: 100%;
-        height: 0px;
-        overflow: hidden;
-        padding-bottom: 20px;
-        box-shadow: 0 0 15px 2px rgba(0, 0, 0, .1), 0 0 8px 1px rgba(0, 0, 0, .1);
-        border-radius: .75rem;
-        opacity: 0;
-        height: 375px;
-        opacity: 1;
-        visibility: visible;
+  
+    .search-input {
+      width: 80%;
     }
-
-    .carta_perfi .carta_body ul {
-        margin-bottom: 1.75rem;
-        list-style: none;
+  
+    .clean-input {
+      font-size: 1rem;
+      padding: 0.4rem 1.4rem;
+      background: red;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
     }
-
-    .carta_perfi .carta_body ul li {
-        margin-bottom: .5rem;
+  
+    .btn-primary,
+    .clean-input {
+      margin: 1%;
     }
-
-    .carta_perfi .carta_body ul i {
-        margin-right: 1rem;
-        display: inline-block;
-        transform: scale(1.25);
+  
+    .container {
+      display: center;
+      grid-template-columns: 300px 300px 300px;
+      grid-gap: 50px;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url(../../static/gris.jpg) no-repeat;
+      font-family: 'Baloo Paaji 2', cursive;
+  
     }
-
-    .carta_perfi .carta_body ul li:nth-child(1) i {
-        color: #668EE8;
+  
+    .card {
+      background-color: rgba(255, 255, 255, .15);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+      height: 37rem;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  
+      color: white;
+      /*  border: solid 1px black ; */
     }
-
-    .carta_perfi .carta_body ul li:nth-child(2) i {
-        color: #5BC7B1;
+  
+  
+    .card__name {
+      margin-top: 15px;
+      font-size: 1.5em;
     }
-
-    .carta_perfi .carta_body ul li:nth-child(3) i {
-        color: #FF5050;
+  
+    .card__image {
+      height: 160px;
+      width: 160px;
+      border-radius: 50%;
+      border: 5px solid #272133;
+      margin-top: 20px;
+      box-shadow: 0 10px 50px rgb(0, 89, 86);
     }
-
-    .carta_perfi .carta_body .carta_pie {
-        text-align: center;
+  
+  
+    .draw-border {
+      box-shadow: inset 0 0 0 4px #58cdd1;
+      color: #58afd1;
+      -webkit-transition: color 0.25s 0.0833333333s;
+      transition: color 0.25s 0.0833333333s;
+      position: relative;
     }
-
-    .carta_perfi .carta_body .carta_boton {
-        padding: 10px 25px;
-        border-radius: .25rem;
-        border: 0;
-        background-color: #1594A6;
-        color: #fff;
-        cursor: pointer;
+  
+    .draw-border::before,
+    .draw-border::after {
+      border: 0 solid transparent;
+      box-sizing: border-box;
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      width: 0rem;
+      height: 0;
+      bottom: 0;
+      right: 0;
     }
-
-    .carta_perfi .carta_body .carta_boton:active {
-        background-color: #188291;
+  
+    .draw-border::before {
+      border-bottom-width: 4px;
+      border-left-width: 4px;
     }
-</style>
-
+  
+    .draw-border::after {
+      border-top-width: 4px;
+      border-right-width: 4px;
+    }
+  
+    .draw-border:hover {
+      color: #ffe593;
+    }
+  
+    .draw-border:hover::before,
+    .draw-border:hover::after {
+      border-color: #eb196e;
+      -webkit-transition: border-color 0s, width 0.25s, height 0.25s;
+      transition: border-color 0s, width 0.25s, height 0.25s;
+      width: 100%;
+      height: 100%;
+    }
+  
+    .draw-border:hover::before {
+      -webkit-transition-delay: 0s, 0s, 0.25s;
+      transition-delay: 0s, 0s, 0.25s;
+    }
+  
+    .draw-border:hover::after {
+      -webkit-transition-delay: 0s, 0.25s, 0s;
+      transition-delay: 0s, 0.25s, 0s;
+    }
+  
+    .btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      line-height: 1.5;
+      font: 700 1.2rem 'Roboto Slab', sans-serif;
+      padding: 0.75em 2em;
+      letter-spacing: 0.05rem;
+      margin: 1em;
+      width: 13rem;
+    }
+  
+    .btn:focus {
+      outline: 2px dotted #55d7dc;
+    }
+  
+  
+    .social-icons {
+      padding: 0;
+      list-style: none;
+      margin: 1em;
+    }
+  
+    .social-icons li {
+      display: inline-block;
+      margin: 0.15em;
+      position: relative;
+      font-size: 1em;
+    }
+  
+    .social-icons i {
+      color: #fff;
+      position: absolute;
+      top: 0.95em;
+      left: 0.96em;
+      transition: all 265ms ease-out;
+    }
+  
+    .social-icons a {
+      display: inline-block;
+    }
+  
+    .social-icons a:before {
+      transform: scale(1);
+      -ms-transform: scale(1);
+      -webkit-transform: scale(1);
+      content: " ";
+      width: 45px;
+      height: 45px;
+      border-radius: 100%;
+      display: block;
+      background: linear-gradient(45deg, #ff003c, #c648c8);
+      transition: all 265ms ease-out;
+    }
+  
+    .social-icons a:hover:before {
+      transform: scale(0);
+      transition: all 265ms ease-in;
+    }
+  
+    .social-icons a:hover i {
+      transform: scale(2.2);
+      -ms-transform: scale(2.2);
+      -webkit-transform: scale(2.2);
+      color: #ff003c;
+      background: -webkit-linear-gradient(45deg, #ff003c, #c648c8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: all 265ms ease-in;
+    }
+  
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 20px;
+      font-size: 1.2em;
+    }
+  
+    .scroll_horizontal {
+      overflow-y: hidden;
+      overflow-x: auto;
+    }
+  
+    * {
+      box-sizing: border-box;
+    }
+  
+    #myInput {
+      background-image: url('/css/searchicon.png');
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      width: 80%;
+      font-size: 16px;
+      padding: 12px 20px 12px 40px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+  
+    #myInputname {
+      background-image: url('/css/searchicon.png');
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      width: 80%;
+      font-size: 16px;
+      padding: 12px 20px 12px 40px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+  
+    #myTable {
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ddd;
+      font-size: 18px;
+    }
+  
+    #myTable th,
+    #myTable td {
+      text-align: left;
+      padding: 12px;
+    }
+  
+    #myTable tr {
+      border-bottom: 1px solid #ddd;
+    }
+  
+    #myTable tr.header,
+    #myTable tr:hover {
+      background-color: #f1f1f1;
+    }
+  
+    svg {
+      position: absolute;
+      top: 50%;
+      margin-top: -60px;
+      left: 30%;
+      margin-left: -225px;
+    }
+  </style>
 
 {% endblock %}

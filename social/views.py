@@ -31,17 +31,24 @@ from django.http import JsonResponse
 def hats(request, username=None):
     template = 'social/hats.html'
     users = User.objects.all().exclude(is_active = "False")
-    asighat = AsignacionHat.objects.order_by('user_id')
-    hat = Hat.objects.all()
-    info = Information.objects.all()
-    actividades = Actividades.objects.order_by('id')
-    if request.method == 'POST':
-            actividad = Actividades.objects.create(
-                actividades=request.POST['actividad'], descripcion=request.POST['descripcion'], 
-                hat_id=request.POST['hat_id'])
-            actividad.save()
-
-    context = {'users': users,'asighat':asighat,'hat':hat,'actividades': actividades, 'info':info}
+    
+    search_query = request.GET.get('search')
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |  # Buscar en el nombre de usuario
+            Q(first_name__icontains=search_query) |  # Buscar en el nombre
+            Q(last_name__icontains=search_query) |  # Buscar en el apellido
+            Q(information__departamento__icontains=search_query)  # Buscar en el departamento
+        )
+    
+    paginator = Paginator(users, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+    
+    context = {'users': page_obj,'page_numbers': page_numbers}
     
     return render(request, template, context)
  

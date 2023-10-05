@@ -23,6 +23,8 @@ import boto3
 from boto3.session import Session
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse
+
 
     
     
@@ -216,7 +218,7 @@ def perfillegal(request, id=None):
     template = 'social/perfillegal.html'
     registros = AsignacionHat.objects.filter(user_id=user_id2) #variable para comparar el hat de la cuenta
     users = User.objects.all().exclude(is_active = "False") #obtiene todos los usuarios
-    tiene_permiso = registros.filter(hat_id__in=[19, 22]).exists()
+    tiene_permiso = registros.filter(hat_id__in=[42, 22]).exists()
     legals = Documentoslegales.objects.all() 
     documentoP = documentacion.objects.all()
     
@@ -423,8 +425,9 @@ def subirinclusion(request):
             
         )
         documento1.save()
-        context = {'users': users, 'legals' : legals, 'documentoP': documentoP,'registros':registros,'hat':hat}
-    return render(request, 'social/perfillegal.html',context)
+         # En lugar de redirigir, envía una respuesta JSON de éxito
+        response_data = {'success': True}
+        return JsonResponse(response_data)
     
 
 #Subir archivos A Perfil Medico

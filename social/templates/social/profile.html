@@ -12,97 +12,19 @@
 	{% load static from static %}
 	<img src="{{user.profile.image.url}}">
 	<h2>{{ user.username }}</h2>
-
-	<!-- tabla carlos -->
-	<table id="tabla-hats" style="display: none;">
-		<thead>
-			<tr>
-				<th>hat</th>
-				<th>valor</th>
-
-			</tr>
-		</thead>
-		<tbody>
-			{% for registros in registros %}
-			{% if registros.user_id == user.id %}
-
-			<tr>
-
-				{% for hat in hat %}
-				{% if registros.hat_id == hat.id %}
-
-				<td>{{hat.nombre_hat}}</td>
-				<td>1</td>
-				{% endif %}
-				{% endfor %}
-
-			</tr>
-			{% endif %}
-			{% endfor %}
-		</tbody>
-		<tfoot>
-			<tr>
-				<th>Total</th>
-				<th>Total</th>
-			</tr>
-		</tfoot>
-	</table>
-
-	<input type="text" id="ganancia_total" style="display: none;">
-
-	<script>
-		$(document).ready(function () {
-			//Defino los totales de mis 2 columnas en 0
-			var total_col1 = 0;
-			var total_col2 = 0;
-			//Recorro todos los tr ubicados en el tbody
-			$('#tabla-hats tbody').find('tr').each(function (i, el) {
-
-				//Voy incrementando las variables segun la fila ( .eq(0) representa la fila 1 )     
-				total_col2 += parseFloat($(this).find('td').eq(1).text());
-			});
-			//Muestro el resultado en el th correspondiente a la columna
-			$('#tabla-hats tfoot tr th').eq(1).text("Total " + total_col2);
-
-			total = $('#tabla-hats tfoot tr th').eq(1).text();
-			var comisiones_balance = total.split(' ');
-			$("#ganancia_total").val(comisiones_balance[1]);
-			var ganancia = $('#ganancia_total').val();
-
-			let buttonF = document.querySelector(".btnfuncional");
-			let buttonN = document.querySelector(".btnnof");
-
-			if (ganancia >= 4) {
-				buttonF.style.display = 'none';
-				buttonN.style.display = 'block';
-				/* button.style.cursor= "not-allowed"; */
-
-			} else {
-				buttonF.style.display = 'block';
-				buttonN.style.display = 'none';
-			}
-		});
-	</script>
-
-	<!-- fin tabla carlos -->
-	<!-- <h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2> -->
-
-
-	<!-- {% if request.user.is_authenticated %}
-	{% if user.username != request.user.username %}
-	{% if user not in request.user.profile.following %}
-	<button><a class="follow-button" href="{% url 'follow' user %}">Siguir</a></button>
-	{% else %}
-	<button><a class="follow-button" href="{% url 'unfollow' user %}">Seguidor</a></button>
-	{% endif %}
-	{% endif %}
-	{% endif %} -->
 </div>
 
 <div class="profile">
 	{% if user.is_superuser%}
 	<h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
 	{%endif%}
+</div>
+
+<div class="codQR"> <!-- {{ user.information.first_name }} {{ user.information.last_name }} -->
+	<a href="{% url 'generar_codigo_qr' user.id %}"
+		download="{{ user.information.first_name }}_{{ user.information.last_name }}_qr.png">
+		<img src="{% url 'generar_codigo_qr' user.id %}" alt="Código QR de usuario" class="QR-code">
+	</a>
 </div>
 
 <!--Piso 0 -->
@@ -121,24 +43,20 @@
 	</div>
 
 </div>
-<div class="codQR"> <!-- {{ user.information.first_name }} {{ user.information.last_name }} -->
-<a href="{% url 'generar_codigo_qr' user.id %}" download="{{ user.information.first_name }}_{{ user.information.last_name }}_qr.png">
-    <img src="{% url 'generar_codigo_qr' user.id %}" alt="Código QR de usuario" class="QR-code">
-</a>
-</div>
+
 
 <style>
-	.codQR{
+	.codQR {
 		width: 100%;
-		height: 420px;
+		height: 270px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 
-	.QR-code{
-		width: 400px;
-		height: 400px;
+	.QR-code {
+		width: 250px;
+		height: 250px;
 	}
 </style>
 
@@ -147,20 +65,12 @@
 <div class="follow" style="height: 50px; align-items: center;">
 
 	{% for registros in registros %}
-			{% if registros.user_id == user.id %}
+	<div style="font-size: 15px;">
+		{{registros.hat.nombre_hat}}
+	</div>
+{% endfor %}
+	</tbody>
 
-				{% for hat in hat %}
-				{% if registros.hat_id == hat.id %}
-				<div style="font-size: 15px;">
-					 {{hat.nombre_hat}}
-				</div>
-				
-				{% endif %}
-				{% endfor %}
-			{% endif %}
-			{% endfor %}
-		</tbody>
-	
 </div>
 
 
@@ -181,11 +91,11 @@
 <div class="profile1">
 
 	<div class="profile1">
-		<a class="btnInf btnfuncional" href="{% url 'asignarhat' %}" style="text-align: center; display: none;">Asigna tu hat</a>
-	</div>
-	<!-- La validacion para que aparesca un botono o otro esta en el script de arriba que va en conjunto con la tabla -->
-	<div class="profile1">
-		<a class="btnInf btnnof" style="color: red; text-align: center; display: none;">Haz alcanzado el limite de hats</a>
+		{% if cantidad_registros < 4 %} <a class="btnInf btnfuncional" href="{% url 'asignarhat' %}"
+			style="text-align: center;">Asigna tu hat</a>
+			{% else %}
+			<a class="btnInf btnnof" style="color: red; text-align: center;">Haz alcanzado el limite de hats</a>
+			{% endif %}
 	</div>
 
 </div>

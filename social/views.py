@@ -671,14 +671,16 @@ def post(request):
 def profile(request, username=None):
     current_user = request.user
     hat = Hat.objects.order_by('id')
-    registros = AsignacionHat.objects.all()
     if username and username != current_user.username:
         user = User.objects.get(username=username)
         posts = user.posts.all()
+        asignados = AsignacionHat.objects.filter(user_id=user.id)
+        cantidad_registros = asignados.count()
+        print(cantidad_registros)
     else:
         posts = current_user.posts.all()
         user = current_user
-    return render(request, 'social/profile.html', {'user': user, 'posts': posts, 'hat' : hat, 'registros' : registros})
+    return render(request, 'social/profile.html', {'user': user, 'posts': posts, 'hat' : hat, 'registros' : asignados, 'cantidad_registros': cantidad_registros})
 
 
 def follow(request, username):
@@ -798,7 +800,6 @@ def egg(request):
 def generar_codigo_qr(request, user_id):
     try:
         id_user=user_id
-        print(id_user)
         # Obtén el usuario correspondiente al user_id
         usuario = CredentialToken.objects.get(user_id=id_user)
         token_user= usuario.token

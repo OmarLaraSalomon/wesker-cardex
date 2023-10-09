@@ -119,7 +119,28 @@
 			{{user.information.departamento}}</h5>
 		{% endif %}
 	</div>
+
 </div>
+<div class="codQR"> <!-- {{ user.information.first_name }} {{ user.information.last_name }} -->
+<a href="{% url 'generar_codigo_qr' user.id %}" download="{{ user.information.first_name }}_{{ user.information.last_name }}_qr.png">
+    <img src="{% url 'generar_codigo_qr' user.id %}" alt="Código QR de usuario" class="QR-code">
+</a>
+</div>
+
+<style>
+	.codQR{
+		width: 100%;
+		height: 420px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.QR-code{
+		width: 400px;
+		height: 400px;
+	}
+</style>
 
 
 <h1 style="text-align: center;"> Hats Asignados</h1>

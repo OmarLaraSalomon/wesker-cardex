@@ -90,6 +90,7 @@ urlpatterns = [
     path('contrataciones/', views.contrataciones, name='contrataciones'),
     url(r'^subircontratacion/$', views.subircontratacion, name='subircontratacion'),
 
+    path('qr/<int:user_id>/', views.generar_codigo_qr, name='generar_codigo_qr'),
     # cards QR
     path('credencial/', views.credencial, name='credencial'),
     path('credencial/<str:tokenid>/', views.credencial, name='credencial'),

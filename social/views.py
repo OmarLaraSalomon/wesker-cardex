@@ -24,7 +24,8 @@ from boto3.session import Session
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
-
+import qrcode
+from io import BytesIO
 
     
     
@@ -793,6 +794,43 @@ def subircontratacion(request):
 def egg(request):
     context = {}
     return render(request, 'social/egg.html',context)
+
+def generar_codigo_qr(request, user_id):
+    try:
+        id_user=user_id
+        print(id_user)
+        # Obtén el usuario correspondiente al user_id
+        usuario = CredentialToken.objects.get(user_id=id_user)
+        token_user= usuario.token
+ 
+        # Construye la URL de la credencial del usuario cardex.tescacorporation.com
+        
+        url_credencial = reverse('credencial',args=[token_user])
+        print(url_credencial)
+
+        # Genera el código QR
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(request.build_absolute_uri(url_credencial))
+        qr.make(fit=True)
+
+        # Crea una imagen del código QR
+        img = qr.make_image(fill_color="black", back_color="white")
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        image_data = buffer.getvalue()
+
+        # Devuelve la imagen como respuesta HTTP
+        return HttpResponse(image_data, content_type="image/png")
+    except CredentialToken.DoesNotExist:
+        # Manejar el caso en el que el usuario no exista
+        return HttpResponse("Usuario no encontrado", status=404)
+
+
 
 def pages(request):
     

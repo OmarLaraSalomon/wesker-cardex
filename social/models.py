@@ -203,8 +203,8 @@ class Information(models.Model):
 
 class Egresos(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, null=True)
-    ingreso = models.CharField(max_length=250, null=True)
-    egreso = models.CharField(max_length=250, null=True)
+    ingreso = models.CharField(max_length=250, null=True, blank=True)
+    egreso = models.CharField(max_length=250, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Salida empresa'

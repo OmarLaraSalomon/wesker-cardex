@@ -1,15 +1,6 @@
 {
-    "cSpell.words": [
-        "adjuntar",
-        "departamento",
-        "direccionjustificantes",
-        "direccionmedica",
-        "Estas",
-        "Foto",
-        "Ingresa",
-        "Subir",
-        "titulo",
-        "uploadlegal",
-        "Usuario"
-    ]
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "python.formatting.provider": "none"
 }

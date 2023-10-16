@@ -26,6 +26,8 @@ from django.db.models import Q
 from django.http import JsonResponse
 import qrcode
 from io import BytesIO
+from django.core.exceptions import ObjectDoesNotExist
+
 
     
     
@@ -667,10 +669,28 @@ def post(request):
         form = PostForm()
     return render(request, 'social/post.html', {'form': form})
 
-
+from dateutil.relativedelta import relativedelta
 def profile(request, username=None):
     current_user = request.user
     hat = Hat.objects.order_by('id')
+    periodo = Egresos.objects.filter(user=current_user).first() #se obtiene el objeto egresos del usuario actual
+    dias_transcurridos = None #para manejar el caso en que no haya un período definido
+    anios_transcurridos = None
+    meses_transcurridos = None
+    if periodo and periodo.ingreso and periodo.egreso: #verifica si ya existe el periodo
+        try:
+            fecha_ingreso = datetime.strptime(periodo.ingreso, '%Y-%m-%d') #ingreso se convierte a date time con el formato strptime es para el calculo
+            fecha_egreso = datetime.strptime(periodo.egreso, '%Y-%m-%d')
+            diferencia = relativedelta(fecha_egreso, fecha_ingreso)
+            anios_transcurridos = diferencia.years #años  dividiendo la cantidad total de días por 365
+            meses_transcurridos = diferencia.months #meses dividiendo el residuo de los días por 365 entre 31 
+            dias_transcurridos = diferencia.days #días  dividiendo el residuo de los días por 365 entre 31
+            print("Años:", anios_transcurridos)
+            print("Meses:", meses_transcurridos)
+            print("Días:", dias_transcurridos)
+        except ValueError as e: #excepciones
+            print("Error al convertir las fechas:", e)
+    
     if username and username != current_user.username:
         user = User.objects.get(username=username)
         posts = user.posts.all()
@@ -680,7 +700,9 @@ def profile(request, username=None):
     else:
         posts = current_user.posts.all()
         user = current_user
-    return render(request, 'social/profile.html', {'user': user, 'posts': posts, 'hat' : hat, 'registros' : asignados, 'cantidad_registros': cantidad_registros})
+        asignados = AsignacionHat.objects.filter(user_id=current_user.id)
+        cantidad_registros = asignados.count()
+    return render(request, 'social/profile.html', {'user': user, 'posts': posts, 'hat' : hat, 'registros' : asignados, 'cantidad_registros': cantidad_registros , 'periodo':periodo, 'dias_transcurridos': dias_transcurridos, 'anios_transcurridos': anios_transcurridos,'meses_transcurridos': meses_transcurridos})
 
 
 def follow(request, username):
@@ -717,6 +739,48 @@ def asignarhat(request):
 
 
     context = {'hat': hat,'registros': registros}
+    return render(request, template, context)
+
+
+
+
+from datetime import datetime  # Asegúrate de tener esta importación en la parte superior de tu archivo
+
+
+
+
+
+@login_required
+def asignaregreso(request):
+    template = 'social/asignar_egreso.html'
+    usuario = request.user
+   
+    periodo_existente = Egresos.objects.filter(user=usuario).first()
+
+    if request.method == 'POST':
+        ingreso = request.POST.get('ingreso', None)
+        egreso = request.POST.get('egreso' , None)
+        print("Fecha de ingreso:", ingreso)
+        print("Fecha de egreso:", egreso)
+
+        if periodo_existente:
+    # Solo actualiza la fecha de ingreso si se proporciona una nueva fecha
+            if ingreso:
+                periodo_existente.ingreso = ingreso
+            periodo_existente.egreso = egreso if egreso else None
+            periodo_existente.save()
+            messages.success(request, "Periodo actualizado con éxito")
+        else:
+            Egresos.objects.create(
+            user=usuario,
+            ingreso=ingreso,
+            egreso=egreso if egreso else None
+            )
+        messages.success(request, "Periodo asignado con éxito")
+
+        return redirect('profile')
+
+    context = {'periodo_existente': periodo_existente}
     return render(request, template, context)
 
 def asistencia(request):
@@ -803,7 +867,7 @@ def generar_codigo_qr(request, user_id):
         # Obtén el usuario correspondiente al user_id
         usuario = CredentialToken.objects.get(user_id=id_user)
         token_user= usuario.token
- 
+        print(usuario)
         # Construye la URL de la credencial del usuario cardex.tescacorporation.com
         
         url_credencial = reverse('credencial',args=[token_user])

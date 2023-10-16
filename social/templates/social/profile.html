@@ -69,8 +69,6 @@
 		{{registros.hat.nombre_hat}}
 	</div>
 {% endfor %}
-	</tbody>
-
 </div>
 
 
@@ -95,6 +93,21 @@
 			style="text-align: center;">Asigna tu hat</a>
 			{% else %}
 			<a class="btnInf btnnof" style="color: red; text-align: center;">Haz alcanzado el limite de hats</a>
+			{% endif %}
+	</div>
+
+</div>
+
+
+
+
+<div class="profile1">
+
+	<div class="profile1">
+		{% if cantidad_registros < 4 %} <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}"
+			style="text-align: center;">Asigna tú periodo</a>
+			{% else %}
+			<a class="btnInf btnnof" style="color: red; text-align: center;">Haz alcanzado el limite de modificaciones</a>
 			{% endif %}
 	</div>
 
@@ -147,21 +160,64 @@
 <div class="follow">
 	<div>
 		<h5>Fecha de ingreso</h5>
-		<p>{{ user.egresos.ingreso }}</p>
+		<p>{{ periodo.ingreso }}</p>
 	</div>
 	<div>
 		<h5>Fecha de egreso</h5>
-		<p>{{ user.egresos.egreso}}</p>
+		<p>{{ periodo.egreso}}</p>
 	</div>
 	<div>
-		<h5>Departamento(s)</h5>
-		<p>{{ user.information.departamento }}</p>
-	</div>
+	
+
+
+
+<h5>Periodo Transcurrido</h5>
+{% if anios_transcurridos or meses_transcurridos or dias_transcurridos %} <!--verifica si hay al menos un valor entre años,mes,dias-->
+    <p>
+        {% if anios_transcurridos %}<!--verifica si hay años-->
+		
+            {{ anios_transcurridos }} año{{ anios_transcurridos|pluralize:"s" }}
+<!--Muestra años transcurridos y utiliza el filtro pluralize para manejar la pluralización del texto"año"-->			
+        {% endif %}
+
+
+        {% if meses_transcurridos %}<!--verifica si hay meses-->
+          
+            {{ meses_transcurridos }} mes{{ meses_transcurridos|pluralize:"es" }}
+			{% if anios_transcurridos or dias_transcurridos %}  {% endif %}<!--si tambien hay años agregalos-->
+<!--meses transcurridos y utiliza el filtro pluralize para manejar la pluralización del texto "mes"-->						
+        {% endif %}
+
+
+        {% if dias_transcurridos %}<!--verifica si hay meses-->
+            {% if anios_transcurridos or meses_transcurridos %} y {% endif %}<!-- si tambien hay meses y años se agrega "y"-->
+            {{ dias_transcurridos }} día{{ dias_transcurridos|pluralize:"s" }}
+<!--meses transcurridos y utiliza el filtro pluralize para manejar la pluralización del texto "dias"-->				
+        {% endif %}
+        transcurrido(s)
+    </p>
+{% else %}
+    <p>No se puede calcular.</p>
+{% endif %}
+
 </div>
+</div>
+
+
+
+
+
+
+
 
 <!-- PISO 5 -->
 
 <div class="follow">
+	<div>
+		<h5>Departamento(s)</h5>
+		<p>{{ user.information.departamento }}</p>
+	</div>
+
 	<div>
 		<h5>Puesto</h5>
 		<p>{{ user.information.puesto }}</p>

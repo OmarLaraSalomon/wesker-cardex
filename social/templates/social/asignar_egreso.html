@@ -27,7 +27,7 @@ Information
 
 {% if  periodo_existente %}
 <!-- Si ya existe el ingreso, mostrar la parte de egreso -->
-<h2>Actualizar Egreso</h2>
+<h2>Agregar Egreso</h2>
 
     <form method="post" enctype="multipart/form-data" action="{% url 'asignaregreso' %}">
         {% csrf_token %}
@@ -57,7 +57,7 @@ Information
   <!-- Si no existe un periodo, mostrar la parte de ingreso -->
 
 
-  <h2>Actualizar Ingreso</h2>
+  <h2>Agregar Ingreso</h2>
 
   <form method="post" enctype="multipart/form-data" action="{% url 'asignaregreso' %}">
       {% csrf_token %}

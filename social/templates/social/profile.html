@@ -100,17 +100,16 @@
 
 
 
-
 <div class="profile1">
-
-	<div class="profile1">
-		{% if cantidad_registros < 4 %} <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}"
-			style="text-align: center;">Asigna tú periodo</a>
-			{% else %}
-			<a class="btnInf btnnof" style="color: red; text-align: center;">Haz alcanzado el limite de modificaciones</a>
-			{% endif %}
-	</div>
-
+    <div class="profile1">
+        {% if periodo.ingreso and periodo.egreso %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}" style="text-align: center;">Actualizar periodo</a>
+        {% elif periodo.ingreso %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}" style="text-align: center;">Asignar egreso</a>
+        {% else %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}" style="text-align: center;">Agregar ingreso</a>
+        {% endif %}
+    </div>
 </div>
 
 
@@ -167,40 +166,46 @@
 		<p>{{ periodo.egreso}}</p>
 	</div>
 	<div>
+		<h5>Periodo Transcurrido</h5>
 	
-
-
-
-<h5>Periodo Transcurrido</h5>
-{% if anios_transcurridos or meses_transcurridos or dias_transcurridos %} <!--verifica si hay al menos un valor entre años,mes,dias-->
-    <p>
-        {% if anios_transcurridos %}<!--verifica si hay años-->
-		
-            {{ anios_transcurridos }} año{{ anios_transcurridos|pluralize:"s" }}
-<!--Muestra años transcurridos y utiliza el filtro pluralize para manejar la pluralización del texto"año"-->			
-        {% endif %}
-
-
-        {% if meses_transcurridos %}<!--verifica si hay meses-->
-          
-            {{ meses_transcurridos }} mes{{ meses_transcurridos|pluralize:"es" }}
-			{% if anios_transcurridos or dias_transcurridos %}  {% endif %}<!--si tambien hay años agregalos-->
-<!--meses transcurridos y utiliza el filtro pluralize para manejar la pluralización del texto "mes"-->						
-        {% endif %}
-
-
-        {% if dias_transcurridos %}<!--verifica si hay meses-->
-            {% if anios_transcurridos or meses_transcurridos %} y {% endif %}<!-- si tambien hay meses y años se agrega "y"-->
-            {{ dias_transcurridos }} día{{ dias_transcurridos|pluralize:"s" }}
-<!--meses transcurridos y utiliza el filtro pluralize para manejar la pluralización del texto "dias"-->				
-        {% endif %}
-        transcurrido(s)
-    </p>
-{% else %}
-    <p>No se puede calcular.</p>
-{% endif %}
-
-</div>
+		{% if periodo.ingreso %}
+			{% if not periodo.egreso %}
+				<!-- Mostrar tiempo actual si hay ingreso y no hay egreso -->
+				<p>
+					{% if tiempo_formateado.dias %}
+						{{ tiempo_formateado.dias }} día{{ tiempo_formateado.dias|pluralize:"s" }},
+					{% endif %}
+					{{ tiempo_formateado.horas }} hora{{ tiempo_formateado.horas|pluralize:"s" }},
+					{{ tiempo_formateado.minutos }} minuto{{ tiempo_formateado.minutos|pluralize:"s" }},
+					{{ tiempo_formateado.segundos }} segundo{{ tiempo_formateado.segundos|pluralize:"s" }}
+				</p>
+			{% endif %}
+		{% else %}
+			<p>No hay ingreso y no se calcula.</p>
+		{% endif %}
+	
+		<!-- Diferencia con egreso -->
+		{% if periodo.egreso %}
+			<p>
+				{% if anios_transcurridos or meses_transcurridos or dias_transcurridos %}
+					{% if anios_transcurridos %}
+						{{ anios_transcurridos }} año{{ anios_transcurridos|pluralize:"s" }}
+					{% endif %}
+					{% if meses_transcurridos %}
+						{{ meses_transcurridos }} mes{{ meses_transcurridos|pluralize:"es" }}
+						{% if anios_transcurridos or dias_transcurridos %}  {% endif %}
+					{% endif %}
+					{% if dias_transcurridos %}
+						{% if anios_transcurridos or meses_transcurridos %} y {% endif %}
+						{{ dias_transcurridos }} día{{ dias_transcurridos|pluralize:"s" }}
+					{% endif %}
+					transcurrido(s)
+				{% else %}
+					<p>No se puede calcular.</p>
+				{% endif %}
+			</p>
+		{% endif %}
+	</div>
 </div>
 
 

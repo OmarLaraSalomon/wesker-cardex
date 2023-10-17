@@ -677,17 +677,51 @@ def profile(request, username=None):
     dias_transcurridos = None #para manejar el caso en que no haya un período definido
     anios_transcurridos = None
     meses_transcurridos = None
-    if periodo and periodo.ingreso and periodo.egreso: #verifica si ya existe el periodo
+    
+    dias_transcurridos_actual = None #para manejar el caso en que no haya un período definido
+    anios_transcurridos_actual = None
+    meses_transcurridos_actual = None
+    tiempo_transcurrido_hasta_ahora= None
+    tiempo_formateado = None  # Definir tiempo_formateado como None
+    if periodo and periodo.ingreso: #verifica si ya existe el periodo
         try:
-            fecha_ingreso = datetime.strptime(periodo.ingreso, '%Y-%m-%d') #ingreso se convierte a date time con el formato strptime es para el calculo
-            fecha_egreso = datetime.strptime(periodo.egreso, '%Y-%m-%d')
-            diferencia = relativedelta(fecha_egreso, fecha_ingreso)
-            anios_transcurridos = diferencia.years #años  dividiendo la cantidad total de días por 365
-            meses_transcurridos = diferencia.months #meses dividiendo el residuo de los días por 365 entre 31 
-            dias_transcurridos = diferencia.days #días  dividiendo el residuo de los días por 365 entre 31
-            print("Años:", anios_transcurridos)
-            print("Meses:", meses_transcurridos)
-            print("Días:", dias_transcurridos)
+            fecha_ingreso = timezone.make_aware(datetime.strptime(periodo.ingreso, '%Y-%m-%d'), timezone.utc)
+            fecha_actual= timezone.now()
+            
+            diferencia_actual=relativedelta(fecha_actual, fecha_ingreso)
+            anios_transcurridos_actual = diferencia_actual.years
+            meses_transcurridos_actual = diferencia_actual.months
+            dias_transcurridos_actual = diferencia_actual.days
+            print("Años (hasta ahora):", anios_transcurridos_actual)
+            print("Meses (hasta ahora):", meses_transcurridos_actual)
+            print("Días (hasta ahora):", dias_transcurridos_actual)
+            tiempo_transcurrido_hasta_ahora = fecha_actual - fecha_ingreso
+            print("Tiempo transcurrido hasta ahora:", tiempo_transcurrido_hasta_ahora)
+            
+            
+            dias = tiempo_transcurrido_hasta_ahora.days
+            horas, segundos = divmod(tiempo_transcurrido_hasta_ahora.seconds, 3600)
+            minutos, segundos = divmod(segundos, 60)
+            
+            tiempo_formateado = {
+                'dias': dias,
+                'horas': horas,
+                'minutos': minutos,
+                'segundos': segundos,
+            }
+            
+            if periodo.egreso:  # Si hay egreso, calcula la diferencia de tiempo con egreso
+                fecha_egreso = timezone.make_aware(datetime.strptime(periodo.egreso, '%Y-%m-%d'), timezone.utc)
+                diferencia = relativedelta(fecha_egreso, fecha_ingreso)
+                anios_transcurridos = diferencia.years #años  dividiendo la cantidad total de días por 365
+                meses_transcurridos = diferencia.months #meses dividiendo el residuo de los días por 365 entre 31 
+                dias_transcurridos = diferencia.days #días  dividiendo el residuo de los días por 365 entre 31
+    
+                print("Años (con egreso):", anios_transcurridos)
+                print("Meses (con egreso):", meses_transcurridos)
+                print("Días (con egreso):", dias_transcurridos)
+            
+            
         except ValueError as e: #excepciones
             print("Error al convertir las fechas:", e)
     
@@ -702,7 +736,26 @@ def profile(request, username=None):
         user = current_user
         asignados = AsignacionHat.objects.filter(user_id=current_user.id)
         cantidad_registros = asignados.count()
-    return render(request, 'social/profile.html', {'user': user, 'posts': posts, 'hat' : hat, 'registros' : asignados, 'cantidad_registros': cantidad_registros , 'periodo':periodo, 'dias_transcurridos': dias_transcurridos, 'anios_transcurridos': anios_transcurridos,'meses_transcurridos': meses_transcurridos})
+    return render(request, 'social/profile.html', {
+        'user': user,  'posts': posts, 'hat' : hat, 'registros' : asignados, 
+        'cantidad_registros': cantidad_registros , 
+        'periodo': periodo, 
+        'tiempo_formateado': tiempo_formateado,
+        'dias_transcurridos': dias_transcurridos, 
+        'anios_transcurridos': anios_transcurridos,
+        'meses_transcurridos': meses_transcurridos, 
+        'tiempo_transcurrido_hasta_ahora': tiempo_transcurrido_hasta_ahora,
+        'dias_transcurridos_actual': dias_transcurridos_actual,
+        'anios_transcurridos_actual': anios_transcurridos_actual,
+        'meses_transcurridos_actual': meses_transcurridos_actual,
+    })
+
+
+
+
+
+
+
 
 
 def follow(request, username):
@@ -747,24 +800,20 @@ def asignarhat(request):
 from datetime import datetime  # Asegúrate de tener esta importación en la parte superior de tu archivo
 
 
-
-
-
 @login_required
 def asignaregreso(request):
     template = 'social/asignar_egreso.html'
     usuario = request.user
-   
     periodo_existente = Egresos.objects.filter(user=usuario).first()
 
     if request.method == 'POST':
         ingreso = request.POST.get('ingreso', None)
-        egreso = request.POST.get('egreso' , None)
+        egreso = request.POST.get('egreso', None)
         print("Fecha de ingreso:", ingreso)
         print("Fecha de egreso:", egreso)
 
         if periodo_existente:
-    # Solo actualiza la fecha de ingreso si se proporciona una nueva fecha
+            # Solo actualiza la fecha de ingreso si se proporciona una nueva fecha
             if ingreso:
                 periodo_existente.ingreso = ingreso
             periodo_existente.egreso = egreso if egreso else None
@@ -772,16 +821,19 @@ def asignaregreso(request):
             messages.success(request, "Periodo actualizado con éxito")
         else:
             Egresos.objects.create(
-            user=usuario,
-            ingreso=ingreso,
-            egreso=egreso if egreso else None
+                user=usuario,
+                ingreso=ingreso,
+                egreso=egreso if egreso else None
             )
-        messages.success(request, "Periodo asignado con éxito")
+            messages.success(request, "Periodo asignado con éxito")
 
         return redirect('profile')
 
     context = {'periodo_existente': periodo_existente}
     return render(request, template, context)
+
+
+
 
 def asistencia(request):
     template = 'social/asistencia.html'

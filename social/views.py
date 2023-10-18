@@ -799,20 +799,24 @@ def asignarhat(request):
 
 from datetime import datetime  # Asegúrate de tener esta importación en la parte superior de tu archivo
 
-
 @login_required
-def asignaregreso(request):
+def asignaregreso(request, user_id=None):
     template = 'social/asignar_egreso.html'
-    usuario = request.user
-    periodo_existente = Egresos.objects.filter(user=usuario).first()
-
+   
+    id_user=user_id
+   
+    periodo_existente = Egresos.objects.filter(user_id=id_user).first()
+   
     if request.method == 'POST':
         ingreso = request.POST.get('ingreso', None)
         egreso = request.POST.get('egreso', None)
+        id = request.POST.get('id', None)
         print("Fecha de ingreso:", ingreso)
         print("Fecha de egreso:", egreso)
-
+        print("ID del usuario:", id)
+      
         if periodo_existente:
+            print("ando en validacion XD")
             # Solo actualiza la fecha de ingreso si se proporciona una nueva fecha
             if ingreso:
                 periodo_existente.ingreso = ingreso
@@ -821,9 +825,10 @@ def asignaregreso(request):
             messages.success(request, "Periodo actualizado con éxito")
         else:
             Egresos.objects.create(
-                user=usuario,
+                user_id=id_user,
                 ingreso=ingreso,
                 egreso=egreso if egreso else None
+        
             )
             messages.success(request, "Periodo asignado con éxito")
 

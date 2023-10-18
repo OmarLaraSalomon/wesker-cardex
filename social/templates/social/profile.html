@@ -98,20 +98,18 @@
 
 </div>
 
-
-
 <div class="profile1">
     <div class="profile1">
         {% if periodo.ingreso and periodo.egreso %}
-            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}" style="text-align: center;">Actualizar periodo</a>
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id %}" style="text-align: center;">Actualizar periodo</a>
+			
         {% elif periodo.ingreso %}
-            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}" style="text-align: center;">Asignar egreso</a>
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id%}" style="text-align: center;">Asignar egreso</a>
         {% else %}
-            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' %}" style="text-align: center;">Agregar ingreso</a>
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id %}" style="text-align: center;">Agregar ingreso</a>
         {% endif %}
     </div>
 </div>
-
 
 <!-- PISO 1 -->
 <div class="follow">

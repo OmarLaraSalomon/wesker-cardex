@@ -99,7 +99,7 @@ urlpatterns = [
     url(r'^viewfiles/$', views.viewfiles, name='viewfiles'),
     path(r'^viewfiles/<str:username>/', views.viewfiles, name='viewfiles'),
     url(r'^asignarhat/$', views.asignarhat, name='asignarhat'),
-    url(r'^asignaregreso/$', views.asignaregreso, name='asignaregreso'),
+    path('asignaregreso/<int:user_id>/', views.asignaregreso, name='asignaregreso'),
     path('profile/<str:username>/', views.profile, name='profile'),
     path('register/', views.register, name='register'),
     path('login/', LoginView.as_view(template_name='social/login.html'), name='login'),

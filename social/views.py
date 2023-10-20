@@ -27,8 +27,8 @@ from django.http import JsonResponse
 import qrcode
 from io import BytesIO
 from django.core.exceptions import ObjectDoesNotExist
-
-
+from dateutil.relativedelta import relativedelta
+from datetime import datetime  # Asegúrate de tener esta importación en la parte superior de tu archivo
     
     
 def hats(request, username=None):
@@ -62,6 +62,54 @@ def rewards(request, username=None):
     context = {'users': users}
     
     return render(request, template, context)    
+
+def cartas(request):
+    template = 'social/docs.html'
+    users = User.objects.all().exclude(is_active = "False")
+    
+    search_query = request.GET.get('search')
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |  # Buscar en el nombre de usuario
+            Q(first_name__icontains=search_query) |  # Buscar en el nombre
+            Q(last_name__icontains=search_query) |  # Buscar en el apellido
+            Q(information__departamento__icontains=search_query)  # Buscar en el departamento
+        )
+    
+    paginator = Paginator(users, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+    
+    context = {'users': page_obj,'page_numbers': page_numbers}
+    
+    return render(request, template, context)
+
+def constancia (request, username=None):
+    user = username
+    us1= User.objects.get(username=user)
+    template = 'social/constancia.html'
+    context = {'us1':us1}
+    
+    return render(request, template, context)
+
+def renuncia (request, username=None):
+    user = username
+    us1= User.objects.get(username=user)
+    template = 'social/renuncia.html'
+    context = {'us1':us1}
+    
+    return render(request, template, context)
+
+def finiquito (request, username=None):
+    user = username
+    us1= User.objects.get(username=user)
+    template = 'social/finiquito.html'
+    context = {'us1':us1}
+    
+    return render(request, template, context)
 
 def perfilkaisen(request, username=None):
     template = 'social/perfilkaisen.html'
@@ -669,11 +717,12 @@ def post(request):
         form = PostForm()
     return render(request, 'social/post.html', {'form': form})
 
-from dateutil.relativedelta import relativedelta
+
+
 def profile(request, username=None):
     current_user = request.user
     hat = Hat.objects.order_by('id')
-    periodo = Egresos.objects.filter(user=current_user).first() #se obtiene el objeto egresos del usuario actual
+    
     dias_transcurridos = None #para manejar el caso en que no haya un período definido
     anios_transcurridos = None
     meses_transcurridos = None
@@ -683,6 +732,16 @@ def profile(request, username=None):
     meses_transcurridos_actual = None
     tiempo_transcurrido_hasta_ahora= None
     tiempo_formateado = None  # Definir tiempo_formateado como None
+    
+    if username: #verifica si existe username 
+        try:
+            user = User.objects.get(username=username) #esto re cupera el username de la url 
+        except User.DoesNotExist:
+            user = None #si no existe es none 
+    else: #si username no tiene valor va acceder al usuario actual que seria el que inicio sesion 
+        user = current_user
+
+    periodo = Egresos.objects.filter(user=user).first() #me filtra por usuario y ya no por la sesion actual
     if periodo and periodo.ingreso: #verifica si ya existe el periodo
         try:
             fecha_ingreso = timezone.make_aware(datetime.strptime(periodo.ingreso, '%Y-%m-%d'), timezone.utc)
@@ -750,13 +809,39 @@ def profile(request, username=None):
         'meses_transcurridos_actual': meses_transcurridos_actual,
     })
 
+@login_required
+def asignaregreso(request, user_id=None):
+    template = 'social/asignar_egreso.html'
+   
+    id_user=user_id
+   
+    periodo_existente = Egresos.objects.filter(user_id=id_user).first()
+   
+    if request.method == 'POST':
+        ingreso = request.POST.get('ingreso', None)
+        egreso = request.POST.get('egreso', None)
+        id = request.POST.get('id', None)
+      
+        if periodo_existente:
+            # Solo actualiza la fecha de ingreso si se proporciona una nueva fecha
+            if ingreso:
+                periodo_existente.ingreso = ingreso
+            periodo_existente.egreso = egreso if egreso else None
+            periodo_existente.save()
+            messages.success(request, "Periodo actualizado con éxito")
+        else:
+            Egresos.objects.create(
+                user_id=id_user,
+                ingreso=ingreso,
+                egreso=egreso if egreso else None
+        
+            )
+            messages.success(request, "Periodo asignado con éxito")
 
+        return redirect('profile')
 
-
-
-
-
-
+    context = {'periodo_existente': periodo_existente, 'id_user':id_user}
+    return render(request, template, context)
 
 def follow(request, username):
     current_user = request.user
@@ -793,52 +878,6 @@ def asignarhat(request):
 
     context = {'hat': hat,'registros': registros}
     return render(request, template, context)
-
-
-
-
-from datetime import datetime  # Asegúrate de tener esta importación en la parte superior de tu archivo
-
-@login_required
-def asignaregreso(request, user_id=None):
-    template = 'social/asignar_egreso.html'
-   
-    id_user=user_id
-   
-    periodo_existente = Egresos.objects.filter(user_id=id_user).first()
-   
-    if request.method == 'POST':
-        ingreso = request.POST.get('ingreso', None)
-        egreso = request.POST.get('egreso', None)
-        id = request.POST.get('id', None)
-        print("Fecha de ingreso:", ingreso)
-        print("Fecha de egreso:", egreso)
-        print("ID del usuario:", id)
-      
-        if periodo_existente:
-            print("ando en validacion XD")
-            # Solo actualiza la fecha de ingreso si se proporciona una nueva fecha
-            if ingreso:
-                periodo_existente.ingreso = ingreso
-            periodo_existente.egreso = egreso if egreso else None
-            periodo_existente.save()
-            messages.success(request, "Periodo actualizado con éxito")
-        else:
-            Egresos.objects.create(
-                user_id=id_user,
-                ingreso=ingreso,
-                egreso=egreso if egreso else None
-        
-            )
-            messages.success(request, "Periodo asignado con éxito")
-
-        return redirect('profile')
-
-    context = {'periodo_existente': periodo_existente}
-    return render(request, template, context)
-
-
-
 
 def asistencia(request):
     template = 'social/asistencia.html'
@@ -877,6 +916,58 @@ def credencial(request, tokenid=None):
     hats = Hat.objects.all()
     context = {'user': user, 'puesto': puesto, 'hats':hats}
     return render(request, template, context)
+
+def credencial_fisica(request):
+    template = "social/credencial_fisica.html"
+    users = User.objects.all().exclude(is_active = "False")
+    search_query = request.GET.get('search')
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |  # Buscar en el nombre de usuario
+            Q(first_name__icontains=search_query) |  # Buscar en el nombre
+            Q(last_name__icontains=search_query) |  # Buscar en el apellido
+            Q(information__departamento__icontains=search_query)  # Buscar en el departamento
+        )
+        
+    paginator = Paginator(users, 10)  # 10 registros por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_num = page_obj.number
+    max_pages_before_and_after = 2
+    page_numbers = [num for num in range(page_num - max_pages_before_and_after, page_num + max_pages_before_and_after + 1) if 1 <= num <= page_obj.paginator.num_pages]
+
+    context = {'users': page_obj,'page_numbers': page_numbers}
+
+    return render(request, template, context)
+
+
+def ver(request, id):
+    
+    u = User.objects.get(id = id)
+    user = User.objects.all().filter(id = id)
+    inf = Information.objects.get(user_id = u)
+    # mejorar este if
+    if inf.departamento == "Agua":
+        template = "social/credenciales/agua.html"
+    elif inf.departamento == "Aire":
+        template = "social/credenciales/aire.html"
+    elif inf.departamento == "Dabba":
+        template = "social/credenciales/dabba.html"
+    elif inf.departamento == "Ether":
+        template = "social/credenciales/eter.html"
+    elif inf.departamento == "Fuego":
+        template = "social/credenciales/fuego.html"
+    elif inf.departamento == "Ignis":
+        template = "social/credenciales/ignis.html"
+    elif inf.departamento == "Digimundo":
+        template = "social/credenciales/digimundo.html"
+    elif inf.departamento == "Tierra":
+        template = "social/credenciales/tierra.html"
+    
+    context = {"u": user}
+    return render(request, template, context)
+
+
 
 def contrataciones(request):
     registros = contratacion.objects.all()

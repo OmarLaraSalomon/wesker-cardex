@@ -13,11 +13,15 @@ urlpatterns = [
     path('inicio/', views.inicio, name='inicio'),
     path('', views.feed, name='feed'),
     path('profile/', views.profile, name='profile'),
+    path('constancia/<str:username>/', views.constancia, name='constancia'),
+    path('renuncia/<str:username>/', views.renuncia, name='renuncia'),
+    path('finiquito/<str:username>/', views.finiquito, name='finiquito'),
     #Perfil Legal
     path('perfillegal/<int:id>/', views.perfillegal, name='perfillegal'),
     
     url(r'^information/$', views.information, name='information'),
     url(r'^hats/$', views.hats, name='hats'),
+    url(r'^cartas/$', views.cartas, name='cartas'),
     url(r'^rewards/$', views.rewards, name='rewards'),
     #Perfil Medico
     url(r'^perfilmedico/$', views.perfilmedico, name='perfilmedico'),
@@ -95,12 +99,16 @@ urlpatterns = [
     path('credencial/', views.credencial, name='credencial'),
     path('credencial/<str:tokenid>/', views.credencial, name='credencial'),
     
-    #path es para mandar algo, url es solo para la pagina 
+    #credenciales fisicas
+    url('credencial_fisica/',views.credencial_fisica, name='credencial_fisica'),
+    path("ver/<int:id>",views.ver, name="ver"),
+    
+    
     url(r'^viewfiles/$', views.viewfiles, name='viewfiles'),
     path(r'^viewfiles/<str:username>/', views.viewfiles, name='viewfiles'),
     url(r'^asignarhat/$', views.asignarhat, name='asignarhat'),
-    path('asignaregreso/<int:user_id>/', views.asignaregreso, name='asignaregreso'),
     path('profile/<str:username>/', views.profile, name='profile'),
+    path('asignaregreso/<int:user_id>/', views.asignaregreso, name='asignaregreso'),
     path('register/', views.register, name='register'),
     path('login/', LoginView.as_view(template_name='social/login.html'), name='login'),
 

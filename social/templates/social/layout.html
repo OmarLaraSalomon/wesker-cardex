@@ -105,6 +105,9 @@
 					<li><a href="{% url 'hats' %}" class="purple"><i class="fa fa-graduation-cap"></i>&nbsp;
 							Perfiles</a></li>
 
+					<li><a href="{% url 'credencial_fisica' %}" class="purple"><i class="fa fa-graduation-cap"></i>&nbsp;
+								Credenciales</a></li>
+
 					<li><a href="{% url 'regasis' %}" class="orange"><i class="fa fa-clock-o"></i>&nbsp;
 							Asistencias</a></li>
 					<!-- <li><a href="#" class="orange"><i class="fa fa-trophy"></i>&nbsp;
@@ -118,6 +121,7 @@
 					<li><a href="{% url 'perfillegal' request.user.id %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Documentacion</a></li>
 
 					<li><a href="{% url 'contrataciones' %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Contrataciones </a></li>
+					<li><a href="{% url 'cartas' %}" class="green"><i class="fa-solid fa-envelopes-bulk"></i>&nbsp; Cartas </a></li>
 					<!-- <li><a href="#" class="yellow"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a> -->
 					<!-- <li><a href="#" class="red"><i class="fa fa-money"></i>&nbsp; Contabilidad</a></li>
 					<li><a href="#" class="red"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a></li> -->
@@ -140,6 +144,10 @@
 				<a class="hero1" href="{% url 'hats' %}" style="background-color: #1594A6;"><i
 						class="fa fa-graduation-cap" style="background-color: #1594A6;"></i>&nbsp; Perfiles</a>
 				<br>
+				<a class="hero1" href="{% url 'credencial_fisica' %}" style="background-color: #b30570;"><i
+					class="fa-solid fa-users-viewfinder" style="background-color: #b30570;"></i>&nbsp; Credenciales</a>
+					<br>
+
 				{% endif %}
 				{% if request.user.is_authenticated %}
 				<a class="hero1" href="{% url 'asistencia' %}" style="background-color: #ffff00bb;"><i class="fa fa-clock-o"></i>&nbsp;
@@ -174,9 +182,8 @@
 						style="background-color: #4b3621;" class="fa-solid fa-passport"></i>&nbsp; Documentacion </a>
 			<br> <!-- user.id  -->
 				<a class="hero1" href="{% url 'contrataciones' %}" style="background-color: #032531;"><i class="fa-solid fa-passport"></i>&nbsp; Contrataciones </a></li>
+				<a class="hero1" href="{% url 'cartas' %}" style="background-color: #105db0;"><i class="fa-solid fa-envelopes-bulk"></i>&nbsp; Cartas </a></li>
 
-				<a class="hero1" href="{% url 'egg' %}" style="background-color: #4b3621;"><i
-					style="background-color: #4b3621;" class="fa-solid fa-passport"></i>&nbsp; egg </a>
 		<br>
 				{% endif %}
 				<!-- {% if request.user.is_authenticated %}

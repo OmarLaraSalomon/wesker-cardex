@@ -1,0 +1,48 @@
+{% extends 'social/feed.html' %}
+<!--{% load static %}-->
+{% block content %}
+<script src="{% static 'jspdf.min.js' %}"></script>
+<script src="{% static 'constancia.js' %}"></script>
+
+<!-- <script src="{% static 'constancia.js' %}"></script> -->
+
+<div class="body1">
+    <form class="cons-div" id="form">
+        <input type="text" class="info-cons" id="nombre" value="{{ us1.information.first_name }} {{ us1.information.last_name }}">
+        <input type="date" class="info-cons" name="" value="{{ us1.egresos.ingreso }}" id="inicio">
+        <h3>Hora de entrada</h3>
+        <input type="text" class="info-cons" id="hora1" name="hora1" pattern="[0-2][0-9]:[0-5][0-9]" placeholder="HH:mm" value="09:00" required>
+        <h3>Hora de salida</h3>
+        <input type="text" class="info-cons" id="hora2" name="hora2" pattern="[0-2][0-9]:[0-5][0-9]" placeholder="HH:mm" value="18:00" required>
+
+        <button type="submit" class="btn btn-primary mb-4" id="generarPDF"> Generar documento </button>
+    </form>
+</div>
+
+
+
+<style>
+
+    .body1{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2%;
+    }
+
+    .cons-div{
+        width: 70%;
+        padding: 3%;
+        text-align: center;
+    }
+    .info-cons{
+        width: 90%;
+        border-radius: 8px;
+        text-align: center;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+{% endblock %}

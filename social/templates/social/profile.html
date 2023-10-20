@@ -108,7 +108,7 @@
         {% else %}
             <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id %}" style="text-align: center;">Agregar ingreso</a>
         {% endif %}
-    </div>
+ 	</div>
 </div>
 
 <!-- PISO 1 -->
@@ -204,23 +204,19 @@
 			</p>
 		{% endif %}
 	</div>
+
+	
+	<!-- <div>
+		<h5>Departamento(s)</h5>
+		<p>{{ user.information.departamento }}</p>
+	</div> -->
 </div>
-
-
-
-
-
 
 
 
 <!-- PISO 5 -->
 
 <div class="follow">
-	<div>
-		<h5>Departamento(s)</h5>
-		<p>{{ user.information.departamento }}</p>
-	</div>
-
 	<div>
 		<h5>Puesto</h5>
 		<p>{{ user.information.puesto }}</p>

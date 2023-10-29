@@ -1,0 +1,254 @@
+{% extends 'social/feed.html' %}
+<!--{% load static %}-->
+{% block content %}
+
+{%load static%}
+
+<head>
+	<script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+</head>
+<!-- Profile -->
+<div class="profile">
+	{% load static from static %}
+	<img src="{{user.profile.image.url}}">
+	<h2>{{ user.username }}</h2>
+</div>
+
+<div class="profile">
+	{% if user.is_superuser%}
+	<h2><i style="color: gold;" class='fas fa-crown'></i>&nbsp; Eres Admin </h2>
+	{%endif%}
+</div>
+
+<div class="codQR"> <!-- {{ user.information.first_name }} {{ user.information.last_name }} -->
+	<a href="{% url 'generar_codigo_qr' user.id %}"
+		download="{{ user.information.first_name }}_{{ user.information.last_name }}_qr.png">
+		<img src="{% url 'generar_codigo_qr' user.id %}" alt="Código QR de usuario" class="QR-code">
+	</a>
+</div>
+
+<!--Piso 0 -->
+<div class="follow">
+	<div>
+		{% if user.information.is_leader %}
+
+		<h5 style='padding-bottom: 20px'> <i style="color: gold;" class="fa fa-star" aria-hidden="true"></i>&nbsp;Eres
+			Lider
+			del equipo {{user.information.departamento}} </h5>
+
+		{% else %}
+		<h5 style='padding-bottom: 20px'> <i class="fa fa-users" aria-hidden="true"></i>&nbsp;Eres Parte del equipo
+			{{user.information.departamento}}</h5>
+		{% endif %}
+	</div>
+
+</div>
+
+
+<style>
+	.codQR {
+		width: 100%;
+		height: 270px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.QR-code {
+		width: 250px;
+		height: 250px;
+	}
+</style>
+
+
+<h1 style="text-align: center;"> Hats Asignados</h1>
+<div class="follow" style="height: 50px; align-items: center;">
+
+	{% for registros in registros %}
+	<div style="font-size: 15px;">
+		{{registros.hat.nombre_hat}}
+	</div>
+{% endfor %}
+</div>
+
+
+<div class="profile1">
+	{%if user.id == user.information.user_id %}
+	<div class="profile1">
+		<a class="btnInf" style="color: red;">Ya actualizaste tu informacion</a>
+	</div>
+	{%else%}
+
+	<div class="profile1">
+		<a class="btnInf" href="{% url 'information' %}">Actualiza tu informacion</a>
+	</div>
+	{% endif %}
+
+</div>
+
+<div class="profile1">
+
+	<div class="profile1">
+		{% if cantidad_registros < 4 %} <a class="btnInf btnfuncional" href="{% url 'asignarhat' %}"
+			style="text-align: center;">Asigna tu hat</a>
+			{% else %}
+			<a class="btnInf btnnof" style="color: red; text-align: center;">Haz alcanzado el limite de hats</a>
+			{% endif %}
+	</div>
+
+</div>
+
+<div class="profile1">
+    <div class="profile1">
+        {% if periodo.ingreso and periodo.egreso %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id %}" style="text-align: center;">Actualizar periodo</a>
+			
+        {% elif periodo.ingreso %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id%}" style="text-align: center;">Asignar egreso</a>
+        {% else %}
+            <a class="btnInf btnfuncional" href="{% url 'asignaregreso' user.id %}" style="text-align: center;">Agregar ingreso</a>
+        {% endif %}
+ 	</div>
+</div>
+
+<!-- PISO 1 -->
+<div class="follow">
+	<div>
+		<h5>Entradas y Salidas Registradas</h5>
+		<p>{{ user.posts.count }}</p>
+	</div>
+</div>
+
+<!-- PISO 2 -->
+
+<div class="follow">
+	<div>
+		<h5>Nombre Completo</h5>
+		<h2 style="color: gray;"><span>{{ user.information.first_name }} {{ user.information.last_name }}</span></h2>
+	</div>
+</div>
+
+<div class="follow">
+	<div>
+		<h5>Dirección</h5>
+		<p>{{ user.information.direccion }}</p>
+	</div>
+</div>
+
+<!-- PISO 3 -->
+
+<div class="follow">
+	<div>
+		<h5>Fecha de nacimiento</h5>
+		<p>{{ user.information.nacimiento }}</p>
+	</div>
+	<div>
+		<h5>Teléfono Personal</h5>
+		<p>{{ user.information.telefono }}</p>
+	</div>
+	<div>
+		<h5>Teléfono de Casa</h5>
+		<p>{{ user.information.telefono_casa }}</p>
+	</div>
+</div>
+
+<!-- PISO 4 -->
+
+<div class="follow">
+	<div>
+		<h5>Fecha de ingreso</h5>
+		<p>{{ periodo.ingreso }}</p>
+	</div>
+	<div>
+		<h5>Fecha de egreso</h5>
+		<p>{{ periodo.egreso}}</p>
+	</div>
+	<div>
+		<h5>Periodo Transcurrido</h5>
+	
+		{% if periodo.ingreso %}
+			{% if not periodo.egreso %}
+				<!-- Mostrar tiempo actual si hay ingreso y no hay egreso -->
+				<p>
+					{% if tiempo_formateado.dias %}
+						{{ tiempo_formateado.dias }} día{{ tiempo_formateado.dias|pluralize:"s" }},
+					{% endif %}
+					{{ tiempo_formateado.horas }} hora{{ tiempo_formateado.horas|pluralize:"s" }},
+					{{ tiempo_formateado.minutos }} minuto{{ tiempo_formateado.minutos|pluralize:"s" }},
+					{{ tiempo_formateado.segundos }} segundo{{ tiempo_formateado.segundos|pluralize:"s" }}
+				</p>
+			{% endif %}
+		{% else %}
+			<p>No hay ingreso y no se calcula.</p>
+		{% endif %}
+	
+		<!-- Diferencia con egreso -->
+		{% if periodo.egreso %}
+			<p>
+				{% if anios_transcurridos or meses_transcurridos or dias_transcurridos %}
+					{% if anios_transcurridos %}
+						{{ anios_transcurridos }} año{{ anios_transcurridos|pluralize:"s" }}
+					{% endif %}
+					{% if meses_transcurridos %}
+						{{ meses_transcurridos }} mes{{ meses_transcurridos|pluralize:"es" }}
+						{% if anios_transcurridos or dias_transcurridos %}  {% endif %}
+					{% endif %}
+					{% if dias_transcurridos %}
+						{% if anios_transcurridos or meses_transcurridos %} y {% endif %}
+						{{ dias_transcurridos }} día{{ dias_transcurridos|pluralize:"s" }}
+					{% endif %}
+					transcurrido(s)
+				{% else %}
+					<p>No se puede calcular.</p>
+				{% endif %}
+			</p>
+		{% endif %}
+	</div>
+
+	
+	<!-- <div>
+		<h5>Departamento(s)</h5>
+		<p>{{ user.information.departamento }}</p>
+	</div> -->
+</div>
+
+
+
+<!-- PISO 5 -->
+
+<div class="follow">
+	<div>
+		<h5>Puesto</h5>
+		<p>{{ user.information.puesto }}</p>
+	</div>
+	<div>
+		<h5>Correo</h5>
+		<p>{{ user.email }}</p>
+	</div>
+</div>
+
+<!-- CONTACTO DE EMERGENCIA -->
+
+<div class="follow">
+	<div>
+		<h5>Contacto de Emergencia</h5>
+		<p>{{ user.information.contacto_emergencia }}</p>
+	</div>
+	<div>
+		<h5>Teléfono de Emergencia</h5>
+		<p>{{ user.information.telefono_emergencia }}</p>
+	</div>
+</div>
+
+
+<div>
+
+</div>
+
+
+<style>
+
+</style>
+
+{{ block.super }}
+{% endblock %}

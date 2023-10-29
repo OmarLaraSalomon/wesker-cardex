@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'batman.png' %}" type="image/x-icon">
+    <title>Easter egg</title>
+</head>
+
+<body>
+    <style>
+        body {
+            background: rgb(0, 31, 66);
+            font-size: 62.5%;
+            font-family: "Varela Round", Helvetica, Arial, serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 50px;
+        }
+
+        .ntfound {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+        }
+
+        #img1 {
+            margin-top: 5%;
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <div id="img1">
+        <img src="{% static '6.png' %}" alt="triste" class="ntfound">
+    </div>
+    <div id="img2" style="display: none;">
+        <embed src="http://www.staggeringbeauty.com/" style="border: 1px inset #ddd" width="498" height="598" />
+    </div>
+
+    <script>
+        window.onload = function () {
+            // Obtener referencias a los elementos img1 y img2
+            const img1 = document.getElementById('img1');
+            const img2 = document.getElementById('img2');
+
+            // Mostrar el div img1
+            img1.style.display = 'block';
+
+            // Después de 10 segundos, cambiar la visibilidad de los divs
+            setTimeout(function () {
+                img1.style.display = 'none';
+                img2.style.display = 'block';
+            }, 10000);
+
+        };      
+    </script>
+</body>
+
+</html>

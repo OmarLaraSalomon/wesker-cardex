@@ -1,0 +1,346 @@
+{% extends 'social/layout.html' %}
+{% load humanize %}
+{% block content %}
+
+<link href='https://fonts.googleapis.com/css?family=Cabin+Condensed:700' rel='stylesheet' type='text/css'>
+<!-- <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'> -->
+
+<script>
+    window.onload = function () {
+        let date = new Date();
+        let output = String(date.getDate()).padStart(2, '0');
+        let output1 = String(date.getMonth() + 1).padStart(2, '0');
+        var fechcom = output
+        var fechmes = output1
+        $('#fecha1').val(fechcom);
+        $('#fecha2').val(fechmes);
+
+        var fe1 = $("#timeuser").val()
+        var proof = fe1.split(' ');
+        var proof1 = proof[0];
+        var proof2 = proof1.padStart(2, '0');
+        $('#feuser').val(proof2);
+
+        var a = $("#fecha1").val()
+        var b = $("#feuser").val()
+
+        /*      if( b == a ){
+                 document.getElementById("mensaje").innerHTML = "Recuerda que ya marcaste entrada por hoy";
+             } */
+    };
+</script>
+
+<input type="text" id="fecha1" disabled style="display: none;">
+
+<input type="text" id="fecha2" disabled style="display: none;">
+
+<input type="text" id="feuser" disabled style="display: none;">
+
+
+
+{% for post in posts%}
+
+<!-- mandar a llamar con javascript y añadir el emnsaje con un innerhtml -->
+
+<input type="text" value="{{ post.timestamp }}" id="timeuser" style="display: none;">
+
+{% endfor %}
+
+
+
+<div class="asistencia-div">
+    <div class="regisasis">
+
+        {% if request.user.is_authenticated %}
+        <a class="hero" href="{% url 'post' %}">Registra tu entrada o salida</a>
+        <br>
+        {% endif %}
+
+    </div>
+</div>
+
+{% if user.is_superuser%}
+
+<br>
+<br><br><br>
+<hr width=50% size=10 noshade="noshade">
+
+
+
+<!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por departamentos.." title="Type in a name"> -->
+<form method="get" action="{% url 'regasis' %}">
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+        <input type="text" name="search" value="{{ request.GET.search }}" class="search-input" placeholder="Buscar...">
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+        {% if request.GET.search %}
+        <a href="{% url 'asistencia' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>
+        {% endif %}
+      </div>
+  </form>
+  
+<article>
+    <div>
+
+        <div class="scroll_horizontal">
+            <table id="myTable">
+                <thead>
+                    <tr class="header">
+                        <th style="width:20%;">Foto</th>
+                        <th style="width:20%;">Departamento</th>
+                        <th style="width:20%;">Usuario</th>
+                        <th style="width:20%;">Descripcion</th>
+                        <th style="width:50%;">Hora </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts%}
+                    <tr>
+                        <td>
+                            <div class="container-article"><img src="{{ post.user.profile.image.url }}"></div>
+                        </td>
+                        <td>{{ post.user.information.departamento }}</td>
+                        <td><a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a></td>
+                        <td>{{ post.content }}</td>
+                        <td><time style="color: #14344F;"> <strong>Tu {{ post.content }}</strong> del {{ post.Fecha }} fue a las {{ post.entrada }}</time></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</article>
+
+{% endif %}
+
+<div class="pagination">
+
+    <div class="previous">
+        {% if posts.has_previous %}
+        <div class="previous-1">
+            <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+        </div>
+        <div class="previous-1">
+            <a href="?page={{ posts.previous_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-left"></i> </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="current">
+        {% for page_num in page_numbers %}
+            {% if page_num == posts.number %}
+                <span class="current-page">{{ page_num }}</span>
+            {% else %}
+                <a href="?page={{ page_num }}" class="page-number">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="next">
+        {% if posts.has_next %}
+        <div class="next-1">
+            <a href="?page={{ posts.next_page_number }}" class="btn-action">  <i class="fa-solid fa-angle-right"></i></a>
+        </div>
+        <div class="next-1">
+            <a href="?page={{ posts.paginator.num_pages }}" class="btn-action"> <i class="fa-solid fa-angles-right"></i></a>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<script src="https://kit.fontawesome.com/bdad33e746.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/e12947a646.js" crossorigin="anonymous"></script>
+
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+<!-- <script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script> -->
+
+
+<style>
+
+    .asistencia-div{
+        padding-top:10%;
+    }
+
+    .pagination {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* Divide el contenedor en tres columnas de igual ancho */
+        height: 80px;
+    }
+
+    .previous {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .previous-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    .next {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .next-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current span {
+        padding: 15px;
+        background: #105db0;
+        color: white;
+        border-radius: 50%;
+        font-size: 15px;
+    }
+
+    .page-number {
+        border-style: solid;
+        padding: 5%;
+        border-radius: 15px;
+        color: white;
+        background-color: lightblue;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .page-number:hover {
+        background: #105db0;
+    }
+
+    .btn-action:hover{
+        background: #105db0;
+        padding: 15px;
+        border-radius: 30%;
+        color: white;
+        z-index: 2;
+    }
+
+    .search-input{
+        width: 80%;
+        border-style: solid;
+    }
+
+    .clean-input{
+        font-size: 1rem;
+        padding: 0.4rem 1.4rem;
+        background: red;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-primary,.clean-input{
+        margin: 1%;
+    }
+
+    .scroll_horizontal {
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    #myInput {
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #myTable th,
+    #myTable td {
+        text-align: left;
+        padding: 12px;
+    }
+
+    #myTable tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #myTable tr.header,
+    #myTable tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        margin-top: -60px;
+        left: 30%;
+        margin-left: -225px;
+    }
+
+    @media (max-width:768px) {
+        .asistencia-div{
+        padding-top: 30%;
+    }
+}
+
+    /* @media (max-width:768px) {
+        svg {
+            font-size: 150px;
+            position: absolute;
+            top: 33%;
+            margin-top: 15px;
+            left: 28%;
+            margin-left: -112px;
+        }
+    }
+
+    
+     */
+</style>
+
+
+
+{% endblock %}

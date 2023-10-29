@@ -1,0 +1,192 @@
+{% extends 'social/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block link %}
+
+
+
+{% endblock link %}
+{% block title %}
+Information
+{% endblock title %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <form>
+    {% csrf_token %}
+
+    <h2 style="color:red;">Una vez que Actualices tus datos , no podras cambiarlos , solo el administrador </h2>
+    <div class="form-group">
+      <input type="hidden" class="form-control" id="idField" value="{{user.id}}" required>
+    </div>
+    <div class="form-group">
+      <label for="first_namaField">{{_('Nombre')}}</label>
+      <input type="text" class="form-control" id="first_nameField" placeholder="{{ _('Escribe tu nombre') }}" required>
+    </div>
+    <div class="form-group">
+      <label for="last_nameField">{{_('Apellido')}}</label>
+      <input type="text" class="form-control" id="last_nameField" placeholder="{{ _('Escribe tu Apellido') }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="telefonoField">{{_('Telefono')}}</label>
+      <input type="text" class="form-control" id="telefonoField" placeholder="{{ _('Escribe tu numero de telefono') }}"
+        required>
+    </div>
+
+    <div class="form-group">
+      <label for="telefono_casaField">{{_('Telefono de casa')}}</label>
+      <input type="text" class="form-control" id="telefono_casaField" placeholder="{{ _('Escribe tu numero de casa') }}"
+        required>
+    </div>
+
+    <div class="form-group">
+      <label for="contacto_emergenciaField">{{_('Nombre de contacto de emergencia')}}</label>
+      <input type="text" class="form-control" id="contacto_emergenciaField"
+        placeholder="{{ _('Escribe el nombre de tu contacto de emergencia') }}" required>
+    </div>
+    <div class="form-group">
+      <label for="telefono_emergenciaField">{{_('Telefono de emergencia')}}</label>
+      <input type="text" class="form-control" id="telefono_emergenciaField"
+        placeholder="{{ _('Escribe el telefono de tu contacto de emergencia') }}" required>
+    </div>
+    <div class="form-group" style="margin-top:10px; margin-bottom:20px;">
+      <label for="departamentoField">{{_('Departamento')}}</label>
+      <select class="cajasTexto" id="departamentoField" name="pais" required class="form-control" required>
+        <option value="" disabled selected>{{_('Selecciona tu departamento')}}</option>
+        <option value="Tierra">Tierra</option>
+        <option value="Agua">Agua</option>
+        <option value="Fuego">Fuego</option>
+        <option value="Ignis">Ignis</option>
+        <option value="Aire">Aire</option>
+        <option value="Ether">Ether</option>
+        <option value="Digimundo">Digimundo</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="nacimientoField">{{_('Fecha de nacimiento')}}</label>
+      <input type="date" class="form-control" id="nacimientoField" placeholder="{{ _('') }}" required>
+    </div>
+    <div class="form-group">
+      <label for="direccionField">{{_('Direccion')}}</label>
+      <input type="text" class="form-control" id="direccionField" placeholder="{{ _('Escribe tu direccion') }}"
+        required>
+    </div>
+    <div class="form-group">
+      <label for="puestoField">{{_('Puesto')}}</label>
+      <input type="text" class="form-control" id="puestoField" placeholder="{{ _('Escribe tu puesto') }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="puestoField">{{_('Hat')}}</label>
+      <select class="cajasTexto" id="hatput" name="pais" required class="form-control">
+        <option value="" disabled selected>{{_('Selecciona tu departamento')}}</option>
+        {% for hat in hat %}
+        <option value="{{ hat.id }}">{{hat.nombre_hat}}</option>
+        {% endfor %}
+      </select>
+ 
+      <input type="text" id="idput-1" disabled>
+    </div>
+
+    <script>
+      $("#hatput").on("change", function () {
+        var precio_pr = $("#hatput").val();
+        console.log(precio_pr);
+        $('#idput-1').val(precio_pr);
+
+      });
+    </script>
+
+    <div class="btnact">
+      <button disabled="disabled" name="boton" onclick="hacer()" type="submit"
+        class="actualizar">{{_('Actualizar')}}</button>
+    </div>
+
+  </form>
+
+  <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+
+
+
+
+    var toValidate = $(' #puestoField'),
+      valid = false;
+    toValidate.keyup(function () {
+      if ($(this).val().length > 0) {
+        $(this).data('valid', true);
+      } else {
+        $(this).data('valid', false);
+      }
+      toValidate.each(function () {
+        if ($(this).data('valid') == true) {
+          valid = true;
+        } else {
+          valid = false;
+        }
+      });
+      if (valid === true) {
+        $('button[type=submit]').prop('disabled', false);
+
+      } else {
+        $('button[type=submit]').prop('disabled', true);
+
+
+      }
+    });
+
+
+
+    function hacer() {
+      $.ajax({
+        url: "{% url 'information' %}",
+        type: "POST",
+        data: {
+          'first_name': $('#first_nameField').val(),
+          'last_name': $('#last_nameField').val(),
+          'telefono': $('#telefonoField').val(),
+          'telefono_casa': $('#telefono_casaField').val(),
+          'nacimiento': $('#nacimientoField').val(),
+          'direccion': $('#direccionField').val(),
+          'puesto': $('#puestoField').val(),
+          'contacto_emergencia': $('#contacto_emergenciaField').val(),
+          'telefono_emergencia': $('#telefono_emergenciaField').val(),
+          'departamento': $('#departamentoField').val(),
+          'user_id': $('#idField').val(),
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+
+
+        },
+        success: function (data) {
+          console.log(data)
+          console.log("Success");
+          window.location.href = "{% url 'profile' %}";
+        }
+      });
+
+    }
+
+  </script>
+</body>
+
+</html>
+
+
+{% endblock %}

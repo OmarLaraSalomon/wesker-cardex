@@ -1,0 +1,348 @@
+{% extends 'social/feed.html' %}
+
+<!--{% load static %}-->
+{% block content %}
+
+<head>
+    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+</head>
+
+<style>
+    .subida {
+        width: 500px;
+        height: 250px;
+        display: none;
+    }
+
+    .form-select {
+        text-align: center;
+        width: 100%;
+    }
+
+    .botonera {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn1 {
+        margin-right: 30px;
+    }
+
+    .botonSend {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 1%;
+    }
+
+    #btn1 {
+        display: none;
+        border-radius: 10px;
+        background: #000000;
+    }
+
+    .btn-submit {
+        background: darkblue;
+        color: white;
+        border-radius: 5px;
+        padding-bottom: 1.8%;
+        width: 100px;
+    }
+
+    #btn2 {
+        background: darkblue;
+        border-radius: 10px;
+    }
+
+    .banner {
+        width: 100%;
+        height: 50px;
+        margin-bottom: 2%;
+        padding-top: 0.1%;
+        text-align: center;
+        background: #105db0;
+    }
+
+    embed {
+        display: none;
+    }
+
+    #btn0,
+    #btnn1,
+    #btnn2,
+    #btnn3,
+    #btnn4,
+    #btnn5 {
+        display: none;
+        border-radius: 10px;
+        background: #000000;
+        margin-left: 1%;
+        margin-bottom: 1%;
+    }
+
+    #btn01,
+    #btnn01,
+    #btnn02,
+    #btnn03,
+    #btnn04,
+    #btnn05 {
+        background: darkblue;
+        border-radius: 10px;
+        margin-left: 2%;
+    }
+
+    .scroll_horizontal {
+        padding: 2%;
+        text-align: center;
+    }
+</style>
+
+
+<div class="scroll_horizontal" id="existente">
+
+    {% for registros in asignacion %}
+    {% if registros.user_id == user.id %}
+
+    {% for hat in hat %}
+    {% if registros.hat_id == hat.id %}
+    {% if hat.nombre_hat == "Inclusión" %}
+    <div class="profile" style="margin-top: 20px;">
+        <h2 style="color: black;"><i class="fa fa-line-chart"></i>&nbsp;Si funciona </h2>
+    </div>
+    
+    <div class="container">
+
+        <div class="banner">
+            <h2 style="font-size: 20px; color: white;">Registro de contrataciones </h2>
+        </div>
+
+        <div class="botonera">
+            <button onclick="ocultar()" id="btn1"> Ocultar </button>
+            <button onclick="mostrar()" id="btn2"> Registrar </button>
+        </div>
+
+        <div class="subida" id="nuevo">
+            <form method="post" action="{% url 'subircontratacion' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="alinea">
+                    <h3>Nombre completo del candidato</h3>
+                    <input type="text" name="nombreID" multiple class="btn" id="nombreID" required>
+                </div>
+
+                <div class="alinea">
+                    <h3>CV</h3>
+                    <input class="form-control btn-file" name="uploadedFileCV" type="file" id="uploadedFileCV"
+                        name="uploadedFileCV" required>
+                </div>
+
+                <div class="alinea">
+                    <h3>Notas de la entrevista</h3>
+                    <input class="form-control btn-file" type="file" id="uploadedFile" name="uploadedFile" required>
+                </div>
+
+                <div class="alinea">
+                    <select name="statusContratacion" id="statusContratacion" name="statusContratacion"
+                        class="form-select" required>
+                        <option value="" disabled selected>Status de contratacion</option>
+                        <option value="True">Si</option>
+                        <option value="False">No</option>
+                    </select>
+                </div>
+
+                <div class="alinea">
+                    <h3>Comentarios al respecto</h3>
+                    <textarea name="CommentInput" rows="8" cols="50" id="CommentInput"></textarea>
+                </div>
+
+                <div class="botonSend">
+                    <input type="submit" value="Subir" style="cursor:pointer" class="btn-submit">
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+   
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+    {% endif %}
+    {% endfor %}
+
+    
+    <table id="tabla" class="display" style="width:100%">
+        <thead>
+            <tr class="header">
+                <th>Aspirante</th>
+                <th>Status de contratacion</th>
+                <th>Ver CV</th>
+                <th>Ver Notas</th>
+                <th>Comentarios</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in registros %}
+            <tr>
+                <td>{{a.NombreAspirante}}</td>
+                {% if a.is_contratado == True %}
+                <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
+                {% else %}
+                <td><i class="fa-regular fa-circle-xmark" style="color: red; font-size: 30px;"></i></td>
+                {% endif %}
+                <td>
+                    <button onclick="ocultar1()" id="btn0"> Ocultar </button>
+                    <button onclick="mostrar1()" id="btn01"> Mostrar </button>
+                    <embed src="{{ a.uploadedCV.url }}" type="application/pdf" width="400px" height="300px"
+                        id="documentPDF">
+                </td>
+                <td>
+                    <button onclick="ocultar2()" id="btnn1"> Ocultar </button>
+                    <button onclick="mostrar2()" id="btnn01"> Mostrar </button>
+                    <embed src="{{ a.uploadedNotes.url }}" type="application/pdf" width="400px" height="300px"
+                        id="documentPDF2">
+                </td>
+                <td>{{a.comentarios}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<style>
+    .scroll_horizontal {
+        padding: 2%;
+    }
+
+    #tabla {
+        border-collapse: collapse;
+        width: 80%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #tabla th,
+    #tabla td {
+        text-align: center;
+        padding: 12px;
+    }
+
+    #tabla tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #tabla tr.header,
+    #tabla tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
+
+    .container {
+        display: center;
+        grid-template-columns: 300px 300px 300px;
+        grid-gap: 50px;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Baloo Paaji 2', cursive;
+        border-radius: 30px;
+
+    }
+</style>
+
+<script>
+    function mostrar() {
+        const registro2 = document.getElementById("nuevo");
+        registro2.style.display = "initial";
+        const boton1 = document.getElementById("btn2");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btn1");
+        boton2.style.display = "block";
+    }
+
+    function ocultar() {
+        const registro2 = document.getElementById("nuevo");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btn2");
+        boton1.style.display = "block";
+
+        const boton2 = document.getElementById("btn1");
+        boton2.style.display = "none";
+    }
+</script>
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable();
+    });
+
+    function mostrar1() {
+        const mostpdf = document.getElementById("documentPDF");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btn01");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btn0");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar1() {
+        const registro2 = document.getElementById("documentPDF");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btn01");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btn0");
+        boton2.style.display = "none";
+    }
+
+    function mostrar2() {
+        const mostpdf = document.getElementById("documentPDF2");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btnn01");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btnn1");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar2() {
+        const registro2 = document.getElementById("documentPDF2");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btnn01");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btnn1");
+        boton2.style.display = "none";
+    }
+</script>
+
+
+
+{% endblock %}

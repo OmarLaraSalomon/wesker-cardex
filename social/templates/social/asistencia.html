@@ -1,0 +1,299 @@
+{% extends 'social/feed.html' %}
+{% load static %}
+
+{% block content %}
+<!-- <link href='https://fonts.googleapis.com/css?family=Cabin+Condensed:700' rel='stylesheet' type='text/css'>
+<link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'> -->
+<!-- <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'> -->
+
+<head>
+    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+    <script src="{% static 'xlsx.full.min.js' %}"></script>
+    <script src="{% static 'FileSaver.min.js' %}"></script>
+    <script src="{% static 'tableexport.min.js' %}"></script>
+
+
+
+</head>
+
+<div class="btn-export" style="text-align: center; justify-content: center; align-items: center; padding-top: 4%;">
+    <button style="font-size: 20px;" id="btnExportar">
+        Exportar
+    </button>
+</div>
+
+<form method="get" action="{% url 'asistencia' %}" class="filter-form">
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+      <input type="text" name="search" value="{{ request.GET.search }}" class="search-input" placeholder="Buscar...">
+      <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+      {% if request.GET.search %}
+      <a href="{% url 'asistencia' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>y
+    {% endif %}
+    </div>
+  </form>
+
+<article>
+    <div>
+
+        <div class="scroll_horizontal">
+            <table id="tabla" class="display" style="width:100%">
+                <thead>
+                    <tr class="header">
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Hora de entrada</th>
+                        <th>Hora de salida </th>
+                        <th>Status</th>
+                        <th>Contenido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts%}
+                    {% if post.content == "entrada oficina" %}
+                    <tr>
+                        <td>{{ post.Fecha }}</td>
+                        <td id="user">{{ post.user.username }}</td>
+                        <td>{{ post.user.information.departamento }}</td>
+                        <td>{{ post.entrada }}</td>
+
+                        {% for postb in posts%}
+                        {% if postb.user.username == post.user.username %}
+                        {% if postb.content == "salida oficina" %}
+                        {% if postb.Fecha == post.Fecha %}
+                        <td>{{ postb.entrada }}</td>
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+
+                        <td>{{ post.status }}</td>
+                        <td>Oficina</td>
+                    </tr>
+                    {% elif post.content == "entrada homeofice" %}
+                    <tr>
+                        <td>{{ post.Fecha }}</td>
+                        <td id="user">{{ post.user.username }}</td>
+                        <td>{{ post.user.information.departamento }}</td>
+                        <td>{{ post.entrada }}</td>
+
+                        {% for postb in posts%}
+                        {% if postb.user.username == post.user.username %}
+                        {% if postb.content == "salida homeofice" %}
+                        {% if postb.Fecha == post.Fecha %}
+                        <td>{{ postb.entrada }}</td>
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+
+                        <td>{{ post.status }}</td>
+                        <td>HomeOffice</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</article>
+
+<div class="pagination">
+
+    <div class="previous">
+        {% if posts.has_previous %}
+        <div class="previous-1">
+            <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+        </div>
+        <div class="previous-1">
+            <a href="?page={{ posts.previous_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-left"></i> </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="current">
+        {% for page_num in page_numbers %}
+            {% if page_num == posts.number %}
+                <span class="current-page">{{ page_num }}</span>
+            {% else %}
+                <a href="?page={{ page_num }}" class="page-number">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="next">
+        {% if posts.has_next %}
+        <div class="next-1">
+            <a href="?page={{ posts.next_page_number }}" class="btn-action">  <i class="fa-solid fa-angle-right"></i></a>
+        </div>
+        <div class="next-1">
+            <a href="?page={{ posts.paginator.num_pages }}" class="btn-action"> <i class="fa-solid fa-angles-right"></i></a>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+<style>
+    .pagination {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* Divide el contenedor en tres columnas de igual ancho */
+        height: 80px;
+    }
+
+    .previous {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .previous-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    .next {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .next-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current span {
+        padding: 15px;
+        background: #105db0;
+        color: white;
+        border-radius: 50%;
+        font-size: 15px;
+    }
+
+    .page-number {
+        border-style: solid;
+        padding: 5%;
+        border-radius: 15px;
+        color: white;
+        background-color: lightblue;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .page-number:hover {
+        background: #105db0;
+    }
+
+    .btn-action:hover{
+        background: #105db0;
+        padding: 15px;
+        border-radius: 30%;
+        color: white;
+        z-index: 2;
+    }
+
+    .search-input{
+        width: 80%;
+    }
+
+    .clean-input{
+        font-size: 1rem;
+        padding: 0.4rem 1.4rem;
+        background: red;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .btn-primary,.clean-input{
+        margin: 1%;
+    }
+
+    @media screen and (max-width: 800px){
+        .btn-export{
+            margin-top: 50px;
+        }
+    }
+
+</style>
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable({});
+    });
+</script> -->
+
+<script>
+    const $btnExportar = document.querySelector("#btnExportar"),
+        $tabla = document.querySelector("#tabla");
+
+    $btnExportar.addEventListener("click", function () {
+        let tableExport = new TableExport($tabla, {
+            exportButtons: false, // No queremos botones
+            filename: "Reporte de entradas", //Nombre del archivo de Excel
+            sheetname: "Entradas", //Título de la hoja
+        });
+        let datos = tableExport.getExportData();
+        let preferenciasDocumento = datos.tabla.xlsx;
+        tableExport.export2file(preferenciasDocumento.data,
+            preferenciasDocumento.mimeType, preferenciasDocumento.filename,
+            preferenciasDocumento.fileExtension, preferenciasDocumento.merges,
+            preferenciasDocumento.RTL, preferenciasDocumento.sheetname);
+    });
+</script>
+<!-- Fin script exportar -->
+
+<style>
+
+.scroll_horizontal{
+    overflow-y: scroll;
+}
+    #tabla {
+        border-collapse: collapse;
+        width: 80%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #tabla th,
+    #tabla td {
+        text-align: center;
+        padding: 12px;
+    }
+
+    #tabla tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #tabla tr.header,
+    #tabla tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        margin-top: -60px;
+        left: 30%;
+        margin-left: -225px;
+    }
+</style>
+
+
+{% endblock %}

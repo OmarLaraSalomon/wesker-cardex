@@ -1,0 +1,191 @@
+{% extends 'social/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block link %}
+
+
+
+{% endblock link %}
+{% block title %}
+Information
+{% endblock title %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <table id="tabla-hats" style="display: none;">
+        <thead>
+            <tr>
+                <th>hat</th>
+                <th>valor</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for registros in registros %}
+            {% if registros.user_id == user.id %}
+
+            <tr>
+
+                {% for hat in hat %}
+                {% if registros.hat_id == hat.id %}
+
+                <td>{{hat.nombre_hat}}</td>
+                <td>1</td>
+                {% endif %}
+                {% endfor %}
+
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>Total</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <input type="text" id="ganancia_total" style="display: none;">
+
+    <script>
+         $(document).ready(function () {
+            //Defino los totales de mis 2 columnas en 0
+            var total_col1 = 0;
+            var total_col2 = 0;
+            //Recorro todos los tr ubicados en el tbody
+            $('#tabla-hats tbody').find('tr').each(function (i, el) {
+
+                //Voy incrementando las variables segun la fila ( .eq(0) representa la fila 1 )     
+                total_col2 += parseFloat($(this).find('td').eq(1).text());
+            });
+            //Muestro el resultado en el th correspondiente a la columna
+            $('#tabla-hats tfoot tr th').eq(1).text("Total " + total_col2);
+
+            total = $('#tabla-hats tfoot tr th').eq(1).text();
+                var comisiones_balance = total.split(' ');
+                $("#ganancia_total").val(comisiones_balance[1]);
+                var ganancia = $('#ganancia_total').val();
+                let button = document.querySelector(".actualizar");
+                let selector = document.querySelector(".selectCarlos");
+
+            if (ganancia >= 4) {
+                button.disabled = true;
+                button.style.display = 'none';
+                selector.style.display = 'none';
+                /* button.style.cursor= "not-allowed"; */
+                
+                document.getElementById("mensaje").innerHTML = "Ya tienes el limite de hats asignados";
+            } else {
+                button.style.display = 'block';
+                selector.style.display = 'block';
+            }
+        });
+    </script>
+
+
+    <style>
+        #hatput {
+            width: 90%;
+            font-size: 15px;
+            text-align: center;
+            border-radius: 15px;
+            margin-left: 35px;
+        }
+
+        #idput-1 {
+            text-align: center;
+            font-size: 15px;
+        }
+    </style>
+
+<div style="width: 100%; text-align: center; padding-top: 15px;">
+    <h1 id="mensaje" style="text-align: center; border-style: none; background: transparent; margin-bottom: 20px; color: red;"></h1>
+    {% for registros in registros %}
+    {% if registros.user_id == user.id %}
+
+    {% for hat in hat %}
+    {% if registros.hat_id == hat.id %}
+    <h2> Tu Hat asignado es {{hat.nombre_hat}}</h2>
+    {% endif %}
+    {% endfor %}
+
+    {% endif %}
+    {% endfor %}
+</div>
+
+    <form>
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <input type="text" value="{{ user.id }}" id="user_id" style="display: none;">
+
+            <select class="selectCarlos" id="hatput" name="pais" required class="form-control">
+                <option value="" disabled selected>{{_('Selecciona tu Hat')}}</option>
+                {% for hat in hat %}
+                <option value="{{ hat.id }}">{{hat.nombre_hat}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="text" id="idput-1" disabled style="display: none;">
+        </div>
+
+        <div class="btnact">
+            <button name="boton" onclick="hatreg()" type="submit"
+              class="actualizar" style="margin-top: 20px;">{{_('Asignar')}}</button>
+          </div>
+
+    </form>
+
+    <script>
+        $("#hatput").on("change", function () {
+            var precio_pr = $("#hatput").val();
+            console.log(precio_pr);
+            $('#idput-1').val(precio_pr);
+
+        });
+    </script>
+
+    <script>
+        
+        function hatreg() {
+        $.ajax({
+          url: "{% url 'asignarhat' %}",
+          type: "POST",
+          data: {
+            'user_id': $('#user_id').val(),
+            'hat_id': $('#idput-1').val(),
+            
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+
+
+          },
+          success: function (data) {
+            console.log(data)
+            console.log("Success");
+            location.reload();
+          }
+        });
+    }
+    </script>
+
+</body>
+
+</html>
+
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'social/layout.html' %}
+{% load humanize %}
+{% block content %}
+
+<head>
+    <style>
+        table {
+            width: 100%;
+            text-align: center;
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #FFFFFF;
+        }
+
+        table tr td {
+            padding-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile">
+        <h1>Estas por adjuntar un ACTA KAISEN para {{user.information.first_name}}
+            {{user.information.last_name}}
+        </h1>
+    </div>
+    <form action="{% url 'uploadkaisen' %}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" name="idField" value="{{user.id}}" required>
+        <input type="text" name="fileTitle" placeholder="Ingresa un titulo" required>
+        <input type="file" name="uploadedFile" required>
+        {% csrf_token %}
+        <input type="submit"  value="Subir" style="cursor: pointer" class="hov">
+    </form>
+</body>
+
+<script>
+    
+</script>
+
+<style>
+.hov{
+ border-radius: 10px;
+}
+
+.hov:hover{
+ background-color: red;
+ color: white;
+}
+</style>
+
+{% endblock %}

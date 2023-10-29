@@ -1,0 +1,270 @@
+{% extends 'social/feed.html' %}
+{% load humanize %}
+{% block content %}
+<head>
+    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+</head>
+<!-- Profile -->
+<div class="profile">
+    {% load static from static %}
+    <img src="{{user.profile.image.url}}">
+    <h2>{{ user.username }}</h2>
+</div>
+
+<div style="background-color: #7f00b2;">
+    <hr>
+    <div class="profile" style="margin-top: 20px;">
+        <h2 style="color: white;"><i class="fa fa-plus-square"></i>&nbsp;Perfil Psicologico</h2>
+    </div>
+    <hr>
+</div>
+
+<form method="get" action="{% url 'perfilpsico' %}" class="filter-form">
+    <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
+      <input type="text" name="search" value="{{ request.GET.search }}" class="search search-input" placeholder="Buscar...">
+      <button type="submit" class="btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+      {% if request.GET.search %}
+      <a href="{% url 'perfilpsico' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>
+    {% endif %}
+    </div>
+  </form>
+
+<article>
+    <div>
+        <div class="scroll_horizontal">
+            <table id="myTable">
+                <thead>
+                    <tr class="header">
+                        <th style="width:20%;">Foto</th>
+                        <th style="width:20%;">Usuario</th>
+                        <th style="width:20%;">Departamento</th>
+                        <th style="width:20%;">Opciones</th>
+                </thead>
+                <tbody>
+                    </tr>
+                    {% for user in users %}
+                    <tr>
+                        <td>
+                            <div class="container-article"><img src="{{ user.profile.image.url }}"></div>
+                        </td>
+                        <td>{{ user.information.first_name }} {{ user.information.last_name }}</td>
+                        <td>{{ user.information.departamento }}</td>
+                        <td>
+                            <div class="profile">
+                                <input type="text" value="{{user.id}}" id="id_us" style="display: none;">
+                                <a class="boton-datosmedicos justify" style="background-color: #7f00b2; cursor: pointer; text-align: center;"
+                                    href="{% url 'files' user.username %}"><i class="fa-solid fa-file-import"></i> Subir Perfil
+                                    Psicologico</a>
+                                <a class="boton-datosmedicos justify" style="background-color: #7f00b2; cursor: pointer; text-align: center"
+                                    onclick="direccion()"><i class="fa-regular fa-folder-open"></i> Ver
+                                    archivos</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</article>
+
+
+<div class="previous">
+    {% if users.has_previous %}
+    <div class="previous-1">
+        <a href="?page=1" class="btn-action"><i class="fa-solid fa-angles-left"></i> </a>
+    </div>
+    <div class="previous-1">
+        <a href="?page={{ users.previous_page_number }}" class="btn-action"> <i class="fa-solid fa-angle-left"></i> </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="current">
+    {% for page_num in page_numbers %}
+            {% if page_num == users.number %}
+                <span class="current-page">{{ page_num }}</span>
+            {% else %}
+                <a href="?page={{ page_num }}" class="page-number">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
+</div>
+
+<div class="next">
+    {% if users.has_next %}
+    <div class="next-1">
+        <a href="?page={{ users.next_page_number }}" class="btn-action">  <i class="fa-solid fa-angle-right"></i></a>
+    </div>
+    <div class="next-1">
+        <a href="?page={{ users.paginator.num_pages }}" class="btn-action"> <i class="fa-solid fa-angles-right"></i></a>
+    </div>
+    {% endif %}
+</div>
+
+</div>
+
+<script>
+    function direccion() {
+        let id_me = $("#id_us").val();
+        console.log("EL ID ES: " + id_me)
+        window.location.href = "http://127.0.0.1:8000/only-admin-cardex/social/document/"+ "?user_id__id__exact=" + id_me
+    }
+</script>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
+
+    .pagination {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* Divide el contenedor en tres columnas de igual ancho */
+        height: 80px;
+    }
+    
+    .previous {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .previous-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .current {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+    
+    .next {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .next-1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .current span {
+        padding: 15px;
+        background: #105db0;
+        color: white;
+        border-radius: 50%;
+        font-size: 15px;
+    }
+
+    .page-number {
+        border-style: solid;
+        padding: 5%;
+        border-radius: 15px;
+        color: white;
+        background-color: lightblue;
+        margin-left: 1%;
+        margin-right: 1%;
+      }
+      
+      .page-number:hover {
+        background: #105db0;
+      }
+    
+    .btn-action:hover{
+        background: #105db0;
+        padding: 15px;
+        border-radius: 30%;
+        color: white;
+        z-index: 2;
+    }
+    
+    .search-input{
+        width: 80%;
+    }
+    
+    .clean-input{
+        font-size: 1rem;
+        padding: 0.4rem 1.4rem;
+        background: red;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+    
+    .btn-primary,.clean-input{
+        margin: 1%;
+    }
+
+    .container {
+        display: center;
+        grid-template-columns: 300px 300px 300px;
+        grid-gap: 50px;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: url(../../static/gris.jpg) no-repeat;
+        font-family: 'Baloo Paaji 2', cursive;
+
+    }
+
+    .scroll_horizontal {
+        overflow-y: hidden;
+        overflow-x: auto;
+        padding: 1%;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #myTable th,
+    #myTable td {
+        text-align: left;
+        padding: 12px;
+    }
+
+    #myTable tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #myTable tr.header,
+    #myTable tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        margin-top: -60px;
+        left: 30%;
+        margin-left: -225px;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+</html>
+
+
+
+{% endblock %}

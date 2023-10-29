@@ -1,0 +1,31 @@
+{% extends 'social/layout.html' %}
+
+{% block content %}
+
+<style>
+	.reset-pswd{
+		margin-top: 2%;
+		width: 100%;
+		height: auto;
+		text-align: center;
+		/* border-style: solid; */
+	}
+
+	.contra-reset{
+		color: blue;
+		text-decoration: underline;
+	}
+</style>
+
+<form class="form" method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+
+	<button type="submit" id="submit">Login</button>
+
+	<div class="reset-pswd">
+		<a href="{% url 'password_reset' %}" class="contra-reset">Olvide mi contraseña</a>
+	</div>
+</form>
+
+{% endblock %}

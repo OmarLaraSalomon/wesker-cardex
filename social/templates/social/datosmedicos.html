@@ -1,0 +1,549 @@
+{% extends 'social/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block link %}
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+{% endblock link %}
+{% block title %}
+Information
+{% endblock title %}
+{% block content %}
+
+<style>
+  .boton {
+    float: right;
+    background-color: rgb(0, 89, 86);
+    margin: 5px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+  }
+</style>
+
+<body>
+  <div class="profile">
+    <a class="boton" href="{% url 'perfilmedico' %}" class="go-back"> <i class="fa fa-arrow-circle-left"></i>&nbsp;
+      Regresar </a>
+
+  </div>
+  <div class="profile" style="margin-top: 5%">
+    <h2>ACTUALIZACION DATOS MEDICOS </h2>
+  </div>
+
+  <style>
+    form {
+      padding-left: 20%;
+    }
+
+    .prueba {
+      width: 70%;
+      height: 470px;
+      text-align: center;
+      padding-top: 3%;
+      padding-left: 5%;
+      padding-right: 5%;
+      /* display: none; */
+    }
+
+    .prueba input {
+      text-align: center;
+    }
+
+    .prueba3 {
+      width: 70%;
+      height: 450px;
+      padding-top: 3%;
+      text-align: center;
+      display: none;
+    }
+
+    .prueba3 input {
+      text-align: center;
+    }
+
+    .prueba4 {
+      width: 70%;
+      height: 600px;
+      padding-top: 3%;
+      text-align: center;
+      display: none;
+    }
+
+    .prueba4 input {
+      text-align: center;
+    }
+
+    .prueba4 select {
+      width: 90%;
+      text-align: center;
+      margin-top: 2%;
+      margin-bottom: 2%;
+    }
+
+    .btnNext {
+      margin-top: 5%;
+      margin-left: 30%;
+      border-style: solid;
+      background-color: rgb(0, 89, 86);
+      border: 1px solid rgb(0, 89, 86);
+      font-weight: 600;
+      position: relative;
+      outline: none;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      height: 45px;
+      width: 130px;
+      opacity: 1;
+      color: white;
+    }
+
+    .btnBack1 {
+      border-style: solid;
+      background-color: rgb(0, 89, 86);
+      border: 1px solid rgb(0, 89, 86);
+      font-weight: 600;
+      position: relative;
+      outline: none;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      height: 45px;
+      width: 130px;
+      opacity: 1;
+      color: white;
+    }
+
+    .btnNext1 {
+      /* margin-top: 5%; */
+      margin-left: 3%;
+      border-style: solid;
+      background-color: rgb(0, 89, 86);
+      border: 1px solid rgb(0, 89, 86);
+      font-weight: 600;
+      position: relative;
+      outline: none;
+      border-radius: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      height: 45px;
+      width: 130px;
+      opacity: 1;
+      color: white;
+    }
+
+    .btnNext:hover,
+    .btnNext1:hover,
+    .btnBack1:hover {
+      background: black;
+      color: white;
+    }
+
+    .btns {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 5%;
+    }
+  </style>
+
+  <form>
+    <!-- div 1 -->
+    <div class="prueba" id="prueba">
+      <div class="form-group">
+        <input type="hidden" class="form-control" id="idField" value="{{user.id}}">
+      </div>
+      <div class="form-group">
+        <label for="edadField">{{_('1: Edad')}}</label>
+        <input type="text" class="form-control" id="edadField"
+          placeholder="{{ _('Escribe la edad de') }} {{user.username}}" required>
+      </div>
+      <div class="form-group">
+        <label for="pesoField">{{_('2: Peso')}}</label>
+        <input type="text" class="form-control" id="pesoField"
+          placeholder="{{ _('Escribe el peso de') }} {{user.username}}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="estaturaField">{{_('3: Estatura')}}</label>
+        <input type="text" class="form-control" id="estaturaField"
+          placeholder="{{ _('Escribe la estatura de ') }} {{user.username}}" required>
+      </div>
+
+      <label for="chec">4: ¿Tienes alguna alergia?</label>
+
+      <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
+        <table>
+
+          <tr>
+
+            <td> <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton(this,'No');">No</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a alimentos()');">Alergia a
+              alimentos</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Alergia a fármacos()');">Alergia a
+              fármacos.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Asma alérgico');">Asma
+              alérgico.</input></td>
+
+          </tr>
+
+          <tr>
+
+            <td><input type="checkbox" onclick="javacript:EnableDisableButton(this,'Dermatitis atópica');">Dermatitis
+              atópica.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Poliposis nasal');">Poliposis
+              nasal.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Rinitis alérgica');">Rinitis
+              alérgica.</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton(this,'Urticaria crónica');">Urticaria
+              crónica.</input><br></td>
+
+          </tr>
+        </table>
+        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px; display: none;"
+          class="form-control" id="alergiasField" type="textarea" name="t2" required></textarea>
+
+      </div>
+      <a onclick="siguiente1()" style="cursor: pointer;" class="btnNext">Siguiente</a>
+    </div>
+
+    <!-- div 2  -->
+
+    <div class="prueba3" id="prueba3">
+      <div class="form-group">
+        <label for="sangreField">{{_('5: Tipo de sangre')}}</label>
+        <input type="text" class="form-control" id="sangreField"
+          placeholder="{{ _('Escribe el tipo de sangre de ') }} {{user.username}}" required>
+      </div>
+
+      <label for="checy">6: ¿Padeces de alguna enfermedad?</label>
+
+      <div class="form-group d-flex justify-content-center" style="margin-top: 20px;">
+        <table>
+
+          <tr>
+
+            <td> <input id="check1" type="checkbox" onclick="javacript:EnableDisableButton2(this,'No');">No</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Síndrome metabólico o cardiovascular');">Síndrome
+              metabólico
+              o cardiovascular</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Obesidad');">Obesidad.</input>
+            </td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Hipertensión arterial');">Hipertensión arterial</input>
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Colesterol alto');">Colesterol
+              alto</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Triglicéridos');">Triglicéridos</input></td>
+
+            <td> <input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Diabetes');">Diabetes</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Enfermedad Intestinal');">Enfermedad
+              Intestinal</input><br></td>
+
+          </tr>
+
+          <tr>
+
+            <td><input type="checkbox" onclick="javacript:EnableDisableButton2(this,'Enfermedad hepática');">Enfermedad
+              hepática</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Enfermedades cerebrovasculares');">Enfermedades
+              cerebrovasculares </input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Enfermedades respiratorias');">Enfermedades
+              respiratorias</input></td>
+
+            <td> <input type="checkbox"
+                onclick="javacript:EnableDisableButton2(this,'Malformaciones()');">Malformaciones</input><br></td>
+
+          </tr>
+        </table>
+        <textarea style="width: 500px; height: 100px; border: solid 0.5px grey; margin: 20px; display: none;"
+          class="form-control" id="enfermedadField" type="textarea" name="t3" required></textarea>
+
+      </div>
+
+      <div class="btns">
+        <a onclick="anterior2()" style="cursor: pointer;" class="btnBack1">Anterior</a>
+        <a onclick="siguiente2()" style="cursor: pointer;" class="btnNext1">Siguiente</a>
+      </div>
+
+    </div>
+
+    <!-- div 3 -->
+    <div class="prueba4" id="prueba4">
+      <div class="form-group">
+        <label for="lentesField">{{_('7: ¿Usas Lentes?')}}</label>
+        <select name="select" id="lentesField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+        <label for="fumasField">{{_('8: ¿Fumas?')}}</label>
+        <select name="select" id="fumasField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+        <label for="tomasField">{{_('9: ¿Tomas?')}}</label>
+        <select name="select" id="tomasField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+        <label for="deporteField">{{_('10: ¿Realizas algun deporte o actividad fisica ?')}}</label>
+        <input type="text" class="form-control" id="deporteField"
+          placeholder="{{ _('Coloca la actividad fisica que realiza ') }} {{user.username}}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="sueñoField">{{_('11: ¿Cuantas horasde sueño tienes al dia ?')}}</label>
+        <input type="text" class="form-control" id="sueñoField"
+          placeholder="{{ _('Coloca las horas de sueño de ') }} {{user.username}}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="covidField">{{_('12: ¿Te dio Covid alguna vez?')}}</label>
+        <select name="select" id="covidField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
+
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="vacunaField">{{_('13: ¿Ya tienes las 2 vacunas?')}}</label>
+        <select name="select" id="vacunaField" required>
+          <option value="" disabled selected>selecciona una opcion</option>
+          <option value="si">si</option>
+          <option value="no">no</option>
+
+        </select>
+
+      </div>
+
+      <div class="btns">
+        <a onclick="anterior3()" style="cursor: pointer;" class="btnBack1">Anterior</a>
+        <button name="boton" onclick="hacer()" class="btnNext1">{{_('Actualizar')}}</button>
+      </div>
+
+    </div>
+
+  </form>
+
+  <script>
+    function siguiente1() {
+      document.getElementById("prueba").style.display = "none";
+      document.getElementById("prueba3").style.display = "block";
+    }
+
+    function anterior2() {
+      document.getElementById("prueba").style.display = "block";
+      document.getElementById("prueba3").style.display = "none";
+    }
+
+    function siguiente2() {
+      document.getElementById("prueba3").style.display = "none";
+      document.getElementById("prueba4").style.display = "block";
+    }
+
+    function anterior3() {
+      document.getElementById("prueba3").style.display = "block";
+      document.getElementById("prueba4").style.display = "none";
+    }
+  </script>
+<!-- instalar npm con npm install sweetalert2-->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+
+    function get_cookie(name) {
+      let cookie_value = null;
+      if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = jQuery.trim(cookies[i]);
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookie_value;/**/
+    }
+
+    let csrf_token = get_cookie('csrftoken');
+
+    function hacer() {
+      if (document.getElementById('edadField').value == "" && document.getElementById('vacunaField').value == "") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Parece que no has llenado todos los campos!'
+        })
+
+      } else {
+        $.ajax({
+          url: "{% url 'datosmedicos' %}",
+          type: "POST",
+          data: {
+
+            'edad': $('#edadField').val(),
+            'peso': $('#pesoField').val(),
+            'estatura': $('#estaturaField').val(),
+            'alergias': $('#alergiasField').val(),
+            'sangre': $('#sangreField').val(),
+            'enfermedad': $('#enfermedadField').val(),
+            'lentes': $('#lentesField').val(),
+            'fumas': $('#fumasField').val(),
+            'tomas': $('#tomasField').val(),
+            'deporte': $('#deporteField').val(),
+            'sueño': $('#sueñoField').val(),
+            'covid': $('#covidField').val(),
+            'vacuna': $('#vacunaField').val(),
+            'user_id': $('#idField').val(),
+            csrfmiddlewaretoken: csrf_token,
+
+
+          },
+          success: function (data) {
+            console.log(data)
+            console.log("Success");
+            window.location.href = "{% url 'perfilmedico' user.username %}";
+          }
+        });
+      }
+    }
+  </script>
+
+  <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+  <script>
+
+
+    /* script para lista de alergias */
+    var idList = " "
+    document.getElementById('alergiasField').value = idList;
+
+    function EnableDisableButton(cb, id) {
+
+      if (cb.checked == 1) {
+        idList = idList + id + " "
+        document.getElementById('alergiasField').value = idList;
+      }
+
+      if (cb.checked == 0) {
+        var v;
+        v = " " + id + " "
+        idList = idList.replace(v, " ");
+        document.getElementById('alergiasField').value = idList;
+      }
+
+      if (idList == " ") {
+        document.getElementById('button1').disabled = true;
+      } else {
+        document.getElementById('button1').disabled = false;
+      }
+
+    }
+
+
+
+
+  </script>
+
+
+  <script>
+    /* script para lista de enfermedades */
+    var idList2 = " "
+    document.getElementById('enfermedadField').value = idList2;
+
+    function EnableDisableButton2(cbb, ids) {
+
+      if (cbb.checked == 1) {
+        idList2 = idList2 + ids + " "
+        document.getElementById('enfermedadField').value = idList2;
+      }
+
+      if (cbb.checked == 0) {
+        var b;
+        b = " " + ids + " "
+        idList2 = idList2.replace(b, " ");
+        document.getElementById('enfermedadField').value = idList2;
+      }
+
+      if (idList2 == " ") {
+        document.getElementById('button2').disabled = true;
+      } else {
+        document.getElementById('button2').disabled = false;
+      }
+
+    }
+
+  </script>
+</body>
+
+</html>
+
+
+{% endblock %}

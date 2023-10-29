@@ -1,0 +1,460 @@
+{% extends 'social/feed.html' %}
+
+<!--{% load static %}-->
+{% block content %}
+
+<head>
+    <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
+
+
+</head>
+<!-- Profile -->
+<div class="profile">
+    {% load static from static %}
+    <img src="{{user.profile.image.url}}">
+    <h2> {{ user.information.first_name }} {{user.information.last_name }}</h2>
+
+</div>
+
+<style>
+    .subida {
+        width: 500px;
+        height: 250px;
+        display: none;
+    }
+
+    .form-select {
+        text-align: center;
+        width: 100%;
+    }
+
+    .botonera {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn1 {
+        margin-right: 30px;
+    }
+
+    #btn1 {
+        display: none;
+        border-radius: 10px;
+        background: #000000;
+    }
+
+    .btn-submit {
+        background: darkblue;
+        color: white;
+        border-radius: 5px;
+        padding-bottom: 1.5%;
+        width: 100px;
+        margin-left: 45%;
+    }
+
+    #btn2 {
+        background: darkblue;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="container">
+
+    <div class="botonera">
+        <button onclick="ocultar()" id="btn1"> Ocultar </button>
+        <button onclick="mostrar()" id="btn2"> Registrar </button>
+    </div>
+
+    <div class="subida" id="nuevo">
+        <form method="post" action="{% url 'subirdocumentacion' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="numerocontrato"> </label>
+            <div class="alinea">
+                <select name="TipoDocumento" id="TipoDocumento" class="form-select" required>
+                    <option value="" disabled selected>Selecciona el tipo de documento</option>
+                    <option value="INE">INE</option>
+                    <option value="Contratos">Contratos</option>
+                    <option value="Prestaciones">Prestaciones</option>
+                    <option value="NDA">NDA</option>
+                    <option value="Reglamento">Reglamento</option>
+                    <option value="Priv de datos">Privacidad de datos</option>
+                </select>
+            </div>
+
+            <div class="alinea">
+                <input type="file" name="uploadedFile" multiple class="btn" id="uploadedFile" required>
+            </div>
+
+            <input type="text" name="userid" multiple class="btn" id="userid" required value="{{user.id}}"
+                style="display: none;">
+
+            <input type="submit" value="Subir" style="cursor:pointer" class="btn-submit">
+        </form>
+    </div>
+    <style>
+        #btn0,
+        #btnn1,
+        #btnn2,
+        #btnn3,
+        #btnn4,
+        #btnn5 {
+            display: none;
+            border-radius: 10px;
+            background: #000000;
+            margin-left: 1%;
+            margin-bottom: 1%;
+        }
+
+        #btn01,
+        #btnn01,
+        #btnn02,
+        #btnn03,
+        #btnn04,
+        #btnn05 {
+            background: darkblue;
+            border-radius: 10px;
+            margin-left: 2%;
+        }
+
+        embed {
+            display: none;
+        }
+    </style>
+
+    <div class="scroll_horizontal" id="existente">
+        <table id="tabla" class="display" style="width:100%">
+            <thead>
+                <tr class="header">
+                    <th>Tipo de documento</th>
+                    <th>subido</th>
+                    <th>Archivo</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> INE </td>
+                    {% for a in documentoP %}
+                    {% if a.TipoDocumento == 'INE' %}
+                    {% if a.user_id == user.id %}
+                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
+                    <td>
+                        <button onclick="ocultar1()" id="btn0"> Ocultar </button>
+                        <button onclick="mostrar1()" id="btn01"> Mostrar </button>
+                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
+                            id="documentPDF">
+                    </td>
+                    <td>{{ a.dateTimeOfUpload }} </td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td> Contratos </td>
+                    {% for a in documentoP %}
+                    {% if a.TipoDocumento == 'Contratos' %}
+                    {% if a.user_id == user.id %}
+                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
+                    <td>
+                        <button onclick="ocultar2()" id="btnn1"> Ocultar </button>
+                        <button onclick="mostrar2()" id="btnn01"> Mostrar </button>
+                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
+                            id="documentPDF2">
+                    </td>
+                    <td>{{ a.dateTimeOfUpload }} </td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td> Prestaciones </td>
+                    {% for a in documentoP %}
+                    {% if a.TipoDocumento == 'Prestaciones' %}
+                    {% if a.user_id == user.id %}
+                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
+                    <td>
+                        <button onclick="ocultar3()" id="btnn2"> Ocultar </button>
+                        <button onclick="mostrar3()" id="btnn02"> Mostrar </button>
+                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px" 
+                        id="documentPDF3">
+                    </td>
+                    <td>{{ a.dateTimeOfUpload }} </td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td> NDA </td>
+                    {% for a in documentoP %}
+                    {% if a.TipoDocumento == 'NDA' %}
+                    {% if a.user_id == user.id %}
+                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
+                    <td>
+                        <button onclick="ocultar4()" id="btnn3"> Ocultar </button>
+                        <button onclick="mostrar4()" id="btnn03"> Mostrar </button>
+                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
+                        id="documentPDF4">
+                    </td>
+                    <td>{{ a.dateTimeOfUpload }} </td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td> Reglamento </td>
+                    {% for a in documentoP %}
+                    {% if a.TipoDocumento == 'Reglamento' %}
+                    {% if a.user_id == user.id %}
+                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
+                    <td>
+                        <button onclick="ocultar5()" id="btnn4"> Ocultar </button>
+                        <button onclick="mostrar5()" id="btnn04"> Mostrar </button>
+                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
+                        id="documentPDF5">
+                    </td>
+                    <td>{{ a.dateTimeOfUpload }} </td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td> Privacidad de datos </td>
+                    {% for a in documentoP %}
+                    {% if a.TipoDocumento == 'Privacidad de datos' %}
+                    {% if a.user_id == user.id %}
+                    <td><i class="fa-regular fa-circle-check" style="color: green; font-size: 30px;"></i></td>
+                    <td>
+                        <button onclick="ocultar6()" id="btnn5"> Ocultar </button>
+                        <button onclick="mostrar6()" id="btnn05"> Mostrar </button>
+                        <embed src="{{ a.uploadedFile.url }}" type="application/pdf" width="400px" height="300px"
+                        id="documentPDF6">
+                    </td>
+                    <td>{{ a.dateTimeOfUpload }} </td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<style>
+    .scroll_horizontal {
+        padding: 2%;
+    }
+
+    #tabla {
+        border-collapse: collapse;
+        width: 80%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #tabla th,
+    #tabla td {
+        text-align: center;
+        padding: 12px;
+    }
+
+    #tabla tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #tabla tr.header,
+    #tabla tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
+
+    .container {
+        display: center;
+        grid-template-columns: 300px 300px 300px;
+        grid-gap: 50px;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Baloo Paaji 2', cursive;
+        border-radius: 30px;
+
+    }
+</style>
+
+<script>
+    function mostrar() {
+        const registro2 = document.getElementById("nuevo");
+        registro2.style.display = "initial";
+        const boton1 = document.getElementById("btn2");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btn1");
+        boton2.style.display = "block";
+    }
+
+    function ocultar() {
+        const registro2 = document.getElementById("nuevo");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btn2");
+        boton1.style.display = "block";
+
+        const boton2 = document.getElementById("btn1");
+        boton2.style.display = "none";
+    }
+</script>
+
+<script>
+    function mostrar1() {
+        const mostpdf = document.getElementById("documentPDF");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btn01");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btn0");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar1() {
+        const registro2 = document.getElementById("documentPDF");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btn01");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btn0");
+        boton2.style.display = "none";
+    }
+
+    function mostrar2() {
+        const mostpdf = document.getElementById("documentPDF2");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btnn01");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btnn1");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar2() {
+        const registro2 = document.getElementById("documentPDF2");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btnn01");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btnn1");
+        boton2.style.display = "none";
+    }
+
+    function mostrar3() {
+        const mostpdf = document.getElementById("documentPDF3");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btnn02");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btnn2");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar3() {
+        const registro2 = document.getElementById("documentPDF3");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btnn02");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btnn2");
+        boton2.style.display = "none";
+    }
+
+    function mostrar4() {
+        const mostpdf = document.getElementById("documentPDF4");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btnn03");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btnn3");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar4() {
+        const registro2 = document.getElementById("documentPDF4");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btnn03");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btnn3");
+        boton2.style.display = "none";
+    }
+
+    function mostrar5() {
+        const mostpdf = document.getElementById("documentPDF5");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btnn04");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btnn4");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar5() {
+        const registro2 = document.getElementById("documentPDF5");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btnn04");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btnn4");
+        boton2.style.display = "none";
+    }
+
+    function mostrar6() {
+        const mostpdf = document.getElementById("documentPDF6");
+        mostpdf.style.display = "initial";
+        const boton1 = document.getElementById("btnn05");
+        boton1.style.display = "none";
+
+        const boton2 = document.getElementById("btnn5");
+        boton2.style.display = "initial";
+    }
+
+    function ocultar6() {
+        const registro2 = document.getElementById("documentPDF6");
+        registro2.style.display = "none";
+        const boton1 = document.getElementById("btnn05");
+        boton1.style.display = "initial";
+
+        const boton2 = document.getElementById("btnn5");
+        boton2.style.display = "none";
+    }
+</script>
+
+<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable({});
+    });
+</script>
+
+
+
+{% endblock %}

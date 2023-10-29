@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+	<title>Cardex</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="{% static 'normalize.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+	<link rel="icon" href="{% static 'batman.png' %}" type="image/x-icon">
+
+
+
+	<script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- <script src="https://kit.fontawesome.com/2aa4b284c9.js" crossorigin="anonymous"></script> -->
+	<script src="https://kit.fontawesome.com/bdad33e746.js" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+</head>
+
+<body>
+
+	<header class="main-head">
+
+		<nav class="navbar">
+			<!-- LOGO -->
+			<h1 class="logo"><a href="{% url 'inicio' %}">TESCA CORPORATION </a></h1>
+
+	
+			<!-- NAVIGATION MENU -->
+			<ul class="nav-links">
+
+				<!-- USING CHECKBOX HACK -->
+				<input class="checki" type="checkbox" id="checkbox_toggle" />
+				<label for="checkbox_toggle" class="hamburger">&#9776;</label>
+				<!-- NAVIGATION MENUS -->
+				<div class="menu">
+				{% if request.user.is_authenticated %}
+					{%if user.id == user.information.user_id %}
+					<li><a href="{% url 'regasis' %}" class="orange"><i class="fa fa-clock-o"></i>&nbsp;
+						Asistencias</a></li>
+					{%else%}
+					<li style="background: red; border-radius: 20px; border-style: solid;" ><a href="{% url 'information' %}"><i class="fa fa-user"></i>&nbsp;Actualizar info. </a></li>
+					{% endif %}
+
+					<li><a href="{% url 'inicio' %}"><i class="fa fa-home"></i>&nbsp;Inicio</a></li>
+					<li><a href="{% url 'profile' request.user.username %}"><i class="fa fa-user"></i>&nbsp;Mi
+							Perfil</a></li>
+							
+					{% if user.is_superuser%}
+					<li><a href="{% url 'admin:index' %}"><i class="fa fa-cogs"></i>&nbsp;Panel de Control</a></li>
+					{%endif%}
+					<li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>&nbsp;Salir</a></li>
+
+				{% else %}
+					<li><a href="{% url 'register' %}">Registrarse</a></li>
+					<li><a href="{% url 'login' %}">Entrar</a></li>
+				{% endif %}
+				</div>
+			</ul>
+			{% if request.user.is_authenticated %}
+			<!-- <img style="margin-left: -50px; margin-right: 50px; padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
+				src=""> -->
+			<img style="margin-left: -50px; margin-right: 50px; padding-bottom: -5px; height: 60px; width: 60px; border-radius: 50%;"
+				src="{{user.profile.image.url}}">
+			{% else %}
+			{%endif%}
+		</nav>
+
+		<div id="top"></div>
+	</header>
+
+	{% if messages %}
+	{% for message in messages %}
+	<div class="notification {{ message.tags}}">
+		{{ message }}
+	</div>
+	{% endfor %}
+	{% endif %}
+
+	<!-------------------------------------
+					Navigation Bar 
+	-------------------------------------->
+	{% if user.is_superuser%}
+	{% if request.user.is_authenticated %}
+	<div class="ocultar1">
+		<div class="main-menu">
+			<div class="main-menu-form">
+				<div class="main-menu-btn"><i class="fa fa-bars"></i></div>
+			</div>
+
+			<div class="main-menu-content">
+				<!-- main logo -->
+				<div class="main-menu-logo">
+					<a href="#" class="main-menu-close"><i class="fa fa-close"></i>&nbsp; Cerrar</a>
+
+				</div>
+				<!-- navigation -->
+				<ul class="main-menu-nav">
+					<li><a href="{% url 'hats' %}" class="purple"><i class="fa fa-graduation-cap"></i>&nbsp;
+							Perfiles</a></li>
+
+					<li><a href="{% url 'credencial_fisica' %}" class="purple"><i class="fa fa-graduation-cap"></i>&nbsp;
+								Credenciales</a></li>
+
+					<li><a href="{% url 'regasis' %}" class="orange"><i class="fa fa-clock-o"></i>&nbsp;
+							Asistencias</a></li>
+					<!-- <li><a href="#" class="orange"><i class="fa fa-trophy"></i>&nbsp;
+							Reconocimientos</a></li> -->
+					<li><a href="{% url 'perfilKaisen' %}" class="green"><i class="fa fa-line-chart"></i>&nbsp; Actas Kaizen</a></li>
+					<li><a href="{% url 'perfilpsico' %}" class="yellow"><i class="fa fa-lightbulb-o"></i>&nbsp; Perfil
+							Psicologico</a>
+					</li>
+					<li><a href="{% url 'perfilmedico' %}" class="green"><i class="fa fa-stethoscope"></i>&nbsp; Perfil
+							Medico</a></li>
+					<li><a href="{% url 'perfillegal' request.user.id %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Documentacion</a></li>
+
+					<li><a href="{% url 'contrataciones' %}" class="green"><i class="fa-solid fa-passport"></i>&nbsp; Contrataciones </a></li>
+					<li><a href="{% url 'cartas' %}" class="green"><i class="fa-solid fa-envelopes-bulk"></i>&nbsp; Cartas </a></li>
+					<!-- <li><a href="#" class="yellow"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a> -->
+					<!-- <li><a href="#" class="red"><i class="fa fa-money"></i>&nbsp; Contabilidad</a></li>
+					<li><a href="#" class="red"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a></li> -->
+
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	{% endif %}
+	{%endif%}
+
+	{% if user.is_superuser%}
+	<div class="ocultar">
+		<div class="cards">
+			<nav class="second-nav">
+				{% if request.user.is_authenticated %}
+				<a class="hero1" href="{% url 'hats' %}" style="background-color: #1594A6;"><i
+						class="fa fa-graduation-cap" style="background-color: #1594A6;"></i>&nbsp; Perfiles</a>
+				<br>
+				<a class="hero1" href="{% url 'credencial_fisica' %}" style="background-color: #b30570;"><i
+					class="fa-solid fa-users-viewfinder" style="background-color: #b30570;"></i>&nbsp; Credenciales</a>
+					<br>
+
+				{% endif %}
+				{% if request.user.is_authenticated %}
+				<a class="hero1" href="{% url 'asistencia' %}" style="background-color: #ffff00bb;"><i class="fa fa-clock-o"></i>&nbsp;
+					Asistencias</a>
+				<br>
+				{% endif %}
+				<!-- {% if request.user.is_authenticated %}
+				<a class="hero1" href="#"><i class="fa fa-trophy"></i>&nbsp; Reconocimientos</a>
+				<br>
+				{% endif %} -->
+				{% if request.user.is_authenticated %}
+				<a style="background-color:red;" class="hero1" href="{% url 'perfilKaisen' %}"><i  class="fa fa-line-chart"></i>&nbsp; Actas Kaizen</a></a>
+				<br>
+				{% endif %}
+				{% if request.user.is_authenticated %}
+				<a class="hero1" href="{% url 'perfilpsico' %}" style="background-color: #7f00b2;"><i
+						style="background-color: #7f00b2;" class="fa fa-plus-square"></i>&nbsp; Perfil
+					Psicologico</a>
+				<br>
+				{% endif %}
+				{% if request.user.is_authenticated %}
+				<a class="hero1" href="{% url 'perfilmedico' %}" style="background-color: rgb(0, 89, 86);"><i
+						style="background-color: rgb(0, 89, 86);" class="fa fa-stethoscope"></i>&nbsp; Perfil Medico</a>
+				<br>
+				{% endif %}
+				<!-- {% if request.user.is_authenticated %}
+				<a class="hero1" href="#"><i class="fa fa-pagelines"></i>&nbsp; Bienestar</a>
+				<br>
+				{% endif %} -->
+				{% if request.user.is_authenticated %}
+				<a class="hero1" href="{% url 'perfillegal' request.user.id %}" style="background-color: #4b3621;"><i
+						style="background-color: #4b3621;" class="fa-solid fa-passport"></i>&nbsp; Documentacion </a>
+			<br> <!-- user.id  -->
+				<a class="hero1" href="{% url 'contrataciones' %}" style="background-color: #032531;"><i class="fa-solid fa-passport"></i>&nbsp; Contrataciones </a></li>
+				<a class="hero1" href="{% url 'cartas' %}" style="background-color: #105db0;"><i class="fa-solid fa-envelopes-bulk"></i>&nbsp; Cartas </a></li>
+
+		<br>
+				{% endif %}
+				<!-- {% if request.user.is_authenticated %}
+				<a class="hero1" href="#"><i class="fa fa-money"></i>&nbsp; Contabilidad</a>
+				<br>
+				{% endif %}
+				{% if request.user.is_authenticated %}
+				<a class="hero1" href="#"><i class="fa fa-connectdevelop"></i>&nbsp; Referencias</a>
+				<br>
+				{% endif %} -->
+
+
+
+			</nav>
+		</div>
+	</div>
+	{%endif%}
+
+	<!-- <div>
+		<nav class="second-nav">
+			{% if request.user.is_authenticated %}
+			<a class="hero" href="{% url 'post' %}">Registra tu entrada o salida</a>
+			<br>
+			{% endif %}
+
+		</nav>
+	</div> -->
+
+	<style>
+		.alerta{
+			width: 100%;
+			height: 80px; 
+			background: transparent; 
+			margin-top: 20px; 
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+	</style>
+
+	{%if user.id != user.information.user_id %}
+	<div class="alerta">
+		<h1 style="text-align: center;"> <i class="fa-solid fa-triangle-exclamation" style="color: yellow; font-size: 30px; margin-right: 10px;"></i> Actualiza tu informacion para poder hacer uso del sistema </h1>
+	</div>
+	{% endif %}
+
+	<div class="main">
+		
+		{% block content %}
+		
+		{% endblock content %}
+
+		
+
+
+	</div>
+	<footer>
+		<div class="row">
+			<p>TESCA CORPORATION</p>
+		</div>
+	</footer>
+<!-- 	<script src="https://kit.fontawesome.com/2aa4b284c9.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/e12947a646.js" crossorigin="anonymous"></script> -->
+	
+	<script>
+		var MainMenu = (function () {
+			var MainMenu = function (config) {
+				config = config || {};
+				this.toggleBtn = $(config.toggleBtn);
+				this.menu = $(config.menu);
+				this.close = $(config.close);
+
+				this.init();
+				config = null;
+			};
+			// public interface
+			MainMenu.prototype = {
+				constructor: MainMenu,
+				init: function () {
+					this.eventManager();
+				},
+				eventManager: function () {
+					this.toggleBtn.on('click.openMenu', onButtonClickHandler.bind(this));
+					this.close.on('click.closeMenu', onCloseClickHandler.bind(this));
+				}
+			};
+			// private interface
+			function onButtonClickHandler(menu, evt) {
+				if (!this.menu.hasClass('open')) {
+					this.menu.addClass('open');
+				};
+
+			}
+
+			function onCloseClickHandler(evt) {
+				this.menu.removeClass('open')
+			}
+
+			function onDocumentClickHandler(evt) {
+				var $target = $(evt.target);
+
+				if (!$target.closest(this.menuForm).length && !$target.closest(this.menuContent).length && this.menu.hasClass('open')) {
+					this.menu.removeClass('open')
+				}
+			}
+
+			return MainMenu;
+		})();
+
+
+		$(document).ready(function () {
+			var mainMenu = new MainMenu({
+				menu: '.main-menu',
+				toggleBtn: '.main-menu-btn',
+				close: '.main-menu-close'
+			});
+		});
+	</script>
+
+	<style>
+		@import "https://fonts.googleapis.com/css?family=Open+Sans";
+		@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css";
+
+
+		ul {
+			list-style-type: none;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		/*main menu*/
+		.main-menu {
+			float: left;
+			position: absolute;
+			min-height: 100%;
+			width: 500px;
+			z-index: 1000;
+			-webkit-transition: all 0.3s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+			-moz-transition: all 0.3s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+			transition: all 0.3s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+
+			-webkit-transform-origin: 100% 0;
+			-moz-transform-origin: 100% 0;
+			transform-origin: 100% 0;
+
+			-webkit-transform: translate(-336px, 0);
+			-moz-transform: translate(-336px, 0);
+			transform: translate(-336px, 0);
+		}
+
+		.main-menu.open {
+			-webkit-transform: translate(0, 0) skew(0);
+			-moz-transform: translate(0, 0) skew(0);
+			transform: translate(0, 0) skew(0);
+		}
+
+		.main-menu.open .main-menu-form {
+			-webkit-transform: skewX(-25deg);
+			-moz-transform: skewX(-25deg);
+			transform: skewX(-25deg);
+		}
+
+		.main-menu.open .main-menu-form:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 1px;
+			height: 100%;
+			background: #2980B9;
+			box-shadow: 0px 0px 6px 1px rgba(93, 173, 226, 0.7);
+		}
+
+		.main-menu-form {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #283747;
+			z-index: 1001;
+			-webkit-transition: all 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+			-moz-transition: all 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+			transition: all 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+
+			-webkit-transform-origin: 100% 0;
+			-moz-transform-origin: 100% 0;
+			transform-origin: 100% 0;
+
+			-webkit-transform: skewX(-38deg);
+			-moz-transform: skewX(-38deg);
+			transform: skewX(-38deg);
+		}
+
+		.main-menu.open .main-menu-btn {
+			opacity: 0;
+			visibility: hidden;
+			-webkit-transition: opacity 0s, visibility 0s;
+			-moz-transition: opacity 0s, visibility 0s;
+			transition: opacity 0s, visibility 0s;
+		}
+
+		/*main menu content*/
+		.main-menu-content {
+			position: relative;
+			padding: 35px 55px 35px 25px;
+			font: normal 16px/1.25 'Open Sans';
+		}
+
+		.main-menu.open .main-menu-content {
+			z-index: 1002;
+		}
+
+		.main-menu-logo h2 {
+			font-size: 28px;
+			opacity: 0;
+		}
+
+		.main-menu.open .main-menu-logo h2 {
+			opacity: 1;
+			-webkit-transition: opacity .5s ease-in .3s;
+			-moz-transition: opacity .5s ease-in .3s;
+			transition: opacity .5s ease-in .3s;
+		}
+
+		.main-menu-nav {
+			margin-top: 35px;
+		}
+
+		.main-menu.open .main-menu-nav a {
+			-webkit-transform: translate(0, 0);
+			-moz-transform: translate(0, 0);
+			transform: translate(0, 0);
+			-webkit-transition: color .2s ease-in-out 0s, opacity .3s ease, transform .3s ease;
+			-moz-transition: color .2s ease-in-out 0s, opacity .3s ease, transform .3s ease;
+			transition: color .2s ease-in-out 0s, opacity .3s ease, transform .3s ease;
+			opacity: 1;
+		}
+
+		.main-menu-nav a {
+			opacity: 0;
+			display: inline-block;
+			padding: 10px 15px;
+			font-size: 20px;
+			color: #5DADE2;
+			-webkit-transform: translate(0, 100%);
+			-moz-transform: translate(0, 100%);
+			transform: translate(0, 100%);
+		}
+
+		.main-menu-nav i {
+			color: #fff;
+			-webkit-transition: color .2s ease-in-out;
+			-moz-transition: color .2s ease-in-out;
+			transition: color .2s ease-in-out;
+		}
+
+		.main-menu.open .main-menu-nav a:hover {
+			color: #3498DB;
+			/*i don't care*/
+			-webkit-transition-delay: 0s !important;
+			-moz-transition-delay: 0s !important;
+			transition-delay: 0s !important;
+		}
+
+		.main-menu.open .main-menu-nav a.orange {
+			-webkit-transition-delay: .4s;
+			-moz-transition-delay: .4s;
+			transition-delay: .4s;
+		}
+
+		.main-menu.open .main-menu-nav a.yellow {
+			-webkit-transition-delay: .5s;
+			-moz-transition-delay: .5s;
+			transition-delay: .5s;
+		}
+
+		.main-menu.open .main-menu-nav a.green {
+			-webkit-transition-delay: .6s;
+			-moz-transition-delay: .6s;
+			transition-delay: .6s;
+		}
+
+		.main-menu.open .main-menu-nav a.purple {
+			-webkit-transition-delay: .7s;
+			-moz-transition-delay: .7s;
+			transition-delay: .7s;
+		}
+
+		.main-menu.open .main-menu-nav a.red {
+			-webkit-transition-delay: .8s;
+			-moz-transition-delay: .8s;
+			transition-delay: .8s;
+		}
+
+		.main-menu-nav a.orange:hover i {
+			color: #D35400;
+		}
+
+		.main-menu-nav a.yellow:hover i {
+			color: #F5AB35;
+		}
+
+		.main-menu-nav a.green:hover i {
+			color: #00B16A;
+		}
+
+		.main-menu-nav a.purple:hover i {
+			color: #9A12B3;
+		}
+
+		.main-menu-nav a.red:hover i {
+			color: #F64747;
+		}
+
+		/*toggle button*/
+		.main-menu-btn {
+			position: absolute;
+			width: 40px;
+			height: 40px;
+			top: 38px;
+			right: 39px;
+			line-height: 40px;
+			text-align: center;
+			cursor: pointer;
+			border: 4px solid #AEB6BF;
+			-webkit-transition: opacity .4s cubic-bezier(0.95, 0.05, 0.795, 0.035), visibility .4s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+			-moz-transition: opacity .4s cubic-bezier(0.95, 0.05, 0.795, 0.035), visibility .4s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+			transition: opacity .4s cubic-bezier(0.95, 0.05, 0.795, 0.035), visibility .4s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+
+			-webkit-transform: skew(38deg) rotate(38deg);
+			-moz-transform: skew(38deg) rotate(38deg);
+			transform: skew(38deg) rotate(38deg);
+
+		}
+
+		.main-menu-btn i {
+			-webkit-transform: rotate(-38deg);
+			-moz-transform: rotate(-38deg);
+			transform: rotate(-38deg);
+			color: #AEB6BF;
+		}
+
+		.main-menu-btn:hover i {
+			color: #3498DB;
+		}
+
+		/*close button*/
+		.main-menu.open .main-menu-close {
+			opacity: 1;
+			-webkit-transition: color .2s ease, opacity 1s ease 1s, transform .3s ease 1s;
+			-moz-transition: color .2s ease, opacity 1s ease 1s, transform .3s ease 1s;
+			transition: color .2s ease, opacity 1s ease 1s, transform .3s ease 1s;
+			-webkit-transform: translate(0, 0);
+			-moz-transform: translate(0, 0);
+			transform: translate(0, 0);
+		}
+
+		.main-menu-close {
+			opacity: 0;
+			display: inline-block;
+			margin-top: 65px;
+			margin-left: 15px;
+			font-size: 18px;
+			color: #BDC3C7;
+			-webkit-transform: translate(0, 100%);
+			-moz-transform: translate(0, 100%);
+			transform: translate(0, 100%);
+		}
+
+		.main-menu-close:hover {
+			color: #A569BD;
+		}
+
+		/*main content*/
+		.main-wrapper {
+			max-width: 1280px;
+			padding: 0 10px;
+			margin: 0 auto;
+			background: #212F3D;
+			font: normal 16px 'Open Sans';
+		}
+
+		.main-content {
+			padding: 45px 55px;
+		}
+
+		.main-content h4 {
+			font-size: 26px;
+			line-height: 1.25;
+			color: #3498DB;
+			text-align: center;
+		}
+
+		.main-content .posts li {
+			margin: 10px 0;
+		}
+
+		@media only screen and (max-width: 1120px) {
+			.ocultar {
+				/*visibility: hidden;*/
+				display: none;
+			}
+		}
+
+		@media only screen and (min-width: 1120px) {
+			.ocultar1 {
+				/*visibility: hidden;*/
+				display: none;
+			}
+		}
+	</style>
+
+	<style>
+		.row {
+			color: gray;
+		}
+
+		@media (max-width:768px) {
+			.row {
+				color: white;
+			}
+		}
+	</style>
+
+	<style>
+		/* NAVBAR STYLING STARTS */
+		.navbar {
+
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px;
+			/*background-color: #0A253F;*/
+			background-color: #fff;
+			color: black;
+		}
+
+		.nav-links a {
+			color: black;
+		}
+
+
+		/* LOGO */
+		.logo {
+			color: black;
+		}
+
+		/* NAVBAR MENU */
+		.menu {
+			display: flex;
+			justify-content: center;
+			/*display: flex;
+			justify-content: right;
+			gap: 1em;
+			font-size: 18px;*/
+		}
+
+		.menu li:hover {
+			background-color: #01648E;
+			border-radius: 5px;
+			transition: 0.3s ease;
+			color: #fff;
+		}
+
+		.menu li {
+			padding: 5px 24px;
+			color: #fff;
+		}
+
+		/*RESPONSIVE NAVBAR MENU STARTS*/
+		/* CHECKBOX HACK */
+		.checki {
+			display: none;
+		}
+
+		/*HAMBURGER MENU*/
+		.hamburger {
+			display: none;
+			font-size: 24px;
+			user-select: none;
+		}
+
+		/* APPLYING MEDIA QUERIES */
+		@media (max-width: 768px) {
+			.menu {
+				display: none;
+				position: absolute;
+				background-color: #fff;
+				right: 0;
+				left: 0;
+				margin-right: 10px;
+				margin-top: 5%;
+				text-align: right;
+				padding: 10px 0;
+				z-index: 10;
+				/* text-align: center; */
+			}
+
+			.menu li:hover {
+				display: inline-block;
+				background-color: #01648E;
+				transition: 0.3s ease;
+
+			}
+
+			.menu li+li {
+				margin-top: 14px;
+			}
+
+			.checki:checked~.menu {
+				display: block;
+			}
+
+			.hamburger {
+				margin-top: 10px;
+				margin-right: 60px;
+				display: block;
+			}
+		}
+	</style>
+
+</body>
+
+</html>

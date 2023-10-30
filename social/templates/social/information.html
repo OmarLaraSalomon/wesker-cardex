@@ -19,48 +19,47 @@ Information
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <title>Document</title>
 </head>
 
 <body>
 
 
-  <form>
+  <form method="POST">
     {% csrf_token %}
 
     <h2 style="color:red;">Una vez que Actualices tus datos , no podras cambiarlos , solo el administrador </h2>
-    <div class="form-group">
-      <input type="hidden" class="form-control" id="idField" value="{{user.id}}" required>
-    </div>
+ 
     <div class="form-group">
       <label for="first_namaField">{{_('Nombre')}}</label>
-      <input type="text" class="form-control" id="first_nameField" placeholder="{{ _('Escribe tu nombre') }}" required>
+      <input type="text" class="form-control" id="first_nameField" name="first_name" placeholder="{{ _('Escribe tu nombre') }}" required>
     </div>
     <div class="form-group">
       <label for="last_nameField">{{_('Apellido')}}</label>
-      <input type="text" class="form-control" id="last_nameField" placeholder="{{ _('Escribe tu Apellido') }}" required>
+      <input type="text" class="form-control" id="last_nameField" name="last_name" placeholder="{{ _('Escribe tu Apellido') }}" required>
     </div>
 
     <div class="form-group">
       <label for="telefonoField">{{_('Telefono')}}</label>
-      <input type="text" class="form-control" id="telefonoField" placeholder="{{ _('Escribe tu numero de telefono') }}"
+      <input type="text" class="form-control" id="telefonoField"  name="telefono" placeholder="{{ _('Escribe tu numero de telefono') }}"
         required>
     </div>
 
     <div class="form-group">
       <label for="telefono_casaField">{{_('Telefono de casa')}}</label>
-      <input type="text" class="form-control" id="telefono_casaField" placeholder="{{ _('Escribe tu numero de casa') }}"
+      <input type="text" class="form-control" id="telefono_casaField"    name="telefono_casa" placeholder="{{ _('Escribe tu numero de casa') }}"
         required>
     </div>
 
     <div class="form-group">
       <label for="contacto_emergenciaField">{{_('Nombre de contacto de emergencia')}}</label>
-      <input type="text" class="form-control" id="contacto_emergenciaField"
+      <input type="text" class="form-control" id="contacto_emergenciaField" name="contacto_emergencia"
         placeholder="{{ _('Escribe el nombre de tu contacto de emergencia') }}" required>
     </div>
     <div class="form-group">
       <label for="telefono_emergenciaField">{{_('Telefono de emergencia')}}</label>
-      <input type="text" class="form-control" id="telefono_emergenciaField"
+      <input type="text" class="form-control" id="telefono_emergenciaField" name="telefono_emergencia"
         placeholder="{{ _('Escribe el telefono de tu contacto de emergencia') }}" required>
     </div>
     <div class="form-group" style="margin-top:10px; margin-bottom:20px;">
@@ -78,21 +77,21 @@ Information
     </div>
     <div class="form-group">
       <label for="nacimientoField">{{_('Fecha de nacimiento')}}</label>
-      <input type="date" class="form-control" id="nacimientoField" placeholder="{{ _('') }}" required>
+      <input type="date" class="form-control" id="nacimientoField"  name="nacimiento"placeholder="{{ _('') }}" required>
     </div>
     <div class="form-group">
       <label for="direccionField">{{_('Direccion')}}</label>
-      <input type="text" class="form-control" id="direccionField" placeholder="{{ _('Escribe tu direccion') }}"
+      <input type="text" class="form-control" id="direccionField" name="direccion" placeholder="{{ _('Escribe tu direccion') }}"
         required>
     </div>
     <div class="form-group">
       <label for="puestoField">{{_('Puesto')}}</label>
-      <input type="text" class="form-control" id="puestoField" placeholder="{{ _('Escribe tu puesto') }}" required>
+      <input type="text" class="form-control" id="puestoField" name="puesto"placeholder="{{ _('Escribe tu puesto') }}" required>
     </div>
 
     <div class="form-group">
       <label for="puestoField">{{_('Hat')}}</label>
-      <select class="cajasTexto" id="hatput" name="pais" required class="form-control">
+      <select class="cajasTexto" id="hatput" name="departamento" required class="form-control">
         <option value="" disabled selected>{{_('Selecciona tu departamento')}}</option>
         {% for hat in hat %}
         <option value="{{ hat.id }}">{{hat.nombre_hat}}</option>
@@ -116,16 +115,15 @@ Information
         class="actualizar">{{_('Actualizar')}}</button>
     </div>
 
+
+
   </form>
 
   <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-
-
-
 
     var toValidate = $(' #puestoField'),
       valid = false;
@@ -169,7 +167,7 @@ Information
           'contacto_emergencia': $('#contacto_emergenciaField').val(),
           'telefono_emergencia': $('#telefono_emergenciaField').val(),
           'departamento': $('#departamentoField').val(),
-          'user_id': $('#idField').val(),
+         
           csrfmiddlewaretoken: '{{ csrf_token }}',
 
 
@@ -177,11 +175,21 @@ Information
         success: function (data) {
           console.log(data)
           console.log("Success");
-          window.location.href = "{% url 'profile' %}";
-        }
-      });
-
-    }
+           // Usar SweetAlert para mostrar una alerta de éxito
+          Swal.fire({
+          title: '¡Éxito!',
+          text: 'Perfil actualizado exitosamente.',
+          icon: 'success', // Icono de éxito
+           }).then((result) => {
+            if (result.isConfirmed) {
+            // Redireccionar a la página 'profile' si el usuario hace clic en "Aceptar"
+             window.location.href = "{% url 'profile' %}";
+          }
+        });
+      },
+    });
+  }
+</script>
 
   </script>
 </body>

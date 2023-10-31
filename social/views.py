@@ -44,7 +44,7 @@ def hats(request, username=None):
             Q(information__departamento__icontains=search_query)  # Buscar en el departamento
         )
     
-    paginator = Paginator(users, 10)  # 10 registros por página
+    paginator = Paginator(users, 15)  # 10 registros por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_num = page_obj.number
@@ -123,7 +123,7 @@ def perfilkaisen(request, username=None):
             Q(information__departamento__icontains=search_query)  # Buscar en el departamento
         )
     
-    paginator = Paginator(users, 10)  # 10 registros por página
+    paginator = Paginator(users, 15)  # 10 registros por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -163,7 +163,7 @@ def perfilmedico(request, username=None):
             Q(information__departamento__icontains=search_query)  # Buscar en el departamento
         )
     
-    paginator = Paginator(users, 10)  # 10 registros por página
+    paginator = Paginator(users, 15)  # 10 registros por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -259,7 +259,7 @@ def perfilpsico(request, username=None):
             Q(information__departamento__icontains=search_query)  # Buscar en el departamento
         )
     
-    paginator = Paginator(users, 10)  # 10 registros por página
+    paginator = Paginator(users, 15)  # 10 registros por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -587,20 +587,49 @@ def inicio(request, username=None):
         return render(request, template)    
 
 
+# para lo del token
+from django.utils.crypto import get_random_string
+
+
 def information(request):
     hat = Hat.objects.order_by('id')
-    print(request)
     template = 'social/information.html'
+
     if request.method == 'POST':
-        info = Information.objects.create(
-            first_name=request.POST['first_name'], last_name=request.POST['last_name'], 
-            telefono=request.POST['telefono'], telefono_casa=request.POST['telefono_casa'],
-            nacimiento=request.POST['nacimiento'],direccion=request.POST['direccion'],
-            puesto=request.POST['puesto'], contacto_emergencia=request.POST['contacto_emergencia'], 
-            telefono_emergencia=request.POST['telefono_emergencia'], departamento=request.POST['departamento'],
-            user_id=request.POST['user_id'])
+        # Obtiene el usuario actualmente autenticado
+        user = request.user
+        
+
+   # Intenta obtener el objeto Information del usuario o crear uno nuevo si no existe
+        # Verifica si existe un registro de Information con ese usuario
+        info, created = Information.objects.get_or_create(user=user)
+#este es pra querr me cree varios objetos y los actualice sin que se generen mas registros 
+
+        # Actualiza la información del usuario del objeto info 
+        info.first_name = request.POST['first_name']
+        info.last_name = request.POST['last_name']
+        info.telefono = request.POST['telefono']
+        info.telefono_casa = request.POST['telefono_casa']
+        info.nacimiento = request.POST['nacimiento']
+        info.direccion = request.POST['direccion']
+        info.puesto = request.POST['puesto']
+        info.contacto_emergencia = request.POST['contacto_emergencia']
+        info.telefono_emergencia = request.POST['telefono_emergencia']
+        info.departamento = request.POST['departamento']
         info.save()
-    context = {'hat' : hat}
+
+        # Genera y guarda el token automáticamente
+        toke, created = CredentialToken.objects.get_or_create(user=user)
+        if created or not toke.token:
+            toke.token = get_random_string(length=20)
+            toke.save()
+            messages.success(request, "Actualización de Perfil Correctamente")
+            print("El token generado es:", toke)
+
+        # Redirige al usuario a la página 'profile' después de procesar el formulario
+        return redirect('profile')
+
+    context = {'hat': hat}
     return render(request, template, context)
 
 #Asistencias
@@ -929,7 +958,7 @@ def credencial_fisica(request):
             Q(information__departamento__icontains=search_query)  # Buscar en el departamento
         )
         
-    paginator = Paginator(users, 10)  # 10 registros por página
+    paginator = Paginator(users, 15)  # 10 registros por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_num = page_obj.number

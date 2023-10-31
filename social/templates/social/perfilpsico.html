@@ -3,6 +3,7 @@
 {% block content %}
 <head>
     <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+    
 </head>
 <!-- Profile -->
 <div class="profile">
@@ -11,7 +12,7 @@
     <h2>{{ user.username }}</h2>
 </div>
 
-<div style="background-color: #7f00b2;">
+<div>
     <hr>
     <div class="profile" style="margin-top: 20px;">
         <h2 style="color: white;"><i class="fa fa-plus-square"></i>&nbsp;Perfil Psicologico</h2>
@@ -27,39 +28,108 @@
       <a href="{% url 'perfilpsico' %}" class="clean-input"><i class="fa-solid fa-trash"></i></a>
     {% endif %}
     </div>
+
+    
   </form>
+
+
+ 
+
+  <div class="custom-select">
+
+<button class="select-button"  role="combobox" aria-labelledby="select button" aria-haspopup="listbox" aria-expanded="false"aria-controls="select-dropdown">
+
+      <span class="selected-value">Opciones</span>
+      <span class="arrow"></span>
+    </button>
+
+    <ul class="select-dropdown" role="listbox" id="select-dropdown">
+      <li role="option">
+        <input type="radio" id="perfil" name="perfil" />
+
+        <label for="perfil"><i class="bx bxl-github"></i>
+          
+                <input type="text" value="{{user.id}}" id="perfil_pscico" style="display: none;">
+                <a class="boton-datosmedicos justify" style="color: #000; cursor: pointer; text-align: center; margin: auto; padding:0 ;"
+                    href="{% url 'files' user.username %}"><i class="fa-solid fa-file-import " ></i> Subir Perfil
+                    Psicologico</a>
+        </label>
+      </li>
+
+      
+      <li role="option">
+        <input type="radio" id="archivo" name="archivo" />
+        <label for="archivo" > <i class="bx bxl-instagram"></i>
+          
+            <a class="boton-datosmedicos justify" style=" color: #000; cursor: pointer; text-align: center; margin: 0; margin: auto; padding:0 ;"
+            onclick="direccion()"><i class="fa-regular fa-folder-open text-align: center;"></i> Ver
+            archivos</a>
+        
+        </label>
+    </ul>
+ <br>
+    
+  <!-- Botón para limpiar el cuadro de selección -->
+  <button  style="margin-left: 34%;"     id="limpiar-select" onclick="limpiarSelect()">Limpiar Campos</button>
+  </div>
+  <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <article>
     <div>
         <div class="scroll_horizontal">
             <table id="myTable">
-                <thead>
+                
                     <tr class="header">
-                        <th style="width:20%;">Foto</th>
-                        <th style="width:20%;">Usuario</th>
-                        <th style="width:20%;">Departamento</th>
-                        <th style="width:20%;">Opciones</th>
-                </thead>
-                <tbody>
+            
+                      
+            <th style="width:20%; text-align: center; font-size: 15px;">Foto</th>
+            <th style="width:20%; text-align: center; font-size: 15px;">Usuario</th>
+            <th style="width:20%;text-align: center; font-size: 15px;">Departamento</th>
+        
                     </tr>
+
+
                     {% for user in users %}
-                    <tr>
-                        <td>
-                            <div class="container-article"><img src="{{ user.profile.image.url }}"></div>
-                        </td>
-                        <td>{{ user.information.first_name }} {{ user.information.last_name }}</td>
-                        <td>{{ user.information.departamento }}</td>
-                        <td>
-                            <div class="profile">
-                                <input type="text" value="{{user.id}}" id="id_us" style="display: none;">
-                                <a class="boton-datosmedicos justify" style="background-color: #7f00b2; cursor: pointer; text-align: center;"
-                                    href="{% url 'files' user.username %}"><i class="fa-solid fa-file-import"></i> Subir Perfil
-                                    Psicologico</a>
-                                <a class="boton-datosmedicos justify" style="background-color: #7f00b2; cursor: pointer; text-align: center"
-                                    onclick="direccion()"><i class="fa-regular fa-folder-open"></i> Ver
-                                    archivos</a>
+
+                    <tr style="height:auto ; padding:0 ; margin: 0;">
+                        <td style="text-align: center; padding: 2.5px;  ">
+                         
+                               
+                               
+                           
+                            <div class="container-article">
+                                 <input class="form-check-input"  type="checkbox" value="" id="marcar">
+                                <img src="{{ user.profile.image.url }}">
+                            
                             </div>
+                            
                         </td>
+
+                        <td style="text-align: center; padding: 0; font-size: 14.88px;">{{ user.information.first_name }} {{ user.information.last_name }}</td>
+                        <td style="text-align: center; padding: 0; font-size: 14.88px;">{{ user.information.departamento }}</td>
+                      
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -126,6 +196,10 @@
         grid-template-columns: 1fr 1fr;
     }
     
+    
+    .current a {
+       padding: 15px;
+    }
     .previous-1 {
         display: flex;
         justify-content: center;
@@ -139,6 +213,65 @@
         border-radius: 20px;
     }
     
+    /* Estilos para pantallas más pequeñas */
+@media  (min-width: 360px) {
+  article{
+    width: 100%;
+  } 
+  article table {
+    width: auto;
+        font-size: 14px;
+        text-align: center;
+        border-spacing: 0;
+    border-collapse: collapse;
+    overflow-x: auto;
+    display: block;
+    }
+    tr, td, th {
+            text-align: center;
+            padding: 0;
+        border-spacing: 0;
+    margin: 0px ;
+    }
+
+    a.boton-datosmedicos.justify{
+          padding: 0;
+         background-color: #cd0bf8;
+         
+          margin: 0px auto;
+        }
+
+    tr.header,  tr:hover {
+      text-align: center;
+      align-items: center;
+      font-size: 14px;
+        
+        border-spacing: 0;
+    border-collapse: collapse;
+   
+    }
+
+   
+    .btn-doc {
+        font-size: 12px;
+        padding: 1px 5px;
+    }
+    .current-page {
+        font-size: 14px;
+    }
+    .page-number {
+        font-size: 14px;
+        padding: 1px 5px;
+    }
+    .profile{
+    margin: auto;
+  
+    text-align: center;
+    
+
+    }
+
+}
     .next {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -207,6 +340,28 @@
         font-family: 'Baloo Paaji 2', cursive;
 
     }
+    .profile{
+        margin-top: -40px;
+    }
+    
+    .container-article {
+        display: flex;
+        justify-content: center;
+       
+        width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+   
+      } 
+  
+      .container-article img{
+        width: 50px;
+        height: 40px;
+        margin: 0;
+  
+      } 
+
+
 
     .scroll_horizontal {
         overflow-y: hidden;
@@ -258,10 +413,231 @@
         left: 30%;
         margin-left: -225px;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+.custom-select {
+  position: relative;
+  width: 400px;
+  max-width: 100%;
+  font-size: 1.15rem;
+  color: #000;
+ margin: auto;
+
+}
+
+.select-button {
+  width: 100%;
+  font-size: 1.15rem;
+  background-color: #fff;
+  padding-left: 35px;
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  color: #105db0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-value {
+  text-align: left;
+}
+
+.arrow {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #000;
+  transition: transform ease-in-out 0.3s;
+}
+
+.select-dropdown {
+  position: absolute;
+  list-style: none;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  border: 1px solid #caced1;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  transition: 0.5s ease;
+
+  transform: scaleY(0);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.select-dropdown:focus-within {
+  box-shadow: 0 10px 25px rgba(94, 108, 233, 0.6);
+}
+
+.select-dropdown li {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.select-dropdown li label {
+  width: 100%;
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.select-dropdown::-webkit-scrollbar {
+  width: 7px;
+}
+.select-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 25px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 25px;
+}
+
+.select-dropdown li:hover,
+.select-dropdown input:checked ~ label {
+  background-color: #f2f2f2;
+}
+
+.select-dropdown input:focus ~ label {
+  background-color: #dfdfdf;
+}
+
+.select-dropdown input[type="radio"] {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+}
+
+
+.custom-select.active .arrow {
+  transform: rotate(180deg);
+}
+
+.custom-select.active .select-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1);
+}
+
+
+
+
+
 </style>
+
+
+
+
+
+
+
+<script> 
+
+
+const customSelect = document.querySelector(".custom-select");
+const selectBtn = document.querySelector(".select-button");
+
+const selectedValue = document.querySelector(".selected-value");
+const optionsList = document.querySelectorAll(".select-dropdown li");
+
+// add click event to select button
+selectBtn.addEventListener("click", () => {
+  // add/remove active class on the container element
+  customSelect.classList.toggle("active");
+  // update the aria-expanded attribute based on the current state
+  selectBtn.setAttribute(
+    "aria-expanded",
+    selectBtn.getAttribute("aria-expanded") === "true" ? "false" : "true"
+  );
+});
+
+optionsList.forEach((option) => {
+  function handler(e) {
+    // Click Events
+    if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
+      selectedValue.textContent = this.children[1].textContent;
+      customSelect.classList.remove("active");
+    }
+    // Key Events
+    if (e.key === "Enter") {
+      selectedValue.textContent = this.textContent;
+      customSelect.classList.remove("active");
+    }
+  }
+
+  option.addEventListener("keyup", handler);
+  option.addEventListener("click", handler);
+});
+
+</script>
+
+
+<!--SCRIPT PARA LIMPIAR CON EL BOTON EL BOX-->
+<script>
+    function limpiarSelect() {
+        // Restablece el valor seleccionado del cuadro de selección
+        var selectButton = document.querySelector('.select-button');
+        var selectedValue = selectButton.querySelector('.selected-value');
+        selectedValue.textContent = 'Opciones';
+    }
+</script>
+
+<script>
+    // Obtén todos los checkboxes secundarios por su clase
+    var checkboxesSecundarios = document.querySelectorAll('.form-check-input');
+
+    // Agrega un evento "change" a todos los checkboxes secundarios
+    checkboxesSecundarios.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            // Si un checkbox secundario se marca, desmarca los demás
+            if (checkbox.checked) {
+                checkboxesSecundarios.forEach(function (otherCheckbox) {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.disabled = true;
+                    }
+                });
+            } else {
+                // Si un checkbox secundario se desmarca, habilita todos los checkboxes
+                checkboxesSecundarios.forEach(function (otherCheckbox) {
+                    otherCheckbox.disabled = false;
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
 
 </html>
 

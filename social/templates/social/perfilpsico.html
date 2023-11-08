@@ -3,7 +3,8 @@
 {% block content %}
 <head>
     <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
 </head>
 <!-- Profile -->
 <div class="profile">
@@ -12,15 +13,15 @@
     <h2>{{ user.username }}</h2>
 </div>
 
-<div>
-    <hr>
-    <div class="profile" style="margin-top: 20px;">
-        <h2 style="color: white;"><i class="fa fa-plus-square"></i>&nbsp;Perfil Psicologico</h2>
-    </div>
-    <hr>
+<div style="background-color: #7f00b2;">
+  <hr>
+  <div class="profile" style="margin-top: 20px;">
+      <h2 style="color: white;"><i class="fa fa-plus-square"></i>&nbsp;Perfil Psicologico</h2>
+  </div>
+  <hr>
 </div>
 
-<form method="get" action="{% url 'perfilpsico' %}" class="filter-form">
+<form method="get" action="{% url 'perfilpsico' %}" class="filter-form" style="padding: 0;">
     <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
       <input type="text" name="search" value="{{ request.GET.search }}" class="search search-input" placeholder="Buscar...">
       <button type="submit" class="btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -33,8 +34,10 @@
   </form>
 
 
- 
 
+  
+<div class="acciones">
+  
   <div class="custom-select">
 
 <button class="select-button"  role="combobox" aria-labelledby="select button" aria-haspopup="listbox" aria-expanded="false"aria-controls="select-dropdown">
@@ -47,52 +50,35 @@
       <li role="option">
         <input type="radio" id="perfil" name="perfil" />
 
-        <label for="perfil"><i class="bx bxl-github"></i>
-          
-                <input type="text" value="{{user.id}}" id="perfil_pscico" style="display: none;">
-                <a class="boton-datosmedicos justify" style="color: #000; cursor: pointer; text-align: center; margin: auto; padding:0 ;"
-                    href="{% url 'files' user.username %}"><i class="fa-solid fa-file-import " ></i> Subir Perfil
-                    Psicologico</a>
+        
+        <input type="text" value="{{user.id}}" id="perfil_pscico" style="display: none;"  >
+        <a class="boton-datosmedicos justify"onclick="enviarDatos()" style="      font-size: 20px;     color: #000; cursor: pointer; text-align: center; margin: auto; padding: 0; "
+       ><i class="fa-solid fa-file-import"></i> Subir Perfil Psicológico</a>
         </label>
       </li>
 
-      
+      <br>
       <li role="option">
         <input type="radio" id="archivo" name="archivo" />
-        <label for="archivo" > <i class="bx bxl-instagram"></i>
-          
-            <a class="boton-datosmedicos justify" style=" color: #000; cursor: pointer; text-align: center; margin: 0; margin: auto; padding:0 ;"
+            <a class="boton-datosmedicos justify" style="  font-size: 20px;   color: #000; cursor: pointer; text-align: center; margin: 0; margin: auto; padding:0 ;  "
             onclick="direccion()"><i class="fa-regular fa-folder-open text-align: center;"></i> Ver
             archivos</a>
         
         </label>
     </ul>
- <br>
-    
-  <!-- Botón para limpiar el cuadro de selección -->
-  <button  style="margin-left: 34%;"     id="limpiar-select" onclick="limpiarSelect()">Limpiar Campos</button>
+
+
+
   </div>
-  <br>
+  
+  
+    <button class="btn " id="limpiar-select" onclick="limpiarCheckboxes()"><span class="btn-text">Desmarcar Usuario</span></button>
+  
+    
+ 
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 
@@ -120,8 +106,10 @@
                                
                            
                             <div class="container-article">
-                                 <input class="form-check-input"  type="checkbox" value="" id="marcar">
-                                <img src="{{ user.profile.image.url }}">
+                         
+                                <input type="checkbox" name="selectedUsers"  class="form-check-input" value="{{ user.username }}">
+
+                              &nbsp;  <img src="{{ user.profile.image.url }}">
                             
                             </div>
                             
@@ -184,6 +172,10 @@
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
 
+
+
+    
+
     .pagination {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -236,7 +228,7 @@
 
     a.boton-datosmedicos.justify{
           padding: 0;
-         background-color: #cd0bf8;
+         background-color: #ffffff;
          
           margin: 0px auto;
         }
@@ -541,7 +533,66 @@
 }
 
 
+.acciones{
+ padding: 15px;
+ margin: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 53px;
+}
 
+
+
+
+.btn {
+
+  border: none;
+  padding: 10px 44px;
+  font-size: 15px;
+  position: relative;
+  background-color: #ffff;
+  margin: auto;
+  color: #000;
+   
+}
+.btn::before {
+  -webkit-transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  content: '';
+  width: 50%;
+  height: 100%;
+  background: rgb(189, 204, 248);
+  color: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.btn .btn-text {
+  color: white;
+  mix-blend-mode: difference;
+ 
+}
+.btn:hover::before {
+  background:  rgb(189, 204, 248);
+  width: 100%;
+}
+.btn.rounded {
+  border-radius: 50px;
+margin-right: 100%;
+}
+.btn.rounded .text-green {
+  color: #00F0B5;
+  mix-blend-mode: difference;
+}
+.btn.rounded::before {
+  border-radius: 50px;
+  width: 25%;
+  background: #00F0B5;
+}
+.btn.rounded:hover::before {
+  background: #00F0B5;
+  width: 100%;
+}
 
 
 </style>
@@ -595,7 +646,7 @@ optionsList.forEach((option) => {
 
 <!--SCRIPT PARA LIMPIAR CON EL BOTON EL BOX-->
 <script>
-    function limpiarSelect() {
+    function limpiarCombo() {
         // Restablece el valor seleccionado del cuadro de selección
         var selectButton = document.querySelector('.select-button');
         var selectedValue = selectButton.querySelector('.selected-value');
@@ -628,8 +679,43 @@ optionsList.forEach((option) => {
 </script>
 
 
+<script>
+  function limpiarCheckboxes() {
+      // Obtén todos los checkboxes secundarios por su clase
+      var checkboxesSecundarios = document.querySelectorAll('.form-check-input');
+
+      // Itera a través de los checkboxes y desmárcalos
+      checkboxesSecundarios.forEach(function (checkbox) {
+          checkbox.checked = false;
+          checkbox.disabled = false; // Habilita todos los checkboxes al limpiar
+      });
+  }
+</script>
 
 
+
+
+<script>
+  function enviarDatos() {
+      var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+//selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+      var usernames = [];
+// inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+      selectedUsers.forEach(function(user) { 
+//se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+          usernames.push(user.value);
+      });
+
+      if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+        window.location.href = '/%5Efiles/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+        // Limpia el cuadro de selección después de la redirección
+        limpiarCombo();
+      } else {
+          alert('Por favor, selecciona al menos un usuario.');
+      }
+  }
+</script>
 
 
 
@@ -637,6 +723,7 @@ optionsList.forEach((option) => {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
 
 
 </html>

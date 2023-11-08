@@ -5,7 +5,10 @@
 <!-- tambien esta la idea de hacer la tabla con los botones y cada url pase el id y con eso obtener los datos por ventana  -->
 
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
     <script src="https://kit.fontawesome.com/c8ee4f8012.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
 </head>
 
 <div style="background-color: #105db0;">
@@ -28,46 +31,120 @@
     </div>
   </form>
 
-  <article>
-    <div>
-
-      <div class="scroll_horizontal">
-        <table id="myTable">
 
 
-          <tr class="header">
-            
-            <th style="width:20%; text-align: center;">Usuario</th>
-            <th style="width:20%; text-align: center;">Departamento</th>
-            <th id="tres" style="width:20%;text-align: center;">Constancias y Contratos</th>
 
-          </tr>
+ 
+  <div class="acciones">
+  
+    <div class="custom-select">
+  
+  <button class="select-button"  role="combobox" aria-labelledby="select button" aria-haspopup="listbox" aria-expanded="false"aria-controls="select-dropdown">
+  
+        <span class="selected-value">Documentos</span>
+        <span class="arrow"></span>
+      </button>
+  
+    
+      <ul class="select-dropdown" role="listbox" id="select-dropdown">
 
+        <li role="option">
+          <input type="text" value="{{user.id}}" id="perfil_pscico" style="display: none;"  >
+          <a class="boton-datosmedicos justify"onclick="enviarConstancia()" style="      font-size: 20px;     color: #000; cursor: pointer; text-align: center; margin: auto; padding: 0;  background-color: #ffff;"
+         ><i class="fa-solid fa-file-lines"></i> Constancia</a>
+        </li>
+  
+      
+        <li role="option">
+          <input type="radio" id="archivo" name="archivo" />
+              <a class="boton-datosmedicos justify" style="  font-size: 20px;   color: #000; cursor: pointer; text-align: center; margin: 0; margin: auto; padding:0 ;  background-color: #ffff;"
+              onclick="enviarDeterminado()"><i class="fa-solid fa-file-circle-check text-align: center;"></i> Determinado</a>
+        
+         
 
-          {% for user in users %}
-          <tr  style="height:auto ; padding:0 ; margin: 0;">
-            <td style="text-align: center; padding: 0; font-size: 14.88px; ">
-              {{user.information.first_name }}
-                {{user.information.last_name }}</td>
-            <td style="text-align: center; padding: 0; font-size: 14.88px; ">{{ user.information.departamento }}</td>
-            <td style="text-align: center; margin: auto; padding: 5px;">
-              <ul style="margin: auto;">
-             
-                <li style="margin: 10px;"> <a class="btn-doc" href="{% url 'constancia' user.username %}">Constancia</a></li>
-                <li style="margin: 10px;"> <a class="btn-doc" href="{% url 'profile' user.username %}">determinado</a></li>
-                  <li style="margin: 10px;"><a class="btn-doc" href="{% url 'profile' user.username %}">Indeterminado</a></li>
-                    <li style="margin: 10px;"><a class="btn-doc" href="{% url 'renuncia' user.username %}">Renuncia</a></li>
-                      <li style="margin: 10px;"><a class="btn-doc" href="{% url 'finiquito' user.username %}">Finiquito</a></li>
-              </ul>
+              <li role="option">
+                <input type="text" value="{{user.id}}" id="perfil_pscico" style="display: none;"  >
+                <a class="boton-datosmedicos justify"onclick="enviarIndeterminado()" style="      font-size: 20px;     color: #000; cursor: pointer; text-align: center; margin: auto; padding: 0;  background-color: #ffff;"
+               ><i class="fa-solid fa-file-circle-exclamation"></i> Indetermiando</a>
+              </li>
+  
               
-              </td>
-          </tr>
-          {% endfor %}
-        </table>
-      </div>
 
+
+              <li role="option">
+                <input type="text" value="{{user.id}}" id="perfil_pscico" style="display: none;"  >
+                <a class="boton-datosmedicos justify"onclick="enviarRenuncia()" style="      font-size: 20px;     color: #000; cursor: pointer; text-align: center; margin: auto; padding: 0;  background-color: #ffff;"
+               ><i class="fa-solid fa-file-excel"></i> Renuncia</a>
+              </li>
+  
+             
+
+
+              <li role="option">
+                <input type="text" value="{{user.id}}" id="perfil_pscico" style="display: none;"  >
+                <a class="boton-datosmedicos justify"onclick="enviarFiniquito()" style="      font-size: 20px;     color: #000; cursor: pointer; text-align: center; margin: auto; padding: 0;  background-color: #ffff;"
+               ><i class="fa-solid fa-file-import"></i> Finiquito</a>
+              </li>
+        
+
+      </ul>
+  
+  
     </div>
+  
+  
+    <button class="btn " id="limpiar-select" onclick="limpiarCheckboxes()"><span class="btn-text">Desmarcar Usuario</span></button>
+  
+    
+ 
+</div>
+  
+  
+  
+  <article>
+      <div>
+          <div class="scroll_horizontal">
+              <table id="myTable">
+                  
+                      <tr class="header">
+              
+                        
+              <th style="width:20%; text-align: center; font-size: 15px;">Foto</th>
+              <th style="width:20%; text-align: center; font-size: 15px;">Usuario</th>
+              <th style="width:20%;text-align: center; font-size: 15px;">Departamento</th>
+          
+                      </tr>
+  
+  
+                      {% for user in users %}
+  
+                      <tr style="height:auto ; padding:0 ; margin: 0;">
+                          <td style="text-align: center; padding: 2.5px;  ">
+                           
+                                 
+                                 
+                             
+                              <div class="container-article">
+                           
+                                  <input type="checkbox" name="selectedUsers"  class="form-check-input" value="{{ user.username }}">
+  
+                                &nbsp;  <img src="{{ user.profile.image.url }}">
+                              
+                              </div>
+                              
+                          </td>
+  
+                          <td style="text-align: center; padding: 0; font-size: 14.88px;">{{ user.information.first_name }} {{ user.information.last_name }}</td>
+                          <td style="text-align: center; padding: 0; font-size: 14.88px;">{{ user.information.departamento }}</td>
+                        
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
   </article>
+  
 
   <div class="pagination">
 
@@ -107,28 +184,37 @@
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400;500&display=swap");
-  
+
     .pagination {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      /* Divide el contenedor en tres columnas de igual ancho */
-      height: 80px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* Divide el contenedor en tres columnas de igual ancho */
+        height: 80px;
     }
-  
+    
     .previous {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
-  
+    
+    
+    .current a {
+       padding: 15px;
+    }
     .previous-1 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-  
-
-
-/* Estilos para pantallas más pequeñas */
+    
+    .current {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+    
+    /* Estilos para pantallas más pequeñas */
 @media  (min-width: 360px) {
   article{
     width: 100%;
@@ -139,16 +225,21 @@
         text-align: center;
         border-spacing: 0;
     border-collapse: collapse;
+    overflow-x: auto;
+/* AQUI QUITE EL DISPPLAY BLOCK*/
     }
     tr, td, th {
             text-align: center;
             padding: 0;
         border-spacing: 0;
     margin: 0px ;
-   
-        }
-        ul{
+    }
+
+    a.boton-datosmedicos.justify{
           padding: 0;
+         background-color: #cd0bf8;
+         
+          margin: 0px auto;
         }
 
     tr.header,  tr:hover {
@@ -158,7 +249,7 @@
         
         border-spacing: 0;
     border-collapse: collapse;
-    margin: 0px auto;
+   
     }
 
    
@@ -175,326 +266,587 @@
     }
     .profile{
     margin: auto;
-    padding-right: 10px;
+  
     text-align: center;
+    
 
     }
 
 }
-
-    .current {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 20px;
-    }
-  
     .next {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
-  
     .next-1 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  
-    .current span {
-      padding: 15px;
-      background: #105db0;
-      color: white;
-      border-radius: 50%;
-      font-size: 15px;
-    }
-  
-    .page-number {
-      border-style: solid;
-      padding: 5%;
-      border-radius: 15px;
-      color: white;
-      background-color: lightblue;
-      margin-left: 1%;
-      margin-right: 1%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     
-    .page-number:hover {
-      background: #105db0;
-    }
-  
-    .btn-action:hover {
-      background: #105db0;
-      padding: 15px;
-      border-radius: 30%;
-      color: white;
-      z-index: 2;
-    }
-  
-    .search-input {
-      width: 80%;
-    }
-  
-    .clean-input {
-      font-size: 1rem;
-      padding: 0.4rem 1.4rem;
-      background: red;
-      border-radius: 4px;
-      color: white;
-      cursor: pointer;
-    }
-  
-    .btn-primary,
-    .clean-input {
-      margin: 1%;
-    }
-  
-    .container {
-      display: center;
-      grid-template-columns: 300px 300px 300px;
-      grid-gap: 50px;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: url(../../static/gris.jpg) no-repeat;
-      font-family: 'Baloo Paaji 2', cursive;
-  
-    }
-  
-    .card {
-      background-color: rgba(255, 255, 255, .15);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
-      height: 37rem;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  
-      color: white;
-      /*  border: solid 1px black ; */
-    }
-  
-  
-    .card__name {
-      margin-top: 15px;
-      font-size: 1.5em;
-    }
-  
-    .card__image {
-      height: 160px;
-      width: 160px;
-      border-radius: 50%;
-      border: 5px solid #272133;
-      margin-top: 20px;
-      box-shadow: 0 10px 50px rgb(0, 89, 86);
-    }
-  
-  
-    .draw-border {
-      box-shadow: inset 0 0 0 4px #58cdd1;
-      color: #58afd1;
-      -webkit-transition: color 0.25s 0.0833333333s;
-      transition: color 0.25s 0.0833333333s;
-      position: relative;
-    }
-  
-    .draw-border::before,
-    .draw-border::after {
-      border: 0 solid transparent;
-      box-sizing: border-box;
-      content: '';
-      pointer-events: none;
-      position: absolute;
-      width: 0rem;
-      height: 0;
-      bottom: 0;
-      right: 0;
-    }
-  
-    .draw-border::before {
-      border-bottom-width: 4px;
-      border-left-width: 4px;
-    }
-  
-    .draw-border::after {
-      border-top-width: 4px;
-      border-right-width: 4px;
-    }
-  
-    .draw-border:hover {
-      color: #ffe593;
-    }
-  
-    .draw-border:hover::before,
-    .draw-border:hover::after {
-      border-color: #eb196e;
-      -webkit-transition: border-color 0s, width 0.25s, height 0.25s;
-      transition: border-color 0s, width 0.25s, height 0.25s;
-      width: 100%;
-      height: 100%;
-    }
-  
-    .draw-border:hover::before {
-      -webkit-transition-delay: 0s, 0s, 0.25s;
-      transition-delay: 0s, 0s, 0.25s;
-    }
-  
-    .draw-border:hover::after {
-      -webkit-transition-delay: 0s, 0.25s, 0s;
-      transition-delay: 0s, 0.25s, 0s;
-    }
-  
-    .btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      line-height: 1.5;
-      font: 700 1.2rem 'Roboto Slab', sans-serif;
-      padding: 0.75em 2em;
-      letter-spacing: 0.05rem;
-      margin: 1em;
-      width: 13rem;
-    }
-  
-    .btn:focus {
-      outline: 2px dotted #55d7dc;
-    }
-  
-  
-    .social-icons {
-      padding: 0;
-      list-style: none;
-      margin: 1em;
-    }
-  
-    .social-icons li {
-      display: inline-block;
-      margin: 0.15em;
-      position: relative;
-      font-size: 1em;
-    }
-  
-    .social-icons i {
-      color: #fff;
-      position: absolute;
-      top: 0.95em;
-      left: 0.96em;
-      transition: all 265ms ease-out;
-    }
-  
-    .social-icons a {
-      display: inline-block;
-    }
-  
-    .social-icons a:before {
-      transform: scale(1);
-      -ms-transform: scale(1);
-      -webkit-transform: scale(1);
-      content: " ";
-      width: 45px;
-      height: 45px;
-      border-radius: 100%;
-      display: block;
-      background: linear-gradient(45deg, #ff003c, #c648c8);
-      transition: all 265ms ease-out;
-    }
-  
-    .social-icons a:hover:before {
-      transform: scale(0);
-      transition: all 265ms ease-in;
-    }
-  
-    .social-icons a:hover i {
-      transform: scale(2.2);
-      -ms-transform: scale(2.2);
-      -webkit-transform: scale(2.2);
-      color: #ff003c;
-      background: -webkit-linear-gradient(45deg, #ff003c, #c648c8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      transition: all 265ms ease-in;
-    }
-  
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 20px;
-      font-size: 1.2em;
-    }
-  
-    .scroll_horizontal {
-      overflow-y: hidden;
-      overflow-x: auto;
-    }
-  
-    * {
-      box-sizing: border-box;
-    }
-  
-    #myInput {
-      background-image: url('/css/searchicon.png');
-      background-position: 10px 10px;
-      background-repeat: no-repeat;
-      width: 80%;
-      font-size: 16px;
-      padding: 12px 20px 12px 40px;
-      border: 1px solid #ddd;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-  
-    #myInputname {
-      background-image: url('/css/searchicon.png');
-      background-position: 10px 10px;
-      background-repeat: no-repeat;
-      width: 80%;
-      font-size: 16px;
-      padding: 12px 20px 12px 40px;
-      border: 1px solid #ddd;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-  
-    #myTable {
-      border-collapse: collapse;
-      width: 100%;
-      border: 1px solid #ddd;
-      font-size: 18px;
-    }
-  
-    #myTable th,
-    #myTable td {
-      text-align: center;
-      padding: 12px;
-    }
-
-    #myTable td{
-        height: 90px;
-    }
-  
-    #myTable tr {
-      border-bottom: 1px solid #ddd;
-    }
-  
-    #myTable tr.header,
-    #myTable tr:hover {
-      background-color: #f1f1f1;
-    }
-  
-    svg {
-      position: absolute;
-      top: 50%;
-      margin-top: -60px;
-      left: 30%;
-      margin-left: -225px;
-    }
-
-    .btn-doc{
+    .current span {
+        padding: 15px;
         background: #105db0;
         color: white;
-        padding: 2%;
-        border-radius: 12px;
+        border-radius: 50%;
+        font-size: 15px;
     }
-  </style>
+
+    .page-number {
+        border-style: solid;
+        padding: 5%;
+        border-radius: 15px;
+        color: white;
+        background-color: lightblue;
+        margin-left: 1%;
+        margin-right: 1%;
+      }
+      
+      .page-number:hover {
+        background: #105db0;
+      }
+    
+    .btn-action:hover{
+        background: #105db0;
+        padding: 15px;
+        border-radius: 30%;
+        color: white;
+        z-index: 2;
+    }
+    
+    .search-input{
+        width: 80%;
+    }
+    
+    .clean-input{
+        font-size: 1rem;
+        padding: 0.4rem 1.4rem;
+        background: red;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+    }
+    
+    .btn-primary,.clean-input{
+        margin: 1%;
+    }
+
+    .container {
+        display: center;
+        grid-template-columns: 300px 300px 300px;
+        grid-gap: 50px;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: url(../../static/gris.jpg) no-repeat;
+        font-family: 'Baloo Paaji 2', cursive;
+
+    }
+    .profile{
+        margin-top: -40px;
+    }
+    
+    .container-article {
+        display: flex;
+        justify-content: center;
+       
+        width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+   
+      } 
+  
+      .container-article img{
+        width: 50px;
+        height: 40px;
+        margin: 0;
+  
+      } 
+
+
+
+    .scroll_horizontal {
+        overflow-y: hidden;
+        overflow-x: auto;
+        padding: 1%;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    #myTable th,
+    #myTable td {
+        text-align: left;
+        padding: 12px;
+    }
+
+    #myTable tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #myTable tr.header,
+    #myTable tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        margin-top: -60px;
+        left: 30%;
+        margin-left: -225px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+.custom-select {
+  position: relative;
+  width: 400px;
+  max-width: 100%;
+  font-size: 1.15rem;
+  color: #000;
+ margin: auto;
+
+}
+
+.select-button {
+  width: 100%;
+  font-size: 1.15rem;
+  background-color: #fff;
+  padding-left: 35px;
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  color: #105db0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-value {
+  text-align: left;
+}
+
+.arrow {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #000;
+  transition: transform ease-in-out 0.3s;
+}
+
+.select-dropdown {
+  position: absolute;
+  list-style: none;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  border: 1px solid #caced1;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  transition: 0.5s ease;
+
+  transform: scaleY(0);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.select-dropdown:focus-within {
+  box-shadow: 0 10px 25px rgba(94, 108, 233, 0.6);
+}
+
+.select-dropdown li {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.select-dropdown li label {
+  width: 100%;
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.select-dropdown::-webkit-scrollbar {
+  width: 7px;
+}
+.select-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 25px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 25px;
+}
+
+.select-dropdown li:hover,
+.select-dropdown input:checked ~ label {
+  background-color: #f2f2f2;
+}
+
+.select-dropdown input:focus ~ label {
+  background-color: #dfdfdf;
+}
+
+.select-dropdown input[type="radio"] {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+}
+
+
+.custom-select.active .arrow {
+  transform: rotate(180deg);
+}
+
+.custom-select.active .select-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1);
+}
+
+
+.acciones{
+ padding: 15px;
+ margin: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 100px;
+}
+
+
+
+
+.btn {
+
+  border: none;
+  padding: 10px 44px;
+  font-size: 15px;
+  position: relative;
+  background-color: #ffff;
+  margin: auto;
+  color: #000;
+   
+}
+.btn::before {
+  -webkit-transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  content: '';
+  width: 50%;
+  height: 100%;
+  background: rgb(189, 204, 248);
+  color: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.btn .btn-text {
+  color: white;
+  mix-blend-mode: difference;
+ 
+}
+.btn:hover::before {
+  background:  rgb(189, 204, 248);
+  width: 100%;
+}
+.btn.rounded {
+  border-radius: 50px;
+margin-right: 100%;
+margin-top: 55px;
+}
+.btn.rounded .text-green {
+  color: #00F0B5;
+  mix-blend-mode: difference;
+}
+.btn.rounded::before {
+  border-radius: 50px;
+  width: 25%;
+  background: #00F0B5;
+}
+.btn.rounded:hover::before {
+  background: #00F0B5;
+  width: 100%;
+}
+
+
+
+
+</style>
+
+
+
+
+
+
+<script> 
+
+
+  const customSelect = document.querySelector(".custom-select");
+  const selectBtn = document.querySelector(".select-button");
+  
+  const selectedValue = document.querySelector(".selected-value");
+  const optionsList = document.querySelectorAll(".select-dropdown li");
+  
+  // add click event to select button
+  selectBtn.addEventListener("click", () => {
+    // add/remove active class on the container element
+    customSelect.classList.toggle("active");
+    // update the aria-expanded attribute based on the current state
+    selectBtn.setAttribute(
+      "aria-expanded",
+      selectBtn.getAttribute("aria-expanded") === "true" ? "false" : "true"
+    );
+  });
+  
+  optionsList.forEach((option) => {
+    function handler(e) {
+      // Click Events
+      if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
+        selectedValue.textContent = this.children[1].textContent;
+        customSelect.classList.remove("active");
+      }
+      // Key Events
+      if (e.key === "Enter") {
+        selectedValue.textContent = this.textContent;
+        customSelect.classList.remove("active");
+      }
+    }
+  
+    option.addEventListener("keyup", handler);
+    option.addEventListener("click", handler);
+  });
+  
+  </script>
+
+
+
+
+  
+<!--SCRIPT PARA LIMPIAR CON EL BOTON EL BOX-->
+
+
+<!--SCRIPT PARA LIMPIAR CON EL BOTON EL BOX-->
+<script>
+  function limpiarCombo() {
+      // Restablece el valor seleccionado del cuadro de selección
+      var selectButton = document.querySelector('.select-button');
+      var selectedValue = selectButton.querySelector('.selected-value');
+      selectedValue.textContent = 'Opciones';
+  }
+</script>
+
+
+
+
+<script>
+  // Obtén todos los checkboxes secundarios por su clase
+  var checkboxesSecundarios = document.querySelectorAll('.form-check-input');
+
+  // Agrega un evento "change" a todos los checkboxes secundarios
+  checkboxesSecundarios.forEach(function (checkbox) {
+      checkbox.addEventListener('change', function () {
+          // Si un checkbox secundario se marca, desmarca los demás
+          if (checkbox.checked) {
+              checkboxesSecundarios.forEach(function (otherCheckbox) {
+                  if (otherCheckbox !== checkbox) {
+                      otherCheckbox.disabled = true;
+                  }
+              });
+          } else {
+              // Si un checkbox secundario se desmarca, habilita todos los checkboxes
+              checkboxesSecundarios.forEach(function (otherCheckbox) {
+                  otherCheckbox.disabled = false;
+              });
+          }
+      });
+  });
+</script>
+
+
+
+
+<script>
+  function limpiarCheckboxes() {
+      // Obtén todos los checkboxes secundarios por su clase
+      var checkboxesSecundarios = document.querySelectorAll('.form-check-input');
+
+      // Itera a través de los checkboxes y desmárcalos
+      checkboxesSecundarios.forEach(function (checkbox) {
+          checkbox.checked = false;
+          checkbox.disabled = false; // Habilita todos los checkboxes al limpiar
+      });
+  }
+</script>
+
+
+
+
+
+
+
+<script>
+  function enviarConstancia() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+//selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+      var usernames = [];
+// inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+      selectedUsers.forEach(function(user) { 
+//se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+          usernames.push(user.value);
+      });
+
+      if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+        window.location.href = '/constancia/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+         // Limpia el cuadro de selección después de la redirección
+         limpiarCombo();
+      } else {
+          alert('Por favor, selecciona al menos un usuario.');
+      }
+  }
+</script>
+
+
+
+
+
+<script>
+  function enviarDeterminado() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+//selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+      var usernames = [];
+// inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+      selectedUsers.forEach(function(user) { 
+//se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+          usernames.push(user.value);
+      });
+
+      if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+        window.location.href = '/profile/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+         // Limpia el cuadro de selección después de la redirección
+         limpiarCombo();
+      } else {
+          alert('Por favor, selecciona al menos un usuario.');
+      }
+  }
+</script>
+
+
+
+
+
+<script>
+  function enviarIndeterminado() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+//selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+      var usernames = [];
+// inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+      selectedUsers.forEach(function(user) { 
+//se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+          usernames.push(user.value);
+      });
+
+      if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+        window.location.href = '/profile/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+         // Limpia el cuadro de selección después de la redirección
+         limpiarCombo();
+      } else {
+          alert('Por favor, selecciona al menos un usuario.');
+      }
+  }
+</script>
+
+
+
+<script>
+  function enviarRenuncia() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+//selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+      var usernames = [];
+// inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+      selectedUsers.forEach(function(user) { 
+//se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+          usernames.push(user.value);
+      });
+
+      if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+        window.location.href = '/renuncia/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+         // Limpia el cuadro de selección después de la redirección
+         limpiarCombo();
+      } else {
+          alert('Por favor, selecciona al menos un usuario.');
+      }
+  }
+</script>
+
+
+
+<script>
+  function enviarFiniquito() {
+    var selectedUsers = document.querySelectorAll('input[name="selectedUsers"]:checked');
+//selecciona todos los elementos input que tienen el atributo name igual a "selectedUsers" 
+      var usernames = [];
+// inicializa un array vacío para guardar los nombres de los cehckbox seleccionados 
+
+      selectedUsers.forEach(function(user) { 
+//se hace el recorrdo de los usuarios y los agrega con el push a una matriz
+          usernames.push(user.value);
+      });
+
+      if (usernames.length > 0) { //condicion si se ha seleccionado al menos uno 
+        window.location.href = '/finiquito/' + usernames.join('_') + '/';//el %5E es ^files de mis urls
+         // Limpia el cuadro de selección después de la redirección
+         limpiarCombo();
+      } else {
+          alert('Por favor, selecciona al menos un usuario.');
+      }
+  }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+
+
+</html>
 
 {% endblock %}

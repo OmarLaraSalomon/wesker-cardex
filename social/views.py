@@ -76,7 +76,7 @@ def cartas(request):
             Q(information__departamento__icontains=search_query)  # Buscar en el departamento
         )
     
-    paginator = Paginator(users, 10)  # 10 registros por página
+    paginator = Paginator(users, 15)  # 10 registros por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_num = page_obj.number
@@ -247,6 +247,7 @@ def verdatosmedicos(request, username=None):
     return render(request, template,  {'user': user, 'posts': posts})   
     
 def perfilpsico(request, username=None):
+   
     template = 'social/perfilpsico.html'
     users = User.objects.all().exclude(is_active = "False")
     documents = Document.objects.all()
@@ -301,6 +302,8 @@ def perfillegal(request, id=None):
 #Files Psicologicos
 def files(request, username=None):
     template = 'social/files.html'
+    if request.method  == 'POST':
+        print(request.POST['name']) 
     current_user = request.user
     if username and username != current_user.username:
         user = User.objects.get(username=username)
@@ -394,25 +397,29 @@ def legalfiles(request, username=None):
         user = current_user
     return render(request, template, {'user': user, 'posts': posts})
 
-#Subir archivos a perfil Psicologico
+# Subir archivos a perfil Psicologico
 def uploadpsico(request, username=None):
     template = 'social/files.html'
-    users = User.objects.all().exclude(is_active = "False")
+    users = User.objects.all().exclude(is_active="False")
+
     if request.method == "POST":
-        
         # Fetching the form data
         fileTitle = request.POST["fileTitle"]
         uploadedFile = request.FILES["uploadedFile"]
         userid = request.POST["idField"]
 
-        # Saving the information in the database
-        document = models.Document(
-            title = fileTitle,
-            uploadedFile = uploadedFile,
-            user_id = userid
-            
-        )
-        document.save()
+        try:
+          
+            document = models.Document(
+                title=fileTitle,
+                uploadedFile=uploadedFile,
+                user_id=userid
+            )
+            document.save()
+            messages.success(request, "El archivo se ha guardado exitosamente.")
+            return redirect('perfilpsico')
+        except Exception as e:
+            messages.error(request, "Hubo un error al guardar el archivo.")
 
     documents = models.Document.objects.all()
     return render(request, template, {
